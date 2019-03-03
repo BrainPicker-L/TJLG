@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 import re
 import json
 import os
+import time
 class Library():
     def getBookinfo(self,keyword,page):
         headers = {
@@ -20,23 +21,36 @@ class Library():
         return books_info_json   #books_info_json是搜到的书结果json
 
 class Test():
-    def getCheckCode(self,s):  #获得验证码
+    # def getCheckCode(self,s):  #获得验证码
+    #     headers = {
+    #         "User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36",
+    #     }
+    #     checkcode = "http://ssfw.tjut.edu.cn/ssfw/jwcaptcha.do?"
+    #     img=s.get(checkcode,stream=True,headers=headers)
+    #     with open('checkcode1.gif','wb') as f:
+    #         f.write(img.content)
+    def getCheckCode(self,s):
+        imgUrl = "http://ssfw.tjut.edu.cn/ssfw/jwcaptcha.do?"
         headers = {
-            "User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36",
         }
-        checkcode = "http://ssfw.tjut.edu.cn/ssfw/jwcaptcha.do?"
-        img=s.get(checkcode,stream=True,headers=headers)
-        with open('checkcode1.gif','wb') as f:
-            f.write(img.content)
-
+        r = s.get(imgUrl, stream=True, headers=headers)
+        imgName = 'checkcode1.jpg'
+        with open(imgName, 'wb') as f:
+            for chunk in r.iter_content(chunk_size=1024):
+                if chunk:
+                    f.write(chunk)
+                    f.flush()
+            f.close()
+        time.sleep(0.5)
     def judgeCode(self):    #识别验证码
-        pytesseract.pytesseract.tesseract_cmd = 'd://Tesseract-OCR//tesseract.exe'
-        tessdata_dir_config = '--tessdata-dir "d://Tesseract-OCR//tessdata"'
-        im = Image.open("checkcode1.gif")
+        # pytesseract.pytesseract.tesseract_cmd = 'd://Tesseract-OCR//tesseract.exe'
+        # tessdata_dir_config = '--tessdata-dir "d://Tesseract-OCR//tessdata"'
+        im = Image.open("checkcode1.jpg")
         imgry = im.convert('L')
         # 转化到灰度图
-        imgry.save('gray-' + "checkcode1.gif")
-        text = pytesseract.image_to_string(imgry,lang='fontyp',config=tessdata_dir_config)
+        imgry.save('gray-' + "checkcode1.jpg")
+        text = pytesseract.image_to_string(imgry,lang='fontyp')
         print(text)
 
         return text
@@ -197,22 +211,36 @@ class Test():
         headers = {
                 "User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36",
         }
-        for i in range(5):
+        for i in range(10):
             try:
+                print(i)
                 s = requests.session()
                 self.getCheckCode(s)
+                time.sleep(0.5)
                 data = {
                     'j_username': user,           #测试用账号密码
                     'j_password': password,
                     'validateCode': self.judgeCode(),
                 }
+                if data["validateCode"] == '':
+                    continue
                 r = s.post(url,data=data,headers=headers)
                 if choice == "1":
                     info_json = self.getClass(s,headers)
+                    if info_json == [] and i != 4:
+                        continue
+                    elif info_json!= []:
+                        pass
+                    else:
+                        info_json = "账号或密码错误"
+                    print(info_json)
                 elif choice == "2":
                     info_json = self.getGrade(s,headers,"2018-2019","1")
+                    print(info_json)
                 elif choice == "3":
                     info_json = self.getTest(s,headers)
+                    if info_json == [[], [], []]:
+                        continue
                 return info_json
                 break
 
