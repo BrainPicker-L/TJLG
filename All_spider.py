@@ -8,6 +8,7 @@ import re
 import json
 import os
 import time
+from io import BytesIO
 class Library():
     def getBookinfo(self,keyword,page):
         headers = {
@@ -30,30 +31,27 @@ class Test():
     #     with open('checkcode1.gif','wb') as f:
     #         f.write(img.content)
     def getCheckCode(self,s):
-        imgUrl = "http://ssfw.tjut.edu.cn/ssfw/jwcaptcha.do?"
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36",
-        }
-        r = s.get(imgUrl, stream=True, headers=headers)
-        imgName = 'checkcode1.jpg'
-        with open(imgName, 'wb') as f:
-            for chunk in r.iter_content(chunk_size=1024):
-                if chunk:
-                    f.write(chunk)
-                    f.flush()
-            f.close()
-        time.sleep(0.5)
+        while 1:
+            headers = {
+                    "User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36",
+            }
+            img_src = "http://ssfw.tjut.edu.cn/ssfw/jwcaptcha.do?"
+            response = s.get(img_src,headers=headers)
+            image = Image.open(BytesIO(response.content))
+            image.save('checkcode1.jpg')
+            if os.path.exists("checkcode1.jpg"):
+                break
     def judgeCode(self):    #识别验证码
         # pytesseract.pytesseract.tesseract_cmd = 'd://Tesseract-OCR//tesseract.exe'
         # tessdata_dir_config = '--tessdata-dir "d://Tesseract-OCR//tessdata"'
-        im = Image.open("checkcode1.jpg")
-        imgry = im.convert('L')
-        # 转化到灰度图
-        imgry.save('gray-' + "checkcode1.jpg")
-        text = pytesseract.image_to_string(imgry,lang='fontyp')
-        print(text)
-
-        return text
+        while 1:
+            im = Image.open("checkcode1.jpg")
+            # imgry = im.convert('L')
+            # # 转化到灰度图
+            # imgry.save('gray-' + "checkcode1.jpg")
+            text = pytesseract.image_to_string(im,lang='fontyp')
+            os.remove("checkcode1.jpg")
+            return text
 
     def getGrade(self,s,headers,term_year,term_num):            #拿到全部成绩
 
@@ -216,12 +214,13 @@ class Test():
                 print(i)
                 s = requests.session()
                 self.getCheckCode(s)
-                time.sleep(0.5)
+                time.sleep(2)
                 data = {
                     'j_username': user,           #测试用账号密码
                     'j_password': password,
                     'validateCode': self.judgeCode(),
                 }
+                print(data)
                 if data["validateCode"] == '':
                     continue
                 r = s.post(url,data=data,headers=headers)
