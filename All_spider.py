@@ -210,38 +210,38 @@ class Test():
                 "User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36",
         }
         for i in range(10):
-            try:
-                print(i)
-                s = requests.session()
-                self.getCheckCode(s)
-                time.sleep(2)
-                data = {
-                    'j_username': user,           #测试用账号密码
-                    'j_password': password,
-                    'validateCode': self.judgeCode(),
-                }
-                print(data)
-                if data["validateCode"] == '':
+            # try:
+            print(i)
+            s = requests.session()
+            self.getCheckCode(s)
+            time.sleep(2)
+            data = {
+                'j_username': user,           #测试用账号密码
+                'j_password': password,
+                'validateCode': self.judgeCode(),
+            }
+            print(data)
+            if data["validateCode"] == '':
+                continue
+            r = s.post(url,data=data,headers=headers)
+            if choice == "1":
+                info_json = self.getClass(s,headers)
+                if info_json == [] and i != 4:
                     continue
-                r = s.post(url,data=data,headers=headers)
-                if choice == "1":
-                    info_json = self.getClass(s,headers)
-                    if info_json == [] and i != 4:
-                        continue
-                    elif info_json!= []:
-                        pass
-                    else:
-                        info_json = "账号或密码错误"
-                    print(info_json)
-                elif choice == "2":
-                    info_json = self.getGrade(s,headers,"2018-2019","1")
-                    print(info_json)
-                elif choice == "3":
-                    info_json = self.getTest(s,headers)
-                    if info_json == [[], [], []]:
-                        continue
-                return info_json
-                break
+                elif info_json!= []:
+                    pass
+                else:
+                    info_json = "账号或密码错误"
+                print(info_json)
+            elif choice == "2":
+                info_json = self.getGrade(s,headers,"2018-2019","1")
+                print(info_json)
+            elif choice == "3":
+                info_json = self.getTest(s,headers)
+                if info_json == [[], [], []]:
+                    continue
+            return info_json
+            break
 
-            except:
-                return "账号或密码错误"
+            # except:
+            #     return "账号或密码错误"
