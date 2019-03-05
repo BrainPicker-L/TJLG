@@ -188,6 +188,7 @@ class Test():
                     'validateCode': self.judgeCode(),
                 }
                 r = s.post(url,data=data,headers=headers)
+                print(r.text)
                 self.getClass(s,headers)
                 self.getGrade(s,headers,"2018-2019","1")
                 self.getTest(s,headers)

@@ -4,6 +4,7 @@
     <list default="true" id="d1936e51-a940-4920-a23d-3c1f422c957a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/All_spider.py" beforeDir="false" afterPath="$PROJECT_DIR$/All_spider.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/天津理工考试信息.py" beforeDir="false" afterPath="$PROJECT_DIR$/天津理工考试信息.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -25,8 +26,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/All_spider.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="454">
-              <caret line="227" column="51" selection-start-line="227" selection-start-column="51" selection-end-line="227" selection-end-column="51" />
+            <state relative-caret-position="241">
+              <caret line="246" column="28" lean-forward="true" selection-start-line="246" selection-start-column="28" selection-end-line="246" selection-end-column="28" />
               <folding>
                 <element signature="e#1#16#0" expanded="true" />
               </folding>
@@ -35,10 +36,19 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/.local/lib/python3.6/site-packages/PIL/Image.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="157">
+              <caret line="2686" selection-start-line="2686" selection-end-line="2686" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/天津理工考试信息.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2775">
-              <caret line="191" column="56" selection-start-line="191" selection-start-column="56" selection-end-line="191" selection-end-column="56" />
+            <state relative-caret-position="385">
+              <caret line="185" column="35" selection-start-line="185" selection-start-column="35" selection-end-line="185" selection-end-column="43" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -95,14 +105,15 @@
         <option value="$PROJECT_DIR$/Tjlg/urls.py" />
         <option value="$PROJECT_DIR$/11.py" />
         <option value="$PROJECT_DIR$/Tjlg/111.py" />
+        <option value="$PROJECT_DIR$/天津理工考试信息.py" />
         <option value="$PROJECT_DIR$/All_spider.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds">
     <option name="x" value="925" />
     <option name="y" value="92" />
-    <option name="width" value="995" />
+    <option name="width" value="985" />
     <option name="height" value="926" />
   </component>
   <component name="ProjectView">
@@ -110,6 +121,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -126,7 +138,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -146,7 +157,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.111">
+  <component name="RunManager" selected="Python.All_spider">
     <configuration name="天津理工考试信息 (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Tjlg" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -175,9 +186,9 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="/usr/bin/python3.6" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/天津理工考试信息.py" />
@@ -261,11 +272,11 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.111" />
         <item itemvalue="Python.All_spider" />
+        <item itemvalue="Python.天津理工考试信息" />
+        <item itemvalue="Python.111" />
         <item itemvalue="Python.11 (1)" />
         <item itemvalue="Python.天津理工考试信息 (1)" />
-        <item itemvalue="Python.天津理工考试信息" />
       </list>
     </recent_temporary>
   </component>
@@ -292,20 +303,21 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
+    <frame x="925" y="92" width="985" height="926" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.08201203" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15608741" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.42713568" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.38944724" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32864866" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32972974" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.3535135" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.41080403" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.32914573" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -404,16 +416,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/天津理工考试信息.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2775">
-          <caret line="191" column="56" selection-start-line="191" selection-start-column="56" selection-end-line="191" selection-end-column="56" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Tjlg/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="315">
@@ -424,10 +426,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/天津理工考试信息.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="385">
+          <caret line="185" column="35" selection-start-line="185" selection-start-column="35" selection-end-line="185" selection-end-column="43" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.local/lib/python3.6/site-packages/PIL/Image.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="157">
+          <caret line="2686" selection-start-line="2686" selection-end-line="2686" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/All_spider.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="454">
-          <caret line="227" column="51" selection-start-line="227" selection-start-column="51" selection-end-line="227" selection-end-column="51" />
+        <state relative-caret-position="241">
+          <caret line="246" column="28" lean-forward="true" selection-start-line="246" selection-start-column="28" selection-end-line="246" selection-end-column="28" />
           <folding>
             <element signature="e#1#16#0" expanded="true" />
           </folding>

@@ -31,26 +31,31 @@ class Test():
     #     with open('checkcode1.gif','wb') as f:
     #         f.write(img.content)
     def getCheckCode(self,s):
-        while 1:
-            headers = {
-                    "User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36",
-            }
-            img_src = "http://ssfw.tjut.edu.cn/ssfw/jwcaptcha.do?"
-            response = s.get(img_src,headers=headers)
-            image = Image.open(BytesIO(response.content))
-            image.save('checkcode1.jpg')
-            if os.path.exists("checkcode1.jpg"):
-                break
+        headers = {
+                "User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36",
+        }
+        img_src = "http://ssfw.tjut.edu.cn/ssfw/jwcaptcha.do?"
+        response = s.get(img_src,headers=headers)
+        image = Image.open(BytesIO(response.content))
+        image.save('/home/TJLG/checkcode1.jpg')
+        print("正在拿验证码")
+        im = Image.open("/home/TJLG/checkcode1.jpg")
+        # imgry = im.convert('L')
+        # # 转化到灰度图
+        # imgry.save('gray-' + "checkcode1.jpg")
+        text = pytesseract.image_to_string(im,lang='fontyp')
+        os.remove("/home/TJLG/checkcode1.jpg")
+        return text
     def judgeCode(self):    #识别验证码
         # pytesseract.pytesseract.tesseract_cmd = 'd://Tesseract-OCR//tesseract.exe'
         # tessdata_dir_config = '--tessdata-dir "d://Tesseract-OCR//tessdata"'
         while 1:
-            im = Image.open("checkcode1.jpg")
+            im = Image.open("/home/TJLG/checkcode1.jpg")
             # imgry = im.convert('L')
             # # 转化到灰度图
             # imgry.save('gray-' + "checkcode1.jpg")
             text = pytesseract.image_to_string(im,lang='fontyp')
-            os.remove("checkcode1.jpg")
+            os.remove("/home/TJLG/checkcode1.jpg")
             return text
 
     def getGrade(self,s,headers,term_year,term_num):            #拿到全部成绩
@@ -209,39 +214,37 @@ class Test():
         headers = {
                 "User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36",
         }
-        for i in range(10):
-            # try:
-            print(i)
-            s = requests.session()
-            self.getCheckCode(s)
-            time.sleep(2)
+
+        s = requests.session()
+        # self.getCheckCode(s)
+        while 1:
             data = {
                 'j_username': user,           #测试用账号密码
                 'j_password': password,
-                'validateCode': self.judgeCode(),
+                'validateCode': self.getCheckCode(s),
             }
             print(data)
             if data["validateCode"] == '':
                 continue
             r = s.post(url,data=data,headers=headers)
+            return_info = r.text.split("\":")[0].replace("{", "").replace("\"", "")
+            print(return_info)
+            if return_info == "success":
+                break
+            elif return_info == "userNameOrPasswordError":
+                break
+            elif return_info == "validateCodeError":
+                continue
+        if return_info == "userNameOrPasswordError":
+            return "用户名或密码错误"
+        elif return_info == "success":
             if choice == "1":
                 info_json = self.getClass(s,headers)
-                if info_json == [] and i != 4:
-                    continue
-                elif info_json!= []:
-                    pass
-                else:
-                    info_json = "账号或密码错误"
-                print(info_json)
             elif choice == "2":
                 info_json = self.getGrade(s,headers,"2018-2019","1")
-                print(info_json)
             elif choice == "3":
                 info_json = self.getTest(s,headers)
-                if info_json == [[], [], []]:
-                    continue
+            print(info_json)
             return info_json
-            break
-
-            # except:
-            #     return "账号或密码错误"
+# a = Test()
+# a.main("20170084","liu20056957","1")
