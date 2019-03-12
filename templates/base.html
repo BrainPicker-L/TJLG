@@ -1,0 +1,75 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap-3.3.7/css/bootstrap.min.css' %}">
+    <script type="text/javascript" src="{% static 'jquery-1.12.4.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap-3.3.7/js/bootstrap.min.js' %}"></script>
+    {% block header_extends %}{% endblock %}
+</head>
+<body>
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{% url 'home' %}">天津理工大学后台管理</a>
+                <button class="navbar-toggle collapsed"  data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div id="navbar-collapse" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    {% if not user.is_authenticated %}
+                    {% else %}
+                        <li class="{% block nav_home_active %}{% endblock %}">
+                            <a href="{% url 'home' %}">首页</a>
+                        </li>
+                        <li class="{% block nav_manage_article_active %}{% endblock %}">
+                            <a href="{% url 'manage_article' %}">文章管理</a>
+                        </li>
+                        <li class="{% block nav_edit_article_active %}{% endblock %}">
+                            <a href="{% url 'edit_article' 0 %}">文章发布</a>
+                        </li>
+                        <li class="{% block nav_manage_detail_active %}{% endblock %}">
+                            <a href="{% url 'manage_detail'%}">详情文章管理</a>
+                        </li>
+                        <li class="{% block nav_edit_detail_article_active %}{% endblock %}">
+                            <a href="{% url 'edit_detail_article' 0 %}">详情文章发布</a>
+                        </li>
+                    {% endif %}
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    {% if not user.is_authenticated %}
+                        <li>
+                            <a href="{% url 'login' %}?from={{ request.get_full_path }}">登录</a>
+                        </li>
+                    {% else %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">{{ user.username }} <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url 'logout' %}?from={{ request.get_full_path }}">退出</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {% block content %}{% endblock %}
+    <div class="footer">
+        <div class="website-info">
+            <p>津ICP备19001591号-1     Copyright ©2019 lzz 版权所有</p>
+            <p>意见反馈（1500202278@qq.com）</p>
+        </div>
+    </div>
+    {% block script_extends %}{% endblock %}
+</body>
+</html>

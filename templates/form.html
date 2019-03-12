@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="post" enctype="multipart/form-data" >
+    {%csrf_token%}
+    <p>{{form.username.label}}:{{form.username}}</p>
+    {%if form.errors.username%}
+    {{form.errors.username}}
+    {%endif%}
+    <p>{{form.password.label}}:{{form.password}}</p>
+     {%if form.errors.password%}
+    {{form.errors.password}}
+    {%endif%}
+    <p>{{form.email.label}}:{{form.email}}</p>
+       {%if form.errors.email%}
+    {{form.errors.email}}
+    {%endif%}
+    <P>{{form.image.label}}:{{form.image}}</P>
+     {%if form.errors.image%}
+    {{form.errors.image}}
+    {%endif%}
+
+    <input type="submit" value="Submit">
+</form>
+
+</body>
+</html>
