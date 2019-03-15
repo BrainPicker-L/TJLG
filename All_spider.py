@@ -199,9 +199,12 @@ class Test():
         name_list = selector.xpath("/html/body/div[1]/div/fieldset[1]/table//tr/td[3]/span/text()")
         time_list = selector.xpath("/html/body/div[1]/div/fieldset[1]/table//tr/td[7]/span/text()")
         position_list = selector.xpath("/html/body/div[1]/div/fieldset[1]/table//tr/td[8]/span/text()")
-        all_list.append(name_list)
-        all_list.append(time_list)
-        all_list.append(position_list)
+        for i in range(len(name_list)):
+            dict1 = {}
+            dict1['KCMC'] = name_list[i]
+            dict1['KSSJ'] = time_list[i]
+            dict1['JSMC'] = position_list[i]
+            all_list.append(dict1)
         json_all_list = json.dumps(all_list, ensure_ascii=False)
         return json_all_list
 
