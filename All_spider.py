@@ -236,7 +236,8 @@ class Test():
             elif return_info == "validateCodeError":
                 continue
         if return_info == "userNameOrPasswordError":
-            return "用户名或密码错误"
+            info_json = json.dumps({"error":-2}, ensure_ascii=False)
+            return info_json
         elif return_info == "success":
             if choice == "1":
                 info_json = self.getClass(s,headers)

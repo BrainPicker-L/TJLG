@@ -9,8 +9,8 @@ from django.http import HttpResponse
 from .forms import InfoForm
 from All_spider import *
 def info(request):
-    if request.method == 'POST':# 当提交表单时
-        form = InfoForm(request.POST) # form 包含提交的数据
+    if request.method == 'GET':# 当提交表单时
+        form = InfoForm(request.GET) # form 包含提交的数据
         if form.is_valid():
             user = form.cleaned_data['user']
             password = form.cleaned_data['password']

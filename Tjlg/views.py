@@ -9,6 +9,8 @@ import datetime
 import os
 from Tjlg.settings import MEDIA_ROOT
 from detail_article.models import DetailArticle
+import json
+from django.http import HttpResponse
 def home(request):
     context = {}
 
@@ -168,3 +170,7 @@ def phone_detail_article(request,article_pk):
     context = {}
     context['article'] = DetailArticle.objects.get(pk=article_pk)
     return render(request, 'phone_detail_article.html', context)
+
+def start_school_day(request):
+    info_json = json.dumps({"start": "20190225"}, ensure_ascii=False)
+    return HttpResponse(info_json)
