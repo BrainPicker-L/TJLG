@@ -174,3 +174,23 @@ def phone_detail_article(request,article_pk):
 def start_school_day(request):
     info_json = json.dumps({"start": "20190225"}, ensure_ascii=False)
     return HttpResponse(info_json)
+
+from lectureApi.models import Lecture
+def lecture(request):
+    querylist = Lecture.objects.all()
+    info_list = []
+    for i in querylist:
+        #     list_display = ('headline', 'title', 'speaker', 'host','time','start_time','length','location','intro')
+        dict1 = {}
+        dict1['headline'] = i.headline
+        dict1['title'] = i.title
+        dict1['speaker'] = i.speaker
+        dict1['host'] = i.host
+        dict1['time'] = str(i.time).split(" ")[0]
+        dict1['start_time'] = i.start_time
+        dict1['length'] = i.length
+        dict1['location'] = i.location
+        dict1['intro'] = i.intro
+        info_list.append(dict1)
+    info_json = json.dumps(info_list, ensure_ascii=False)
+    return HttpResponse(info_json)

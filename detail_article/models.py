@@ -9,3 +9,7 @@ class DetailArticle(models.Model):
     content = RichTextUploadingField()
     created_time = models.DateTimeField(auto_now_add=False)
     last_updated_time = models.DateTimeField(auto_now=False)
+
+    class Meta:
+        verbose_name = '详情文章'
+        verbose_name_plural = '详情文章'

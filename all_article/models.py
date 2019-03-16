@@ -19,3 +19,6 @@ class Article(models.Model):
     img7 = models.ImageField("图片7",upload_to='img',null=True,default="",blank=True)
     img8 = models.ImageField("图片8",upload_to='img',null=True,default="",blank=True)
     img9 = models.ImageField("图片9",upload_to='img',null=True,default="",blank=True)
+    class Meta:
+        verbose_name = '普通文章'
+        verbose_name_plural = '普通文章'

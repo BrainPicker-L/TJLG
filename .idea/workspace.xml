@@ -2,27 +2,28 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d1936e51-a940-4920-a23d-3c1f422c957a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Tests/forms.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/urls.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tjlg/views.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/all_article/urls.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/detail_article/urls.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/detail_article.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/edit_article.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/edit_detail_article.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/form.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/home.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/manage_article.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/manage_detail.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/phone_detail_article.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/top_article/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/all_article/migrations/0010_auto_20190316_1324.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lectureApi/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lectureApi/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lectureApi/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lectureApi/migrations/0001_initial.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lectureApi/migrations/0002_auto_20190316_1327.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lectureApi/migrations/0003_auto_20190316_1333.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lectureApi/migrations/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lectureApi/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lectureApi/tests.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lectureApi/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/upload/2019/03/16/u250880548926085074fm26gp0.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Tjlg.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Tjlg.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Tjlg/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tjlg/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Tjlg/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tjlg/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/checkcode1.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tjlg/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tjlg/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/all_article/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/all_article/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gray-checkcode1.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/detail_article/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/detail_article/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirement.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirement.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -30,62 +31,8 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FUSProjectUsageTrigger">
-    <session id="-1042822763">
-      <usages-collector id="statistics.lifecycle.project">
-        <counts>
-          <entry key="project.closed" value="14" />
-          <entry key="project.open.time.0" value="6" />
-          <entry key="project.open.time.1" value="4" />
-          <entry key="project.open.time.4" value="1" />
-          <entry key="project.open.time.5" value="1" />
-          <entry key="project.open.time.7" value="1" />
-          <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="14" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.open">
-        <counts>
-          <entry key="css" value="4" />
-          <entry key="html" value="85" />
-          <entry key="py" value="216" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.open">
-        <counts>
-          <entry key="CSS" value="4" />
-          <entry key="HTML" value="85" />
-          <entry key="Python" value="216" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.edit">
-        <counts>
-          <entry key="css" value="204" />
-          <entry key="html" value="1106" />
-          <entry key="py" value="6086" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.edit">
-        <counts>
-          <entry key="CSS" value="204" />
-          <entry key="HTML" value="1106" />
-          <entry key="Python" value="6086" />
-        </counts>
-      </usages-collector>
-    </session>
-  </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Tjlg/settings.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="513">
-              <caret line="27" column="21" lean-forward="true" selection-start-line="27" selection-start-column="21" selection-end-line="27" selection-end-column="21" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -121,8 +68,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/student_info_Api/urls.py" />
-        <option value="$PROJECT_DIR$/student_info_Api/forms.py" />
         <option value="$PROJECT_DIR$/student_info_Api/views.py" />
         <option value="$PROJECT_DIR$/InfoApi/views.py" />
         <option value="$PROJECT_DIR$/11.py" />
@@ -151,7 +96,6 @@
         <option value="$PROJECT_DIR$/templates/edit_article.html" />
         <option value="$PROJECT_DIR$/all_article/admin.py" />
         <option value="$PROJECT_DIR$/static/blog/blog.css" />
-        <option value="$PROJECT_DIR$/detail_article/models.py" />
         <option value="$PROJECT_DIR$/detail_article/admin.py" />
         <option value="$PROJECT_DIR$/templates/edit_detail_article.html" />
         <option value="$PROJECT_DIR$/Tjlg/forms.py" />
@@ -159,27 +103,29 @@
         <option value="$PROJECT_DIR$/templates/manage_detail.html" />
         <option value="$PROJECT_DIR$/detail_article/urls.py" />
         <option value="$PROJECT_DIR$/detail_article/views.py" />
-        <option value="$PROJECT_DIR$/Tjlg/views.py" />
         <option value="$PROJECT_DIR$/templates/detail_article.html" />
         <option value="$PROJECT_DIR$/templates/phone_detail_article.html" />
         <option value="$PROJECT_DIR$/all_article/urls.py" />
         <option value="$PROJECT_DIR$/user/admin.py" />
-        <option value="$PROJECT_DIR$/Tjlg/urls.py" />
-        <option value="$PROJECT_DIR$/all_article/models.py" />
         <option value="$PROJECT_DIR$/all_article/views.py" />
         <option value="$PROJECT_DIR$/top_article/views.py" />
         <option value="$PROJECT_DIR$/templates/home.html" />
         <option value="$PROJECT_DIR$/templates/base.html" />
         <option value="$PROJECT_DIR$/static/base.css" />
         <option value="$PROJECT_DIR$/Tjlg/settings.py" />
+        <option value="$PROJECT_DIR$/lectureApi/admin.py" />
+        <option value="$PROJECT_DIR$/Tjlg/urls.py" />
+        <option value="$PROJECT_DIR$/Tjlg/views.py" />
+        <option value="$PROJECT_DIR$/all_article/models.py" />
+        <option value="$PROJECT_DIR$/detail_article/models.py" />
+        <option value="$PROJECT_DIR$/lectureApi/models.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="1037" />
-    <option name="y" value="52" />
-    <option name="width" value="858" />
-    <option name="height" value="954" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="y" value="25" />
+    <option name="width" value="849" />
+    <option name="height" value="965" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -193,6 +139,31 @@
               <item name="TJLG" type="b2602c69:ProjectViewProjectNode" />
               <item name="TJLG" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="TJLG" type="b2602c69:ProjectViewProjectNode" />
+              <item name="TJLG" type="462c0819:PsiDirectoryNode" />
+              <item name="detail_article" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="TJLG" type="b2602c69:ProjectViewProjectNode" />
+              <item name="TJLG" type="462c0819:PsiDirectoryNode" />
+              <item name="InfoApi" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="TJLG" type="b2602c69:ProjectViewProjectNode" />
+              <item name="TJLG" type="462c0819:PsiDirectoryNode" />
+              <item name="lectureApi" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="TJLG" type="b2602c69:ProjectViewProjectNode" />
+              <item name="TJLG" type="462c0819:PsiDirectoryNode" />
+              <item name="LibraryApi" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="TJLG" type="b2602c69:ProjectViewProjectNode" />
+              <item name="TJLG" type="462c0819:PsiDirectoryNode" />
+              <item name="Tests" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -203,7 +174,10 @@
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../django2.0-course/26.回复功能设计和树结构" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="ReadonlyStatusHandler">
+    <option name="SHOW_DIALOG" value="false" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -363,9 +337,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="830" y="42" width="686" height="763" extended-state="0" />
+    <frame x="67" y="25" width="1853" height="983" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22461538" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10054645" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -376,7 +350,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32751676" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32885906" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.36984128" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.36533958" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.32850942" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -403,39 +377,11 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout-to-restore>
   </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
-  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/top_article/admin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="4" column="34" selection-start-line="4" selection-start-column="34" selection-end-line="4" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/ProgramData/Anaconda3/Lib/json/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="340" selection-start-line="340" selection-end-line="340" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/user/templates/register.html" />
-    <entry file="file://$PROJECT_DIR$/user/templates/login.html" />
     <entry file="file://$PROJECT_DIR$/user/forms.py" />
     <entry file="file://$PROJECT_DIR$/user/urls.py" />
     <entry file="file://$PROJECT_DIR$/templates/home.py" />
-    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/django/core/handlers/base.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="843">
-          <caret line="140" column="35" lean-forward="true" selection-start-line="140" selection-start-column="35" selection-end-line="140" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tjlg/wsgi.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/django/core/handlers/base.py" />
     <entry file="file://$PROJECT_DIR$/LibraryApi/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="36">
@@ -452,13 +398,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/LibraryApi/forms.py">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tests/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="57">
-          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Tests/tests.py">
       <provider selected="true" editor-type-id="text-editor" />
@@ -481,13 +420,6 @@
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/re_edit_article.html" />
-    <entry file="file://$PROJECT_DIR$/all_article/admin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="4" column="34" lean-forward="true" selection-start-line="4" selection-start-column="34" selection-end-line="4" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Tests/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="76">
@@ -506,13 +438,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="57">
           <caret line="4" column="43" lean-forward="true" selection-start-line="4" selection-start-column="43" selection-end-line="4" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/detail_article/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="7" selection-start-line="7" selection-end-line="8" selection-end-column="38" />
         </state>
       </provider>
     </entry>
@@ -569,27 +494,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Tjlg/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="665">
-          <caret line="41" column="22" selection-start-line="41" selection-start-column="22" selection-end-line="41" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/top_article/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="5" column="35" selection-start-line="5" selection-start-column="35" selection-end-line="5" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/all_article/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="2" column="31" lean-forward="true" selection-start-line="2" selection-start-column="31" selection-end-line="2" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/all_article/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="538">
@@ -618,13 +522,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="249">
           <caret line="20" column="20" selection-start-line="20" selection-start-column="20" selection-end-line="20" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tjlg/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="589">
-          <caret line="41" column="31" lean-forward="true" selection-start-line="41" selection-start-column="31" selection-end-line="41" selection-end-column="31" />
         </state>
       </provider>
     </entry>
@@ -707,8 +604,86 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Tjlg/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="513">
-          <caret line="27" column="21" lean-forward="true" selection-start-line="27" selection-start-column="21" selection-end-line="27" selection-end-column="21" />
+        <state relative-caret-position="315">
+          <caret line="48" column="17" selection-start-line="48" selection-start-column="17" selection-end-line="48" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tjlg/wsgi.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/InfoApi/models.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/all_article/admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" selection-start-line="3" selection-end-line="5" selection-end-column="75" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tjlg/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="310">
+          <caret line="187" column="30" selection-start-line="187" selection-start-column="30" selection-end-line="187" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tjlg/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="385">
+          <caret line="43" column="46" selection-start-line="43" selection-start-column="46" selection-end-line="43" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lectureApi/admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" selection-start-line="5" selection-end-line="5" selection-end-column="107" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/all_article/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="23" column="36" lean-forward="true" selection-start-line="23" selection-start-column="36" selection-end-line="23" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/top_article/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="31" lean-forward="true" selection-start-line="10" selection-start-column="31" selection-end-line="10" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/detail_article/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="14" column="36" lean-forward="true" selection-start-line="14" selection-start-column="36" selection-end-line="14" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lectureApi/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="460">
+          <caret line="32" column="40" selection-start-line="32" selection-start-column="40" selection-end-line="32" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LibraryApi/models.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tests/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
         </state>
       </provider>
     </entry>

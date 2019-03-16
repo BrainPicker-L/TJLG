@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "Tests",
     "ckeditor",
     "ckeditor_uploader",
+    "lectureApi",
 
 ]
 
