@@ -27,7 +27,7 @@ class Lecture(models.Model):
     start_time = models.IntegerField("开始时间",choices=start_time_list)
     length = models.IntegerField("持续时长",choices=length_list)
     location = models.CharField("地点",max_length=50)
-    intro = models.CharField("主讲人简介(选填)(最多120字)",max_length=120,null=True,blank=True)
+    intro = models.CharField("主讲人简介(最多120字)",max_length=120,default="暂无主讲人简介")
     class Meta:
         verbose_name = '课表自定义显示内容'
         verbose_name_plural = '课表自定义显示内容'
