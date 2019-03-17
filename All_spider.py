@@ -189,16 +189,16 @@ class Test():
 
     def getTest(self,s,headers):     #拿到考试信息
         data = {
-            "xnxqdm": "2018-2019-1"
+            "xnxqdm": "2018-2019-2"
         }
         url = "http://ssfw.tjut.edu.cn/ssfw/xsks/kcxx.do"
         r = s.post(url,data=data,headers = headers)
         selector = etree.HTML(r.text)
         all_list = []
 
-        name_list = selector.xpath("/html/body/div[1]/div/fieldset[1]/table//tr/td[3]/span/text()")
-        time_list = selector.xpath("/html/body/div[1]/div/fieldset[1]/table//tr/td[7]/span/text()")
-        position_list = selector.xpath("/html/body/div[1]/div/fieldset[1]/table//tr/td[8]/span/text()")
+        name_list = selector.xpath("/html/body/div[1]/div/fieldset[1]/table//tr/td[3]/text()")
+        time_list = selector.xpath("/html/body/div[1]/div/fieldset[1]/table//tr/td[7]/text()")
+        position_list = selector.xpath("/html/body/div[1]/div/fieldset[1]/table//tr/td[8]/text()")
         for i in range(len(name_list)):
             dict1 = {}
             dict1['KCMC'] = name_list[i]
