@@ -9,6 +9,7 @@ import json
 import os
 import time
 from io import BytesIO
+from gradeList.models import *
 class Library():
     def getBookinfo(self,keyword,page):
         headers = {
@@ -58,7 +59,7 @@ class Test():
             os.remove("/home/TJLG/checkcode1.jpg")
             return text
 
-    def getGrade(self,s,headers,term_year,term_num):            #拿到全部成绩
+    def getGrade(self,s,headers,term_year,term_num,user):            #拿到全部成绩
 
         data = {
             'optype': 'query',
@@ -90,10 +91,12 @@ class Test():
         tr_list = a.find_all('tr', attrs={"class":"t_con"})
         sum_credit = 0
         sum_pa_and_credit = 0
+        obj, created = student_Id.objects.get_or_create(xuehao=user)
         for tr in tr_list:
             gradeInfo_dict = {}
             td_list = tr.find_all('td')
             #gradeInfo_dict['xueqi'] = td_list[2].string
+            grade_id = td_list[3].string
             gradeInfo_dict['subject'] = td_list[4].string
             gradeInfo_dict['property'] = (td_list[5].string).replace("\xa0","")
             gradeInfo_dict['credit'] = (td_list[8].string)[-4:-1]
@@ -105,6 +108,13 @@ class Test():
             list2.append(gradeInfo_dict)
             sum_credit = sum_credit + float(gradeInfo_dict['credit'])
             sum_pa_and_credit = sum_pa_and_credit + float(gradeInfo_dict['credit'])*float(gradeInfo_dict['pa'])
+            if created == True:
+                Grade = gradeInfo()
+                Grade.grade_id = grade_id
+                Grade.subject = gradeInfo_dict['subject']
+                Grade.property = gradeInfo_dict['property']
+                Grade.grade = gradeInfo_dict['grade']
+                Grade.save()
 
         gpa_dict['term_num_GPA'] = round(sum_pa_and_credit/sum_credit,2)
         gpa_dict['term_year_GPA'] = gpa_dict['term_num_GPA']
@@ -245,10 +255,10 @@ class Test():
             if choice == "1":
                 info_json = self.getClass(s,headers)
             elif choice == "2":
-                info_json = self.getGrade(s,headers,"2018-2019","1")
+                info_json = self.getGrade(s,headers,"2018-2019","1",user)
             elif choice == "3":
                 info_json = self.getTest(s,headers)
             print(info_json)
             return info_json
 # a = Test()
-# a.main("20170084","liu20056957","1")
+# a.main("20170084","liu20056957","2")
