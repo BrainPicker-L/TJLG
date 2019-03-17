@@ -127,18 +127,18 @@ class Test():
     def getClass(self,s,headers):
         class_all_list = []
         xqj_num = [1,2,3,4,5,6,7]
-        xqj_han = ["一","二","三","四","五","六","七"]
+        xqj_han = ["一","二","三","四","五","六","日"]
         url = "http://ssfw.tjut.edu.cn/ssfw/xkgl/xkjgcx.do"
-        data = {
-            'isHistory': 'ss',
-            'curPageNo': '2',
-            'iDisplayLength': '10',
-            'totalSize': '11',
-            'qXnxqdm': '2018-2019-2',
-            'qKcxzdm':'',
-            'qKclbdm':'',
-        }
-        r = s.post(url,data=data, headers=headers)
+        # data = {
+        #     'isHistory': 'ss',
+        #     'curPageNo': '2',
+        #     'iDisplayLength': '10',
+        #     'totalSize': '11',
+        #     'qXnxqdm': '2018-2019-2',
+        #     'qKcxzdm':'',
+        #     'qKclbdm':'',
+        # }
+        r = s.get(url, headers=headers)
         soup = BeautifulSoup(r.text, "lxml")
         table = soup.find("table", attrs={"class":"ui_table ui_table_striped ui_table_style02"})
         tr_list = table.find_all("tr", attrs={"class":"t_con"})
@@ -260,5 +260,3 @@ class Test():
                 info_json = self.getTest(s,headers)
             print(info_json)
             return info_json
-# a = Test()
-# a.main("20170084","liu20056957","2")
