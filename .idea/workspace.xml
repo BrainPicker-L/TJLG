@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d1936e51-a940-4920-a23d-3c1f422c957a" name="Default Changelist" comment="" />
+    <list default="true" id="d1936e51-a940-4920-a23d-3c1f422c957a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/All_spider.py" beforeDir="false" afterPath="$PROJECT_DIR$/All_spider.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tjlg/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tjlg/settings.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -9,31 +13,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LibraryApi/models.py">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lectureApi/models.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="20" column="5" selection-start-line="20" selection-start-column="5" selection-end-line="20" selection-end-column="5" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/All_spider.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="200" column="89" selection-start-line="200" selection-start-column="89" selection-end-line="200" selection-end-column="89" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -69,8 +49,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/student_info_Api/views.py" />
-        <option value="$PROJECT_DIR$/InfoApi/views.py" />
         <option value="$PROJECT_DIR$/11.py" />
         <option value="$PROJECT_DIR$/Tjlg/111.py" />
         <option value="$PROJECT_DIR$/天津理工考试信息.py" />
@@ -112,13 +90,15 @@
         <option value="$PROJECT_DIR$/templates/home.html" />
         <option value="$PROJECT_DIR$/templates/base.html" />
         <option value="$PROJECT_DIR$/static/base.css" />
-        <option value="$PROJECT_DIR$/Tjlg/settings.py" />
         <option value="$PROJECT_DIR$/lectureApi/admin.py" />
         <option value="$PROJECT_DIR$/Tjlg/urls.py" />
         <option value="$PROJECT_DIR$/Tjlg/views.py" />
         <option value="$PROJECT_DIR$/all_article/models.py" />
         <option value="$PROJECT_DIR$/detail_article/models.py" />
         <option value="$PROJECT_DIR$/lectureApi/models.py" />
+        <option value="$PROJECT_DIR$/Tjlg/settings.py" />
+        <option value="$PROJECT_DIR$/gradeList/admin.py" />
+        <option value="$PROJECT_DIR$/gradeList/models.py" />
         <option value="$PROJECT_DIR$/All_spider.py" />
       </list>
     </option>
@@ -144,12 +124,16 @@
             <path>
               <item name="TJLG" type="b2602c69:ProjectViewProjectNode" />
               <item name="TJLG" type="462c0819:PsiDirectoryNode" />
-              <item name="lectureApi" type="462c0819:PsiDirectoryNode" />
+              <item name="all_article" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="TJLG" type="b2602c69:ProjectViewProjectNode" />
               <item name="TJLG" type="462c0819:PsiDirectoryNode" />
-              <item name="Tests" type="462c0819:PsiDirectoryNode" />
+              <item name="gradeList" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="TJLG" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
             </path>
           </expand>
           <select />
@@ -177,7 +161,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.views">
+  <component name="RunManager" selected="Python.All_spider">
     <configuration name="天津理工考试信息" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Tjlg" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -292,8 +276,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.views" />
         <item itemvalue="Python.All_spider" />
+        <item itemvalue="Python.views" />
         <item itemvalue="Python.天津理工考试信息" />
         <item itemvalue="Python.111" />
         <item itemvalue="Python.11 (1)" />
@@ -330,13 +314,13 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.38944724" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.38875878" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32751676" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32885906" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.36533958" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.3641686" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.32850942" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -364,9 +348,6 @@
     </layout-to-restore>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/user/urls.py" />
-    <entry file="file://$PROJECT_DIR$/templates/home.py" />
-    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/django/core/handlers/base.py" />
     <entry file="file://$PROJECT_DIR$/LibraryApi/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="36">
@@ -587,42 +568,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Tjlg/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="48" column="17" selection-start-line="48" selection-start-column="17" selection-end-line="48" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Tjlg/wsgi.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/InfoApi/models.py">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/all_article/admin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" selection-start-line="3" selection-end-line="5" selection-end-column="75" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tjlg/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
-          <caret line="187" column="30" selection-start-line="187" selection-start-column="30" selection-end-line="187" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tjlg/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="385">
-          <caret line="43" column="46" selection-start-line="43" selection-start-column="46" selection-end-line="43" selection-end-column="46" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lectureApi/admin.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -631,13 +581,6 @@
           <folding>
             <element signature="e#0#32#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/all_article/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="23" column="36" lean-forward="true" selection-start-line="23" selection-start-column="36" selection-end-line="23" selection-end-column="36" />
         </state>
       </provider>
     </entry>
@@ -665,6 +608,73 @@
     <entry file="file://$PROJECT_DIR$/LibraryApi/models.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/Tjlg/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="555">
+          <caret line="43" column="46" selection-start-line="43" selection-start-column="46" selection-end-line="43" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tjlg/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="49" column="16" selection-start-line="49" selection-start-column="16" selection-end-line="49" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/all_article/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-line="5" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/all_article/admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" selection-start-line="3" selection-end-line="5" selection-end-column="75" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gradeList/admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" selection-start-line="9" selection-end-line="9" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tjlg/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="12" column="36" lean-forward="true" selection-start-line="12" selection-start-column="36" selection-end-line="12" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gradeList/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="28" selection-start-line="8" selection-start-column="28" selection-end-line="8" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/All_spider.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="251">
+          <caret line="98" column="40" selection-start-line="98" selection-start-column="40" selection-end-line="98" selection-end-column="40" />
+          <folding>
+            <element signature="e#1#16#0" expanded="true" />
+            <element signature="e#4804#8310#0" />
+            <element signature="e#8365#9198#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/lectureApi/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
@@ -672,12 +682,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/All_spider.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="200" column="89" selection-start-line="200" selection-start-column="89" selection-end-line="200" selection-end-column="89" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/lectureApi/views.py">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>
