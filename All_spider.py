@@ -100,7 +100,7 @@ class Test():
             gradeInfo_dict['subject'] = td_list[4].string
             gradeInfo_dict['property'] = (td_list[5].string).replace("\xa0","")
             gradeInfo_dict['credit'] = (td_list[8].string)[-4:-1]
-            gradeInfo_dict['grade'] = re.findall(r'\d\d',str(td_list[9]))[0]
+            gradeInfo_dict['grade'] = re.findall(r'\d{1,3}',str(td_list[9]))[0]
             if int(gradeInfo_dict['grade'])>=60:
                 gradeInfo_dict['pa'] = str(1 + round((int(gradeInfo_dict['grade'])-60)*0.1,2))
             else:
