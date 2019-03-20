@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "ckeditor_uploader",
     "lectureApi",
     "gradeList",
+    "menuApi",
 
 ]
 
@@ -141,3 +142,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media').replace('\\', '/')     #设置静�
 MEDIA_URL = '/media/'
 
 CKEDITOR_UPLOAD_PATH = 'upload/'
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240

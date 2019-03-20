@@ -1,11 +1,19 @@
-f = open('memu.txt')
+
+import os,django
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Tjlg.settings")# project_name 项目名称
+django.setup()
+from menuApi.models import Menu
+f = open('memu.txt.utf8')
 all_list = f.read().split("\n")
-dict1 = {}
+
 for i in all_list:
+    menu_info = Menu()
     if "食堂" in i:
-        dict1["diningRoom"] = i
+        diningRoom = i
     elif "窗口" in i:
-        dict1["winNum"] = i
+        winNum = i
     else:
-        dict1["namePrice"] = i
-        print(dict1)
+        menu_info.diningRoom = diningRoom
+        menu_info.winNum = winNum
+        menu_info.namePrice = i
+        menu_info.save()

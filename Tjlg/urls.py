@@ -41,5 +41,6 @@ urlpatterns = [
     path('phone_detail_article/<int:article_pk>',views.phone_detail_article,name="phone_detail_article"),
     path('all_article/',article_list, name="article_list"),
     path('start_school_day',views.start_school_day,name='start_school_day'),
-    path('lecture',views.lecture,name="lecture")
+    path('lecture',views.lecture,name="lecture"),
+    path('menu',views.menu,name="menu"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

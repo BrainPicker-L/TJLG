@@ -11,6 +11,8 @@ from Tjlg.settings import MEDIA_ROOT
 from detail_article.models import DetailArticle
 import json
 from django.http import HttpResponse
+from menuApi.models import Menu
+from menuApi.forms import menuForm
 def home(request):
     context = {}
 
@@ -194,3 +196,27 @@ def lecture(request):
         info_list.append(dict1)
     info_json = json.dumps(info_list, ensure_ascii=False)
     return HttpResponse(info_json)
+
+
+
+def menu(request):
+    if request.method == "GET":
+        form = menuForm(request.GET)
+        if form.is_valid():
+            text_to_search = form.cleaned_data['menu_info']
+            print(text_to_search)
+            menu_all_list = Menu.objects.filter(namePrice__contains=text_to_search)
+            if menu_all_list == 0:
+                menu_all_list = Menu.objects.filter(diningRoom__contains=text_to_search)
+            list1 = []
+            for i in menu_all_list:
+                dict1 = {}
+                dict1["diningRoom"] = i.diningRoom
+                dict1["winNum"] = i.winNum
+                dict1["namePrice"] = i.namePrice
+                list1.append(dict1)
+            info_json = json.dumps(list1, ensure_ascii=False)
+            return HttpResponse(info_json)
+    else:
+        form = menuForm()
+    return render(request, 'menu.html', {'form':form})
