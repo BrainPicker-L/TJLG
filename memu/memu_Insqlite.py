@@ -1,6 +1,7 @@
 
-import os,django
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Tjlg.settings")# project_name 项目名称
+import os,django,sys
+sys.path.append('/home/TJLG')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Tjlg.settings")
 django.setup()
 from menuApi.models import Menu
 f = open('memu.txt.utf8')
