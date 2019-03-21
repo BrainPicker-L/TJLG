@@ -1,5 +1,6 @@
 
-import os,django
+import os,django,sys
+sys.path.append('/home/TJLG')
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Tjlg.settings")# project_name 项目名称
 django.setup()
 from menuApi.models import Menu
