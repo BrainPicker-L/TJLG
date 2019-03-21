@@ -3,16 +3,22 @@ f = open('memu.txt.utf8')
 menu_list = f.read().split("\n")
 
 all_list = []
-dict1 = {}
+list1 = []
+list2 = []
 for i in menu_list:
     if "食堂" in i:
-        if dict1 != {}:
-            all_list.append(dict1)
-        dict1 = {}
+        if list1 != []:
+            list1.append(list2)
+            all_list.append(list1)
+            list2 = []
+        list1 = []
     elif "窗口" in i:
-        dict1[i] = []
-        win_name = i
+        if list2 != []:
+            list1.append(list2)
+        list2 = ["",[]]
+        list2[0] = i
     else:
-        dict1[win_name].append(i)
+        list2[1].append(i)
+list1.append(list2)
+all_list.append(list1)
 
-print(all_list)
