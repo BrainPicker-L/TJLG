@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="d1936e51-a940-4920-a23d-3c1f422c957a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/All_spider.py" beforeDir="false" afterPath="$PROJECT_DIR$/All_spider.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tjlg/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tjlg/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/memu/memu_Insqlite.py" beforeDir="false" afterPath="$PROJECT_DIR$/memu/memu_Insqlite.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -26,8 +24,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/All_spider.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="224">
-              <caret line="242" column="24" lean-forward="true" selection-start-line="242" selection-start-column="24" selection-end-line="242" selection-end-column="24" />
+            <state relative-caret-position="295">
+              <caret line="267" column="15" lean-forward="true" selection-start-line="267" selection-start-column="15" selection-end-line="267" selection-end-column="15" />
               <folding>
                 <element signature="e#1#16#0" expanded="true" />
                 <element signature="e#230#850#0" />
@@ -338,7 +336,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3266979" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32885906" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.39578456" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.43559718" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.32850942" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -366,7 +364,6 @@
     </layout-to-restore>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/templates/re_edit_detail_article.html" />
     <entry file="file://$PROJECT_DIR$/Tjlg/forms.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-409">
@@ -703,6 +700,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/.local/lib/python3.6/site-packages/PIL/Image.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="388">
+          <caret line="2686" selection-start-line="2686" selection-end-line="2686" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/memu/memu_Insqlite.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
@@ -712,8 +716,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/All_spider.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="242" column="24" lean-forward="true" selection-start-line="242" selection-start-column="24" selection-end-line="242" selection-end-column="24" />
+        <state relative-caret-position="295">
+          <caret line="267" column="15" lean-forward="true" selection-start-line="267" selection-start-column="15" selection-end-line="267" selection-end-column="15" />
           <folding>
             <element signature="e#1#16#0" expanded="true" />
             <element signature="e#230#850#0" />
