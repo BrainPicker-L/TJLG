@@ -47,6 +47,7 @@ class Test():
         text = pytesseract.image_to_string(im,lang='fontyp')
         os.remove("/home/TJLG/checkcode1.jpg")
         return text
+
     def judgeCode(self):    #识别验证码
         # pytesseract.pytesseract.tesseract_cmd = 'd://Tesseract-OCR//tesseract.exe'
         # tessdata_dir_config = '--tessdata-dir "d://Tesseract-OCR//tessdata"'
@@ -230,39 +231,41 @@ class Test():
 
         s = requests.session()
         # self.getCheckCode(s)
-        while 1:
-            try:
+        try:
+            while 1:
+
                 data = {
                     'j_username': user,           #测试用账号密码
                     'j_password': password,
                     'validateCode': self.getCheckCode(s),
                 }
                 print(data)
-            except:
-                print(1)
-                continue
-            if data["validateCode"] == '':
-                continue
-            r = s.post(url,data=data,headers=headers)
-            return_info = r.text.split("\":")[0].replace("{", "").replace("\"", "")
-            print(return_info)
-            if return_info == "success":
-                break
-            elif return_info == "userNameOrPasswordError":
-                break
-            elif return_info == "validateCodeError":
-                continue
+
+                if data["validateCode"] == '':
+                    continue
+                r = s.post(url,data=data,headers=headers)
+                return_info = r.text.split("\":")[0].replace("{", "").replace("\"", "")
+                print(return_info)
+                if return_info == "success":
+                    break
+                elif return_info == "userNameOrPasswordError":
+                    break
+                elif return_info == "validateCodeError":
+                    continue
 
 
-        if return_info == "userNameOrPasswordError":
-            info_json = json.dumps({"error":-2}, ensure_ascii=False)
-            return info_json
-        elif return_info == "success":
-            if choice == "1":
-                info_json = self.getClass(s,headers)
-            elif choice == "2":
-                info_json = self.getGrade(s,headers,"2018-2019","1",user)
-            elif choice == "3":
-                info_json = self.getTest(s,headers)
-            print(info_json)
+            if return_info == "userNameOrPasswordError":
+                info_json = json.dumps({"error":-2}, ensure_ascii=False)
+                return info_json
+            elif return_info == "success":
+                if choice == "1":
+                    info_json = self.getClass(s,headers)
+                elif choice == "2":
+                    info_json = self.getGrade(s,headers,"2018-2019","1",user)
+                elif choice == "3":
+                    info_json = self.getTest(s,headers)
+                print(info_json)
+                return info_json
+        except:
+            info_json = json.dumps({"error":-3}, ensure_ascii=False)
             return info_json
