@@ -231,12 +231,16 @@ class Test():
         s = requests.session()
         # self.getCheckCode(s)
         while 1:
-            data = {
-                'j_username': user,           #测试用账号密码
-                'j_password': password,
-                'validateCode': self.getCheckCode(s),
-            }
-            print(data)
+            try:
+                data = {
+                    'j_username': user,           #测试用账号密码
+                    'j_password': password,
+                    'validateCode': self.getCheckCode(s),
+                }
+                print(data)
+            except:
+                print(1)
+                continue
             if data["validateCode"] == '':
                 continue
             r = s.post(url,data=data,headers=headers)
@@ -248,6 +252,8 @@ class Test():
                 break
             elif return_info == "validateCodeError":
                 continue
+
+
         if return_info == "userNameOrPasswordError":
             info_json = json.dumps({"error":-2}, ensure_ascii=False)
             return info_json

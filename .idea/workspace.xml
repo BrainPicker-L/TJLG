@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d1936e51-a940-4920-a23d-3c1f422c957a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/All_spider.py" beforeDir="false" afterPath="$PROJECT_DIR$/All_spider.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tjlg/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tjlg/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/memu/memu_Insqlite.py" beforeDir="false" afterPath="$PROJECT_DIR$/memu/memu_Insqlite.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -12,7 +13,30 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/memu/memu_Insqlite.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="240">
+              <caret line="16" column="41" lean-forward="true" selection-start-line="16" selection-start-column="41" selection-end-line="16" selection-end-column="41" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/All_spider.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="224">
+              <caret line="242" column="24" lean-forward="true" selection-start-line="242" selection-start-column="24" selection-end-line="242" selection-end-column="24" />
+              <folding>
+                <element signature="e#1#16#0" expanded="true" />
+                <element signature="e#230#850#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -89,7 +113,6 @@
         <option value="$PROJECT_DIR$/lectureApi/models.py" />
         <option value="$PROJECT_DIR$/gradeList/admin.py" />
         <option value="$PROJECT_DIR$/gradeList/models.py" />
-        <option value="$PROJECT_DIR$/All_spider.py" />
         <option value="$PROJECT_DIR$/menuApi/admin.py" />
         <option value="$PROJECT_DIR$/menuApi/models.py" />
         <option value="$PROJECT_DIR$/Tjlg/settings.py" />
@@ -99,6 +122,7 @@
         <option value="$PROJECT_DIR$/templates/menu.html" />
         <option value="$PROJECT_DIR$/Tjlg/views.py" />
         <option value="$PROJECT_DIR$/memu/memu_Insqlite.py" />
+        <option value="$PROJECT_DIR$/All_spider.py" />
       </list>
     </option>
   </component>
@@ -119,11 +143,6 @@
             <path>
               <item name="TJLG" type="b2602c69:ProjectViewProjectNode" />
               <item name="TJLG" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="TJLG" type="b2602c69:ProjectViewProjectNode" />
-              <item name="TJLG" type="462c0819:PsiDirectoryNode" />
-              <item name="memu" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="TJLG" type="b2602c69:ProjectViewProjectNode" />
@@ -308,7 +327,7 @@
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1853" height="983" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.045901638" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.08852459" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -565,17 +584,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/All_spider.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="271">
-          <caret line="117" selection-start-line="117" selection-end-line="117" />
-          <folding>
-            <element signature="e#1#16#0" expanded="true" />
-            <element signature="e#230#850#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/memu/memu.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -697,8 +705,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/memu/memu_Insqlite.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="31" lean-forward="true" selection-start-line="18" selection-start-column="31" selection-end-line="18" selection-end-column="31" />
+        <state relative-caret-position="240">
+          <caret line="16" column="41" lean-forward="true" selection-start-line="16" selection-start-column="41" selection-end-line="16" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/All_spider.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="242" column="24" lean-forward="true" selection-start-line="242" selection-start-column="24" selection-end-line="242" selection-end-column="24" />
+          <folding>
+            <element signature="e#1#16#0" expanded="true" />
+            <element signature="e#230#850#0" />
+          </folding>
         </state>
       </provider>
     </entry>
