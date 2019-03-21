@@ -267,5 +267,5 @@ class Test():
                 print(info_json)
                 return info_json
         except:
-            info_json = json.dumps({"error":-3}, ensure_ascii=False)
+            info_json = json.dumps({"error":-4}, ensure_ascii=False)
             return info_json
