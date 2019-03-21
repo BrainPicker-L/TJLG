@@ -240,7 +240,6 @@ class Test():
                     'validateCode': self.getCheckCode(s),
                 }
                 print(data)
-
                 if data["validateCode"] == '':
                     continue
                 r = s.post(url,data=data,headers=headers)
@@ -252,6 +251,7 @@ class Test():
                     break
                 elif return_info == "validateCodeError":
                     continue
+
 
 
             if return_info == "userNameOrPasswordError":

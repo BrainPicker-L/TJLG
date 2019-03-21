@@ -43,4 +43,5 @@ urlpatterns = [
     path('start_school_day',views.start_school_day,name='start_school_day'),
     path('lecture',views.lecture,name="lecture"),
     path('menu',views.menu,name="menu"),
+    path('menu_list',views.menu_list,name="menu_list"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

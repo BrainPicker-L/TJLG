@@ -220,3 +220,24 @@ def menu(request):
     else:
         form = menuForm()
     return render(request, 'menu.html', {'form':form})
+
+
+def menu_list(request):
+    f = open('/home/TJLG/memu/memu.txt.utf8')
+
+    menu_list = f.read().split("\n")
+
+    all_list = []
+    dict1 = {}
+    for i in menu_list:
+        if "食堂" in i:
+            if dict1 != {}:
+                all_list.append(dict1)
+            dict1 = {}
+        elif "窗口" in i:
+            dict1[i] = []
+            win_name = i
+        else:
+            dict1[win_name].append(i)
+    json_all_list = json.dumps(all_list, ensure_ascii=False)
+    return HttpResponse(json_all_list)
