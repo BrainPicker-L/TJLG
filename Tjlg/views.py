@@ -197,7 +197,7 @@ def lecture(request):
     info_json = json.dumps(info_list, ensure_ascii=False)
     return HttpResponse(info_json)
 
-
+from fuzzywuzzy import fuzz
 
 def menu(request):
     if request.method == "GET":
@@ -205,16 +205,21 @@ def menu(request):
         if form.is_valid():
             text_to_search = form.cleaned_data['menu_info']
             print(text_to_search)
-            menu_all_list = Menu.objects.filter(namePrice__contains=text_to_search)
-            if menu_all_list == 0:
-                menu_all_list = Menu.objects.filter(diningRoom__contains=text_to_search)
+            menu_all_list = Menu.objects.all()
+            # menu_all_list = Menu.objects.filter(namePrice__contains=text_to_search)
+            # if menu_all_list == 0:
+            #     menu_all_list = Menu.objects.filter(diningRoom__contains=text_to_search)
             list1 = []
             for i in menu_all_list:
-                dict1 = {}
-                dict1["diningRoom"] = i.diningRoom
-                dict1["winNum"] = i.winNum
-                dict1["namePrice"] = i.namePrice
-                list1.append(dict1)
+                value = fuzz.token_sort_ratio(text_to_search,i.namePrice)
+                if value>=40:
+                    dict1 = {}
+                    dict1["diningRoom"] = i.diningRoom
+                    dict1["winNum"] = i.winNum
+                    dict1["namePrice"] = i.namePrice
+                    dict1["value"] = value
+                    list1.append(dict1)
+            list1 = sorted(list1,key=lambda a:a['value'],reverse=True)
             info_json = json.dumps(list1, ensure_ascii=False)
             return HttpResponse(info_json)
     else:
