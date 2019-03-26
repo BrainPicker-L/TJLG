@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'w-fdik*8g3(yf-ija$l*dbt6(zlyq$n&_rf=@20a97azqueh#g'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 HOSTS = "https://www.lzzzzl.top"
