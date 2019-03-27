@@ -62,6 +62,8 @@ class Test():
 
     def getGrade(self,s,headers,term_year,term_num_list,user):            #拿到全部成绩
         list2 = []
+        sum_credit = 0
+        sum_pa_and_credit = 0
         for term_num in term_num_list:
             data = {
                 'optype': 'query',
@@ -89,8 +91,7 @@ class Test():
             gpa_dict['GPA'] = re.findall(r'\d\.\d',str(b))[0]
             a = soup.find_all("div",attrs={"tabid":"01"})[0]
             tr_list = a.find_all('tr', attrs={"class":"t_con"})
-            sum_credit = 0
-            sum_pa_and_credit = 0
+
             obj, created = student_Id.objects.get_or_create(xuehao=user)
             for tr in tr_list:
                 gradeInfo_dict = {}
