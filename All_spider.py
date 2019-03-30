@@ -68,13 +68,13 @@ class Test():
             data = {
                 'optype': 'query',
                 'isFirst': '1',
-                'qXndm_ys':term_year,     #改变学年
-                'qXqdm_ys':term_num,             #改变学期
-                'qKclbdm_ys':'',
-                'qKcxzdm_ys':'',
-                'qXdlx_ys':'',
-                'qKch_ys':'',
-                'qKcm_ys':'',
+                'qXndm_ys': term_year,  # 改变学年
+                'qXqdm_ys': term_num,  # 改变学期
+                'qKclbdm_ys': '',
+                'qKcxzdm_ys': '',
+                'qXdlx_ys': '',
+                'qKch_ys': '',
+                'qKcm_ys': '',
                 'currentSelectTabId': '01',
             }
             r2 = s.post("http://ssfw.tjut.edu.cn/ssfw/zhcx/cjxx.do", data=data, headers=headers)
@@ -83,44 +83,44 @@ class Test():
 
             xueqi_list = []
             gpa_dict = {}
-            soup = BeautifulSoup(r2.text,"lxml")
-            b = soup.find("div",attrs={"class":"ui_alert ui_alert_block"})
+            soup = BeautifulSoup(r2.text, "lxml")
+            b = soup.find("div", attrs={"class": "ui_alert ui_alert_block"})
             gpa_dict['term_year'] = term_year
             gpa_dict['term_num'] = term_num
 
-            gpa_dict['GPA'] = re.findall(r'\d\.\d',str(b))[0]
-            a = soup.find_all("div",attrs={"tabid":"01"})[0]
-            tr_list = a.find_all('tr', attrs={"class":"t_con"})
+            gpa_dict['GPA'] = re.findall(r'\d\.\d|\d', str(b))[0]
+            a = soup.find_all("div", attrs={"tabid": "01"})[0]
+            tr_list = a.find_all('tr', attrs={"class": "t_con"})
 
             obj, created = student_Id.objects.get_or_create(xuehao=user)
             for tr in tr_list:
-                gradeInfo_dict = {}
-                td_list = tr.find_all('td')
-                #gradeInfo_dict['xueqi'] = td_list[2].string
-                grade_id = td_list[3].string
-                gradeInfo_dict['subject'] = td_list[4].string
-                gradeInfo_dict['property'] = (td_list[5].string).replace("\xa0","")
-                gradeInfo_dict['credit'] = (td_list[8].string)[-4:-1]
-                gradeInfo_dict['grade'] = re.findall(r'\d{1,3}',str(td_list[9]))[0]
-                if int(gradeInfo_dict['grade'])>=60:
-                    if int(gradeInfo_dict['grade'][-1]) in [0,1,2,3,4]:
-                        gradeInfo_dict['grade'][-1] = "0"
-                    elif int(gradeInfo_dict['grade'][-1]) in [5,6,7,8,9]:
-                        gradeInfo_dict['grade'][-1] = "5"
-                    gradeInfo_dict['pa'] = str(1 + round((int(gradeInfo_dict['grade'])-60)*0.1,2))
-                else:
-                    gradeInfo_dict['pa'] = "0.0"
-                list2.append(gradeInfo_dict)
-                sum_credit = sum_credit + float(gradeInfo_dict['credit'])
-                sum_pa_and_credit = sum_pa_and_credit + float(gradeInfo_dict['credit'])*float(gradeInfo_dict['pa'])
-                if created == True:
-                    Grade = gradeInfo()
-                    Grade.grade_id = grade_id
-                    Grade.subject = gradeInfo_dict['subject']
-                    Grade.property = gradeInfo_dict['property']
-                    Grade.grade = gradeInfo_dict['grade']
-                    Grade.save()
-        gpa_dict['term_num_GPA'] = round(sum_pa_and_credit/sum_credit,2)
+                try:
+                    gradeInfo_dict = {}
+                    td_list = tr.find_all('td')
+                    # gradeInfo_dict['xueqi'] = td_list[2].string
+                    grade_id = td_list[3].string
+                    gradeInfo_dict['subject'] = td_list[4].string
+                    gradeInfo_dict['property'] = (td_list[5].string).replace("\xa0", "")
+                    gradeInfo_dict['credit'] = (td_list[8].string)[-4:-1]
+                    gradeInfo_dict['grade'] = re.findall(r'\d{1,3}', str(td_list[9]))[0]
+                    if int(gradeInfo_dict['grade']) >= 60:
+                        gradeInfo_dict['pa'] = str(1 + round((int(gradeInfo_dict['grade']) - 60) * 0.1, 2))
+                    else:
+                        gradeInfo_dict['pa'] = "0.0"
+                    list2.append(gradeInfo_dict)
+                    sum_credit = sum_credit + float(gradeInfo_dict['credit'])
+                    sum_pa_and_credit = sum_pa_and_credit + float(gradeInfo_dict['credit']) * float(gradeInfo_dict['pa'])
+                    if created == True:
+                        Grade = gradeInfo()
+                        Grade.grade_id = grade_id
+                        Grade.subject = gradeInfo_dict['subject']
+                        Grade.property = gradeInfo_dict['property']
+                        Grade.grade = gradeInfo_dict['grade']
+                        Grade.save()
+
+                except:
+                    pass
+        gpa_dict['term_num_GPA'] = round(sum_pa_and_credit / sum_credit, 2)
         gpa_dict['term_year_GPA'] = gpa_dict['term_num_GPA']
         list1.append(gpa_dict)
         list_all.append(list1)
