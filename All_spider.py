@@ -103,6 +103,10 @@ class Test():
                 gradeInfo_dict['credit'] = (td_list[8].string)[-4:-1]
                 gradeInfo_dict['grade'] = re.findall(r'\d{1,3}',str(td_list[9]))[0]
                 if int(gradeInfo_dict['grade'])>=60:
+                    if int(gradeInfo_dict['grade'][-1]) in [0,1,2,3,4]:
+                        gradeInfo_dict['grade'][-1] = "0"
+                    elif int(gradeInfo_dict['grade'][-1]) in [5,6,7,8,9]:
+                        gradeInfo_dict['grade'][-1] = "5"
                     gradeInfo_dict['pa'] = str(1 + round((int(gradeInfo_dict['grade'])-60)*0.1,2))
                 else:
                     gradeInfo_dict['pa'] = "0.0"

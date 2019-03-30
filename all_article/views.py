@@ -30,7 +30,7 @@ def sort_time(time,create_time):
 def article_list(request):
     page = request.GET.get('page','')
     articles_all_list = Article.objects.order_by("-created_time")
-    paginator = Paginator(articles_all_list, 2)
+    paginator = Paginator(articles_all_list, 5)
     if int(page) <= paginator.num_pages:
         if page!= '':
             context = {}
