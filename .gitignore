@@ -1,21 +1,4 @@
-
 db.sqlite3
-
-__pycache__/
-<<<<<<< HEAD
-
-media/
-=======
 .idea/
-all_article/__pycache__/
-InfoApi/__pycache__/
-LibraryApi/__pycache__/
-Tests/__pycache__/
-Tjlg/__pycache__/
-all_article/__pycache__/
-detail_article/__pycache__/
-lectureApi/__pycache__/
-top_article/__pycache__/
-user/__pycache__/
+__pycache__/
 media/
->>>>>>> 6b142e7cdbfcf1315a9b181405a99dcf6593790e
