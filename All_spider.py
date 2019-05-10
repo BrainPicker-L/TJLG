@@ -104,7 +104,8 @@ class Test():
                     gradeInfo_dict['credit'] = (td_list[8].string)[-4:-1]
                     gradeInfo_dict['grade'] = re.findall(r'\d{1,3}', str(td_list[9]))[0]
                     if int(gradeInfo_dict['grade']) >= 60:
-                        gradeInfo_dict['pa'] = str(1 + round((int(gradeInfo_dict['grade']) - 60) * 0.1, 2))
+                       # gradeInfo_dict['pa'] = str(1 + round((int(gradeInfo_dict['grade']) - 60) * 0.1, 2))
+                        gradeInfo_dict['pa'] = str(((int(gradeInfo_dict['grade']))-60)//5*0.5+1)
                     else:
                         gradeInfo_dict['pa'] = "0.0"
                     list2.append(gradeInfo_dict)
