@@ -35,7 +35,7 @@ def get_notice():
                 if create_time!=[]:
                         create_time = create_time[0].replace("\xa0","").replace("/","-")
                         title = tr.xpath('./td[2]/a/text()')[0].replace(" ","").replace("\n","")
-                        if str(datetime.date.today()) == create_time and title not in title_list:  #str(datetime.date.today())
+                        if title not in title_list:  #str(datetime.date.today())
                         #if "2018-12-11" == create_time:
                                 articleObj = Article()
                                 detail_url = "http://www.tjut.edu.cn" + tr.xpath('./td[2]/a/@href')[0][2:]
@@ -71,7 +71,7 @@ def get_news():
                         if create_time != []:
                                 create_time = create_time[0].replace("\xa0", "").replace("/", "-")
                                 title = tr.xpath('./td[2]/a/text()')[0].replace(" ", "").replace("\n", "")
-                                if str(datetime.date.today()) == create_time and title not in title_list:  # str(datetime.date.today())
+                                if title not in title_list:  # str(datetime.date.today())
                                         articleObj = Article()
                                         detail_url = "http://news.tjut.edu.cn/" + tr.xpath('./td[2]/a/@href')[0]
                                         detail_r = requests.get(url=detail_url,headers=headers)
