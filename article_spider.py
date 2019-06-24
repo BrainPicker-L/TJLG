@@ -43,7 +43,7 @@ def get_notice():
                                 detail_html = detail_r.content.decode("utf-8")
                                 detail_selector = etree.HTML(detail_html)
 
-                                articleObj.author = Profile.objects.filter(user__username="教务快讯")[0]
+                                articleObj.author = Profile.objects.filter(user__username="通知公告")[0]
                                 articleObj.title = title
                                 excerpt = "".join(detail_selector.xpath('//div[@class="Section0"]//text()'))
                                 if len(excerpt)>200:
@@ -58,6 +58,7 @@ def get_notice():
 
 def get_news():
         urls = ["http://news.tjut.edu.cn/yw1.htm","http://news.tjut.edu.cn/yw.htm"]
+        creators = ["新闻动态","校内公告"]
         for url in urls:
                 r = requests.get(url=url,headers=headers)
                 html = r.content.decode("utf-8")
@@ -65,7 +66,7 @@ def get_news():
                 selector = etree.HTML(html)
                 tr_list = selector.xpath('//table[@class="winstyle52564"]/tr[@height="29"]')
                 title_list = get_title_list()
-
+                creator = creators[urls.index(url)]
                 for tr in tr_list:
                         create_time = tr.xpath('./td[3]/span/text()')
                         if create_time != []:
@@ -78,7 +79,7 @@ def get_news():
                                         detail_html = detail_r.content.decode("utf-8")
                                         detail_selector = etree.HTML(detail_html)
 
-                                        articleObj.author = Profile.objects.filter(user__username="教务快讯")[0]
+                                        articleObj.author = Profile.objects.filter(user__username=creator)[0]
                                         articleObj.title = title
 
                                         excerpt = "\n".join(detail_selector.xpath('//div[@class="v_news_content"]/p[not(@style="text-align: center;")]//text()'))
