@@ -13,6 +13,7 @@ import json
 from django.http import HttpResponse
 from menuApi.models import Menu
 from menuApi.forms import menuForm
+from gradeList.models import Guake
 def home(request):
     context = {}
 
@@ -253,3 +254,44 @@ def menu_list(request):
     all_list.append(list1)
     json_all_list = json.dumps(all_list, ensure_ascii=False)
     return HttpResponse(json_all_list)
+    menu_all_list = Menu.objects.all()
+    # menu_all_list = Menu.objects.filter(namePrice__contains=text_to_search)
+    # if menu_all_list == 0:
+    #     menu_all_list = Menu.objects.filter(diningRoom__contains=text_to_search)
+    list1 = []
+    for i in menu_all_list:
+        value = fuzz.token_sort_ratio(text_to_search, i.namePrice)
+        if value >= 40:
+            dict1 = {}
+            dict1["diningRoom"] = i.diningRoom
+            dict1["winNum"] = i.winNum
+            dict1["namePrice"] = i.namePrice
+            dict1["value"] = value
+            list1.append(dict1)
+    list1 = sorted(list1, key=lambda a: a['value'], reverse=True)
+    info_json = json.dumps(list1, ensure_ascii=False)
+    return HttpResponse(info_json)
+
+def guake(request):
+    searchtext = request.GET.get("searchtext",'')
+    if searchtext != '':
+        guake_all_list = Guake.objects.all()
+        list1 = []
+        for i in guake_all_list:
+            value = fuzz.token_sort_ratio(searchtext, i.Name)
+            if value >= 40:
+                dict1 = {}
+                dict1["Code"] = i.Code
+                dict1["Name"] = i.Name
+                dict1["Number"] = i.Number
+                dict1["Category"] = i.Category
+                dict1["0-59"] = i.P0_59
+                dict1["60-69"] =i.P60_69
+                dict1["70-79"] =i.P70_79
+                dict1["80-89"] =i.P80_89
+                dict1["90-100"] =i.P90_100
+                dict1["value"] = value
+                list1.append(dict1)
+        list1 = sorted(list1, key=lambda a: a['value'], reverse=True)
+        info_json = json.dumps(list1, ensure_ascii=False)
+        return HttpResponse(info_json)

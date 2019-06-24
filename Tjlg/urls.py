@@ -44,4 +44,5 @@ urlpatterns = [
     path('lecture',views.lecture,name="lecture"),
     path('menu',views.menu,name="menu"),
     path('menu_list',views.menu_list,name="menu_list"),
+    path('guake',views.guake,name="guake"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

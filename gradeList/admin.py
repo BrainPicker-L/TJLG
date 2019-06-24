@@ -9,3 +9,8 @@ class student_IdAdmin(admin.ModelAdmin):
 @admin.register(gradeInfo)
 class gradeInfoAdmin(admin.ModelAdmin):
     list_display = ('grade_id','subject','property','grade')
+
+
+@admin.register(Guake)
+class GuakeAdmin(admin.ModelAdmin):
+    list_display = ('id','Name')
