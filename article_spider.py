@@ -58,7 +58,7 @@ def get_notice():
 
 def get_news():
         urls = ["http://news.tjut.edu.cn/yw1.htm","http://news.tjut.edu.cn/yw.htm"]
-        creators = ["新闻动态","校内公告"]
+        creators = ["校园公告","新闻动态"]
         for url in urls:
                 r = requests.get(url=url,headers=headers)
                 html = r.content.decode("utf-8")

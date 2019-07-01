@@ -45,4 +45,5 @@ urlpatterns = [
     path('menu',views.menu,name="menu"),
     path('menu_list',views.menu_list,name="menu_list"),
     path('guake',views.guake,name="guake"),
+    path('psf',views.psf,name="psf"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
