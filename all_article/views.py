@@ -6,46 +6,46 @@ import json
 from django.http import HttpResponse
 from datetime import datetime
 from Tjlg.settings import HOSTS
-def sort_time(time,create_time):
+
+
+def sort_time(time, create_time):
     h_m = str(create_time.strftime("%H:%M"))
-    month_num = time//30
-    if month_num==0:
+    month_num = time // 30
+    if month_num == 0:
         if time == 0:
-            time_text = "今天 %s"%h_m
+            time_text = "今天 %s" % h_m
         elif time == 1:
-            time_text = "昨天 %s"%h_m
+            time_text = "昨天 %s" % h_m
         elif time == 2:
-            time_text = "前天 %s"%h_m
-        elif 0<time<=30:
-            time_text = "%d天前 %s"%(time,h_m)
-    elif month_num>0:
-        time_text = "%d月前 %s"%(month_num,h_m)
+            time_text = "前天 %s" % h_m
+        elif 0 < time <= 30:
+            time_text = "%d天前 %s" % (time, h_m)
+    elif month_num > 0:
+        time_text = "%d月前 %s" % (month_num, h_m)
     else:
-        time_text = "未来 %s" %h_m
+        time_text = "未来 %s" % h_m
     return time_text
 
 
-
-
 def article_list(request):
-    page = request.GET.get('page','')
+    page = request.GET.get('page', '')
     articles_all_list = Article.objects.order_by("-created_time")
     paginator = Paginator(articles_all_list, 5)
     if int(page) <= paginator.num_pages:
-        if page!= '':
+        if page != '':
             context = {}
             page_of_articles = paginator.get_page(int(page))
-            print(page,paginator.num_pages)
+            print(page, paginator.num_pages)
             context['articles'] = page_of_articles.object_list
             context_list = []
-            time1 = datetime(datetime.now().year,datetime.now().month,datetime.now().day)
+            time1 = datetime(datetime.now().year, datetime.now().month, datetime.now().day)
             for i in context['articles']:
                 dict1 = {}
                 dict1['author'] = str(i.author)
-                dict1['avatar'] = HOSTS+i.author.avatar.url
+                dict1['avatar'] = HOSTS + i.author.avatar.url
                 dict1['title'] = i.title
-                time2 = datetime(i.created_time.year,i.created_time.month,i.created_time.day)
-                dict1['time'] = sort_time((time1-time2).days, i.created_time)
+                time2 = datetime(i.created_time.year, i.created_time.month, i.created_time.day)
+                dict1['time'] = sort_time((time1 - time2).days, i.created_time)
                 dict1['excerpt'] = i.excerpt
                 if i.detail_url == "":
                     dict1['detail'] = None

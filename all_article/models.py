@@ -22,3 +22,9 @@ class Article(models.Model):
     class Meta:
         verbose_name = '普通文章'
         verbose_name_plural = '普通文章'
+
+class Email(models.Model):
+    title = models.CharField("标题",max_length=50)
+    ask = models.CharField("问题",max_length=2000)
+    answer=models.CharField("回答",max_length=2000)
+    create_time = models.DateTimeField(auto_now_add=False)

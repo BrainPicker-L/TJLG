@@ -46,4 +46,7 @@ urlpatterns = [
     path('menu_list',views.menu_list,name="menu_list"),
     path('guake',views.guake,name="guake"),
     path('psf',views.psf,name="psf"),
+    path('email',views.email,name='email'),
+    path('searchemail',views.emailSearch,name='emailSearch'),
+    path('emaildetail',views.emaildetail,name='emaildetail'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

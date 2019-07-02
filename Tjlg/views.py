@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from .forms import *
 from user.models import Profile
-from all_article.models import Article
+from all_article.models import Article,Email
 import datetime
 import os
 from Tjlg.settings import MEDIA_ROOT
@@ -14,6 +14,8 @@ from django.http import HttpResponse
 from menuApi.models import Menu
 from menuApi.forms import menuForm
 from gradeList.models import Guake
+from django.core.paginator import Paginator
+import re
 def home(request):
     context = {}
 
@@ -298,3 +300,67 @@ def guake(request):
         list1 = sorted(list1, key=lambda a: a['value'], reverse=True)
         info_json = json.dumps(list1, ensure_ascii=False)
         return HttpResponse(info_json)
+
+def email(request):
+    page = request.GET.get('page', 1)
+    emails_all_list = Email.objects.order_by("-create_time")
+    paginator = Paginator(emails_all_list, 5)
+    if int(page) <= paginator.num_pages:
+        if page != '':
+            context = {}
+            page_of_emails = paginator.get_page(int(page))
+            context['emails'] = page_of_emails.object_list
+            context_list = []
+            for i in context['emails']:
+                dict1 = {}
+                dict1["id"] = i.id
+                dict1['title'] = i.title
+                dict1['ask'] = i.ask
+                dict1['answer'] = re.sub('\d+/\d+/\d+','',i.answer).replace('\r','')
+                dict1['create_time'] = str(i.create_time).split(' ')[0]
+                context_list.append(dict1)
+            context_list_json = json.dumps(context_list, ensure_ascii=False)
+            print(context_list_json)
+            return HttpResponse(context_list_json)
+    context_list = []
+    context_list_json = json.dumps(context_list, ensure_ascii=False)
+    return HttpResponse(context_list_json)
+
+def emailSearch(request):
+    searchtext = request.GET.get('searchtext', '')
+    page = request.GET.get('page', '')
+    emails_all_list = Email.objects.all()
+    list1 = []
+
+    for i in emails_all_list:
+        value = fuzz.token_sort_ratio(searchtext, i.title)
+        if value >= 80:
+            dict1 = {}
+            dict1["id"] = i.id
+            dict1['title'] = i.title
+            dict1['ask'] = i.ask
+            dict1['answer'] = re.sub('\d+/\d+/\d+', '', i.answer).replace('\r', '')
+            dict1['create_time'] = str(i.create_time).split(' ')[0]
+            dict1["value"] = value
+            list1.append(dict1)
+    list1 = sorted(list1, key=lambda a: a['value'], reverse=True)[:20]
+    info_json = json.dumps(list1, ensure_ascii=False)
+    return HttpResponse(info_json)
+
+def emaildetail(request):
+    id = request.GET.get('id', '')
+    try:
+        if id != '':
+            i = Email.objects.filter(id=int(id))[0]
+            dict1 = {}
+            dict1["id"] = i.id
+            dict1['title'] = i.title
+            dict1['ask'] = i.ask
+            dict1['answer'] = re.sub('\d+/\d+/\d+', '', i.answer).replace('\r', '')
+            dict1['create_time'] = str(i.create_time).split(' ')[0]
+            info_json = json.dumps(dict1, ensure_ascii=False)
+        else:
+            info_json = json.dumps({}, ensure_ascii=False)
+    except:
+        info_json = json.dumps({}, ensure_ascii=False)
+    return HttpResponse(info_json)
