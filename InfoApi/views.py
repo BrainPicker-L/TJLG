@@ -9,16 +9,14 @@ from django.http import HttpResponse
 from .forms import InfoForm
 from All_spider import *
 def info(request):
-    if request.method == 'GET':# 当提交表单时
-        form = InfoForm(request.GET) # form 包含提交的数据
-        if form.is_valid():
-            user = form.cleaned_data['user']
-            password = form.cleaned_data['password']
-            choice = form.cleaned_data['choice']
-            a = Test()
-            info_json = a.main(user,password,choice)
-            return HttpResponse(info_json)
 
-    else:# 当正常访问时
-        form = InfoForm()
-    return render(request, 'test_search.html', {'form': form})
+    user = request.GET.get("user",'')
+    password = request.GET.get("password",'')
+    choice = request.GET.get("choice",'')
+    print(user,password)
+    if user=='' or password=='' or choice=='':
+        return HttpResponse(json.dumps({"error":-2}, ensure_ascii=False))
+    a = Test()
+    info_json = a.main(user,password,choice)
+    return HttpResponse(info_json)
+
