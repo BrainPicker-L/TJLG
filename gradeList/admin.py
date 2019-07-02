@@ -8,7 +8,7 @@ class student_IdAdmin(admin.ModelAdmin):
 
 @admin.register(gradeInfo)
 class gradeInfoAdmin(admin.ModelAdmin):
-    list_display = ('grade_id','subject','property','grade')
+    list_display = ('grade_id','unique_key','subject','property','grade')
 
 
 @admin.register(Guake)

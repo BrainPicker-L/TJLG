@@ -111,13 +111,14 @@ class Test():
                     list2.append(gradeInfo_dict)
                     sum_credit = sum_credit + float(gradeInfo_dict['credit'])
                     sum_pa_and_credit = sum_pa_and_credit + float(gradeInfo_dict['credit']) * float(gradeInfo_dict['pa'])
-                    if created == True:
-                        Grade = gradeInfo()
-                        Grade.grade_id = grade_id
-                        Grade.subject = gradeInfo_dict['subject']
-                        Grade.property = gradeInfo_dict['property']
-                        Grade.grade = gradeInfo_dict['grade']
-                        Grade.save()
+                    obj, created = gradeInfo.objects.get_or_create(grade_id=grade_id,unique_key=user+"_"+grade_id,subject=gradeInfo_dict['subject'],property=gradeInfo_dict['property'],grade=gradeInfo_dict['grade'])
+                    # if created == True:
+                    #     Grade = gradeInfo()
+                    #     Grade.grade_id = grade_id
+                    #     Grade.subject = gradeInfo_dict['subject']
+                    #     Grade.property = gradeInfo_dict['property']
+                    #     Grade.grade = gradeInfo_dict['grade']
+                    #     Grade.save()
 
                 except:
                     pass
