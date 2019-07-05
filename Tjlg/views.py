@@ -287,15 +287,15 @@ def guake(request):
             value = fuzz.token_sort_ratio(searchtext, i.Name)
             if value >= 40:
                 dict1 = {}
-                dict1["Code"] = i.Code
-                dict1["Name"] = i.Name
-                dict1["Number"] = i.Number
-                dict1["Category"] = i.Category
-                dict1["0-59"] = i.P0_59
-                dict1["60-69"] =i.P60_69
-                dict1["70-79"] =i.P70_79
-                dict1["80-89"] =i.P80_89
-                dict1["90-100"] =i.P90_100
+                dict1["code"] = i.Code
+                dict1["name"] = i.Name
+                dict1["number"] = i.Number
+                dict1["category"] = i.Category
+                dict1["lost_rate"] = i.P0_59
+                dict1["rate2"] =i.P60_69
+                dict1["rate3"] =i.P70_79
+                dict1["rate4"] =i.P80_89
+                dict1["good_rate"] =i.P90_100
                 dict1["value"] = value
                 list1.append(dict1)
         list1 = sorted(list1, key=lambda a: a['value'], reverse=True)
