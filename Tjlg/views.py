@@ -16,6 +16,7 @@ from menuApi.forms import menuForm
 from gradeList.models import Guake
 from django.core.paginator import Paginator
 import re
+from django.views.decorators.csrf import csrf_exempt
 def home(request):
     context = {}
 
@@ -364,3 +365,21 @@ def emaildetail(request):
     except:
         info_json = json.dumps({}, ensure_ascii=False)
     return HttpResponse(info_json)
+
+@csrf_exempt
+def getarticle(request):
+    try:
+        articleObj = Article()
+        articleObj.author = Profile.objects.filter(user__username=request.POST.get('author',''))[0]
+        articleObj.title = request.POST.get('title','')
+        articleObj.detail_url = request.POST.get('detail_url','')
+        articleObj.excerpt = request.POST.get('excerpt','')
+        cur = datetime.datetime.now()
+        articleObj.created_time = "%s-%s-%s %s:%s" % (cur.year, cur.month, cur.day, cur.hour, cur.minute)
+        articleObj.last_updated_time = "%s-%s-%s %s:%s" % (cur.year, cur.month, cur.day, cur.hour, cur.minute)
+        if request.POST.get('title','') and articleObj.title and articleObj.detail_url and articleObj.excerpt:
+            articleObj.save()
+            return HttpResponse(json.dumps({"insert":"success"},ensure_ascii=False))
+        return HttpResponse(json.dumps({"insert": "Error,缺少字段或字段为空"}, ensure_ascii=False))
+    except:
+        return HttpResponse(json.dumps({"insert": "其他错误"}, ensure_ascii=False))
