@@ -285,7 +285,7 @@ def guake(request):
         list1 = []
         for i in guake_all_list:
             value = fuzz.token_sort_ratio(searchtext, i.Name)
-            if value >= 40:
+            if value >= 20:
                 dict1 = {}
                 dict1["code"] = i.Code
                 dict1["name"] = i.Name
@@ -379,7 +379,7 @@ def getarticle(request):
         articleObj.last_updated_time = "%s-%s-%s %s:%s" % (cur.year, cur.month, cur.day, cur.hour, cur.minute)
         titlelist = gettitlelist()
         print(titlelist,articleObj.detail_url)
-        if request.POST.get('title','') and articleObj.title and articleObj.detail_url and articleObj.excerpt and articleObj.title not in titlelist:
+        if request.POST.get('title','') and articleObj.title and articleObj.excerpt and articleObj.title not in titlelist:
             articleObj.save()
             return HttpResponse(json.dumps({"insert":"success"},ensure_ascii=False))
         return HttpResponse(json.dumps({"insert": "Error,缺少字段或字段为空或数据重复"}, ensure_ascii=False))
