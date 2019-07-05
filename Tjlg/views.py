@@ -377,9 +377,19 @@ def getarticle(request):
         cur = datetime.datetime.now()
         articleObj.created_time = "%s-%s-%s %s:%s" % (cur.year, cur.month, cur.day, cur.hour, cur.minute)
         articleObj.last_updated_time = "%s-%s-%s %s:%s" % (cur.year, cur.month, cur.day, cur.hour, cur.minute)
-        if request.POST.get('title','') and articleObj.title and articleObj.detail_url and articleObj.excerpt:
+        titlelist = gettitlelist()
+        print(titlelist,articleObj.detail_url)
+        if request.POST.get('title','') and articleObj.title and articleObj.detail_url and articleObj.excerpt and articleObj.title not in titlelist:
             articleObj.save()
             return HttpResponse(json.dumps({"insert":"success"},ensure_ascii=False))
-        return HttpResponse(json.dumps({"insert": "Error,缺少字段或字段为空"}, ensure_ascii=False))
+        return HttpResponse(json.dumps({"insert": "Error,缺少字段或字段为空或数据重复"}, ensure_ascii=False))
     except:
         return HttpResponse(json.dumps({"insert": "其他错误"}, ensure_ascii=False))
+
+
+def gettitlelist():
+    titlelist = []
+    articles = Article.objects.all()
+    for article in articles:
+        titlelist.append(article.title)
+    return titlelist
