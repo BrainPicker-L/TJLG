@@ -50,4 +50,5 @@ urlpatterns = [
     path('searchemail',views.emailSearch,name='emailSearch'),
     path('emaildetail',views.emaildetail,name='emaildetail'),
     path('getarticle',views.getarticle,name='getarticle'),
+    path('jspj',views.jspj,name='jspj')
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

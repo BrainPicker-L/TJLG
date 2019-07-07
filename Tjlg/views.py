@@ -393,3 +393,13 @@ def gettitlelist():
     for article in articles:
         titlelist.append(article.title)
     return titlelist
+
+from ZFCheckCode.pj import AhuPj
+@csrf_exempt
+def jspj(request):
+    user = request.POST.get('user', '')
+    password = request.POST.get('password', '')
+    print(user,password)
+    a = AhuPj(user,password)
+    data = a.run()
+    return HttpResponse(json.dumps({"pjFlag": data}, ensure_ascii=False))
