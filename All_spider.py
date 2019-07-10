@@ -266,7 +266,7 @@ class Test():
                 if choice == "1":
                     info_json = self.getClass(s,headers)
                 elif choice == "2":
-                    info_json = self.getGrade(s,headers,"2018-2019",["2"],user)
+                    info_json = self.getGrade(s,headers,"2018-2019",["1","2"],user)
                 elif choice == "3":
                     info_json = self.getTest(s,headers)
                 print(info_json)
