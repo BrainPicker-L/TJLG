@@ -181,7 +181,7 @@ def start_school_day(request):
     info_json = json.dumps({"start": "20190225"}, ensure_ascii=False)
     return HttpResponse(info_json)
 def psf(request):
-    info_json = json.dumps({"flag":"1"})
+    info_json = json.dumps({"flag":"2019"})
     return HttpResponse(info_json)
 
 from lectureApi.models import Lecture
