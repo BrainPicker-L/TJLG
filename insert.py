@@ -40,4 +40,4 @@ def insert_email():
 
         except:
             pass
-insert_email()
+insert_grade()
