@@ -446,7 +446,7 @@ def useraction(request):
 
             img_file_path = 'action_img/'+Sno+'_'+str(time.time())+'.gif'
 
-            if userAvatar!='':#"20" in Sno and len(Sno)<12 and userAvatar!='':
+            if userAvatar!='' and excerpt != '' and Sno != '':#"20" in Sno and len(Sno)<12 and userAvatar!='':
                 with open(media_path + avatar_file_path, 'wb') as f:
                     r = requests.get(url=userAvatar)
                     f.write(r.content)
@@ -465,8 +465,8 @@ def useraction(request):
                 return HttpResponse(json.dumps({"status": 'success'}, ensure_ascii=False))
             else:
                 return HttpResponse(json.dumps({"status": '没有传头像'}, ensure_ascii=False))
-        except:
-            return HttpResponse(json.dumps({"status": '未知错误，联系子哲'}, ensure_ascii=False))
+        except Exception as e:
+            return HttpResponse(json.dumps({"status": e}, ensure_ascii=False))
     elif request.method == "GET":
         page = request.GET.get('page', 0)
         actions_all_list = UserAction.objects.order_by("-created_time")
@@ -485,7 +485,10 @@ def useraction(request):
                     context['author_name'] = action.author.Sno
                     context['author_avatar'] = HOSTS + action.author.userAvatar.url
                     context['excerpt'] = action.excerpt
-                    context['img'] = HOSTS + action.img.url
+                    if str(action.img) != '':
+                        context['img'] = HOSTS + action.img.url
+                    else:
+                        context['img'] = ''
                     context['commit_count'] = ArticleComment.objects.filter(article_id=action.id).count()
                     time2 = datetime(action.created_time.year, action.created_time.month, action.created_time.day)
                     context['time'] = sort_time((time1 - time2).days, action.created_time)
@@ -498,7 +501,9 @@ def useraction(request):
                 context_list_json = json.dumps(context_list)
                 return HttpResponse(context_list_json)
         else:
-            return HttpResponse(json.dumps({"status": 'fail'}, ensure_ascii=False))
+            context_list = []
+            context_list_json = json.dumps(context_list)
+            return HttpResponse(context_list_json)
 
 
 @csrf_exempt
@@ -508,7 +513,7 @@ def comment_action(request):
             Sno = request.POST.get('OnsUha','')
             userAvatar = request.POST.get('userAvatar', '')
             content = request.POST.get('content','')
-            action_id = int(request.POST.get('action_id',''))
+            action_id = int(request.POST.get('action_id',1))
 
 
             os.chdir(BASE_DIR)
@@ -537,6 +542,7 @@ def comment_action(request):
         action_id = request.GET.get('action_id','')
         if action_id != '':
             comments = ArticleComment.objects.filter(article_id=action_id)
+            context_dict = {}
             context_list = []
             time1 = datetime(datetime.now().year, datetime.now().month, datetime.now().day)
             for comment in comments:
@@ -552,13 +558,22 @@ def comment_action(request):
                 time2 = datetime(comment.create_time.year, comment.create_time.month, comment.create_time.day)
                 context['time'] = sort_time((time1 - time2).days, comment.create_time)
                 context_list.append(context)
-            context_list_json = json.dumps(context_list)
-            print(context_list_json)
-            return HttpResponse(context_list_json)
+            action_obj = UserAction.objects.filter(id=action_id)[0]
+            context_dict['context_list'] = context_list
+            context_dict['action_author_id'] = action_obj.author.pk
+            context_dict['action_author'] = action_obj.author.Sno
+            context_dict['action_author_avatar'] = HOSTS + action_obj.author.userAvatar.url
+            context_dict['action_excerpt'] = action_obj.excerpt
+            if str(comment.article.img) != '':
+                context_dict['img'] = HOSTS + action_obj.img.url
+            else:
+                context_dict['img'] = ''
+            context_dict_json = json.dumps(context_dict)
+            return HttpResponse(context_dict_json)
         else:
-            context_list = []
-            context_list_json = json.dumps(context_list)
-            return HttpResponse(context_list_json)
+            context_dict = {}
+            context_list_json = json.dumps(context_dict)
+            return HttpResponse(context_dict_json)
 
     else:
         return HttpResponse(json.dumps({"status": 'action_id不能为空'}, ensure_ascii=False))
@@ -569,6 +584,7 @@ def personal_action(request):
         author_id = request.GET.get('author_id','')
         if author_id != '':
             personal_actions = UserAction.objects.filter(author_id=author_id).order_by("-created_time")
+            context_dict = {}
             context_list = []
             time1 = datetime(datetime.now().year, datetime.now().month, datetime.now().day)
             for personal_action in personal_actions:
@@ -578,17 +594,24 @@ def personal_action(request):
                 context['author_name'] = personal_action.author.Sno
                 context['author_avatar'] = HOSTS + personal_action.author.userAvatar.url
                 context['excerpt'] = personal_action.excerpt
-                context['img'] = HOSTS + personal_action.img.url
+                if str(personal_action.img) != '':
+                    context['img'] = HOSTS + personal_action.img.url
+                else:
+                    context['img'] = ''
                 context['commit_count'] = ArticleComment.objects.filter(article_id=personal_action.id).count()
                 time2 = datetime(personal_action.created_time.year, personal_action.created_time.month, personal_action.created_time.day)
                 context['time'] = sort_time((time1 - time2).days, personal_action.created_time)
                 context_list.append(context)
-            context_list_json = json.dumps(context_list)
-            print(context_list_json)
-            return HttpResponse(context_list_json)
+            author_obj = ahuUser.objects.filter(id=author_id)[0]
+            context_dict['context_list'] = context_list
+            context_dict['author_name'] = author_obj.Sno
+            context_dict['author_avatar'] = HOSTS + author_obj.userAvatar.url
+
+            context_dict_json = json.dumps(context_dict)
+            return HttpResponse(context_dict_json)
         else:
-            context_list = []
-            context_list_json = json.dumps(context_list)
-            return HttpResponse(context_list_json)
+            context_dict = {}
+            context_list_json = json.dumps(context_dict)
+            return HttpResponse(context_dict_json)
     else:
         return HttpResponse(json.dumps({"status": 'fail'}, ensure_ascii=False))
