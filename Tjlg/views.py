@@ -4,10 +4,10 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from .forms import *
 from user.models import Profile
-from all_article.models import Article,Email
+from all_article.models import *
 import datetime
 import os
-from Tjlg.settings import MEDIA_ROOT
+from Tjlg.settings import MEDIA_ROOT,BASE_DIR
 from detail_article.models import DetailArticle
 import json
 from django.http import HttpResponse
@@ -17,6 +17,10 @@ from gradeList.models import Guake
 from django.core.paginator import Paginator
 import re
 from django.views.decorators.csrf import csrf_exempt
+import time
+import requests
+from Tjlg.settings import HOSTS
+
 def home(request):
     context = {}
 
@@ -403,3 +407,188 @@ def jspj(request):
     a = AhuPj(user,password)
     data = a.run()
     return HttpResponse(json.dumps({"pjFlag": data}, ensure_ascii=False))
+
+
+def sort_time(time, create_time):
+    h_m = str(create_time.strftime("%H:%M"))
+    month_num = time // 30
+    if month_num == 0:
+        if time == 0:
+            time_text = "今天 %s" % h_m
+        elif time == 1:
+            time_text = "昨天 %s" % h_m
+        elif time == 2:
+            time_text = "前天 %s" % h_m
+        elif 0 < time <= 30:
+            time_text = "%d天前 %s" % (time, h_m)
+    elif month_num > 0:
+        time_text = "%d月前 %s" % (month_num, h_m)
+    else:
+        time_text = "未来 %s" % h_m
+    return time_text
+
+
+
+from datetime import datetime
+@csrf_exempt
+def useraction(request):
+    if request.method == "POST":
+        try:
+            Sno = request.POST.get('OnsUha','')
+            userAvatar = request.POST.get('userAvatar','')
+            excerpt = request.POST.get('excerpt','')
+            img = request.POST.get('img','')
+            print(Sno,userAvatar,excerpt,img)
+            print(img)
+            os.chdir(BASE_DIR)
+            media_path = './media/'
+            avatar_file_path = 'user_avatar/'+Sno+'.gif'
+
+            img_file_path = 'action_img/'+Sno+'_'+str(time.time())+'.gif'
+
+            if userAvatar!='':#"20" in Sno and len(Sno)<12 and userAvatar!='':
+                with open(media_path + avatar_file_path, 'wb') as f:
+                    r = requests.get(url=userAvatar)
+                    f.write(r.content)
+                f.close()
+                user_obj, created = ahuUser.objects.get_or_create(Sno=Sno,userAvatar=avatar_file_path)
+                article_obj = UserAction()
+                article_obj.author = user_obj
+                article_obj.excerpt = excerpt
+                if img!='':
+                    with open(media_path + img_file_path, 'wb') as f:
+                        r = requests.get(url=img)
+                        f.write(r.content)
+                    f.close()
+                    article_obj.img = img_file_path
+                article_obj.save()
+                return HttpResponse(json.dumps({"status": 'success'}, ensure_ascii=False))
+            else:
+                return HttpResponse(json.dumps({"status": '没有传头像'}, ensure_ascii=False))
+        except:
+            return HttpResponse(json.dumps({"status": '未知错误，联系子哲'}, ensure_ascii=False))
+    elif request.method == "GET":
+        page = request.GET.get('page', 0)
+        actions_all_list = UserAction.objects.order_by("-created_time")
+        paginator = Paginator(actions_all_list, 7)
+        time1 = datetime(datetime.now().year, datetime.now().month, datetime.now().day)
+        if int(page) <= paginator.num_pages:
+            if page != '':
+                context_list = []
+                page_of_actions = paginator.get_page(int(page))
+                actions = page_of_actions.object_list
+
+                for action in actions:
+                    context = {}
+                    context['author_id'] = action.author.pk
+                    context['action_id'] = action.pk
+                    context['author_name'] = action.author.Sno
+                    context['author_avatar'] = HOSTS + action.author.userAvatar.url
+                    context['excerpt'] = action.excerpt
+                    context['img'] = HOSTS + action.img.url
+                    context['commit_count'] = ArticleComment.objects.filter(article_id=action.id).count()
+                    time2 = datetime(action.created_time.year, action.created_time.month, action.created_time.day)
+                    context['time'] = sort_time((time1 - time2).days, action.created_time)
+                    context_list.append(context)
+                context_list_json = json.dumps(context_list)
+                print(context_list_json)
+                return HttpResponse(context_list_json)
+            else:
+                context_list = []
+                context_list_json = json.dumps(context_list)
+                return HttpResponse(context_list_json)
+        else:
+            return HttpResponse(json.dumps({"status": 'fail'}, ensure_ascii=False))
+
+
+@csrf_exempt
+def comment_action(request):
+    if request.method == "POST":
+        try:
+            Sno = request.POST.get('OnsUha','')
+            userAvatar = request.POST.get('userAvatar', '')
+            content = request.POST.get('content','')
+            action_id = int(request.POST.get('action_id',''))
+
+
+            os.chdir(BASE_DIR)
+            media_path = './media/'
+            avatar_file_path = 'user_avatar/' + Sno + '.gif'
+
+
+            if Sno != '' and content != '' and action_id!='' and userAvatar != '':
+                with open(media_path + avatar_file_path, 'wb') as f:
+                    r = requests.get(url=userAvatar)
+                    f.write(r.content)
+                f.close()
+                user_obj, created = ahuUser.objects.get_or_create(Sno=Sno, userAvatar=avatar_file_path)
+                comment = ArticleComment()
+                article_obj = UserAction.objects.get(pk=action_id)
+                comment.article = article_obj
+                comment.user = user_obj
+                comment.content = content
+                comment.save()
+                return HttpResponse(json.dumps({"status": 'success'}, ensure_ascii=False))
+            else:
+                return HttpResponse(json.dumps({"status": 'post中有值为空'}, ensure_ascii=False))
+        except:
+            return HttpResponse(json.dumps({"status": '未知错误，联系子哲'}, ensure_ascii=False))
+    elif request.method == "GET":
+        action_id = request.GET.get('action_id','')
+        if action_id != '':
+            comments = ArticleComment.objects.filter(article_id=action_id)
+            context_list = []
+            time1 = datetime(datetime.now().year, datetime.now().month, datetime.now().day)
+            for comment in comments:
+                context = {}
+                context['action_id'] = comment.article.pk
+                context['commit_id'] = comment.pk
+                context["author_id"] = comment.user.pk
+                context['author_name'] = comment.user.Sno
+                context['author_avatar'] = HOSTS +comment.user.userAvatar.url
+                context['commit_content'] = comment.content
+
+
+                time2 = datetime(comment.create_time.year, comment.create_time.month, comment.create_time.day)
+                context['time'] = sort_time((time1 - time2).days, comment.create_time)
+                context_list.append(context)
+            context_list_json = json.dumps(context_list)
+            print(context_list_json)
+            return HttpResponse(context_list_json)
+        else:
+            context_list = []
+            context_list_json = json.dumps(context_list)
+            return HttpResponse(context_list_json)
+
+    else:
+        return HttpResponse(json.dumps({"status": 'action_id不能为空'}, ensure_ascii=False))
+
+
+def personal_action(request):
+    if request.method == "GET":
+        author_id = request.GET.get('author_id','')
+        if author_id != '':
+            personal_actions = UserAction.objects.filter(author_id=author_id).order_by("-created_time")
+            context_list = []
+            time1 = datetime(datetime.now().year, datetime.now().month, datetime.now().day)
+            for personal_action in personal_actions:
+                context = {}
+                context['author_id'] = personal_action.author.pk
+                context['action_id'] = personal_action.pk
+                context['author_name'] = personal_action.author.Sno
+                context['author_avatar'] = HOSTS + personal_action.author.userAvatar.url
+                context['excerpt'] = personal_action.excerpt
+                context['img'] = HOSTS + personal_action.img.url
+                context['commit_count'] = ArticleComment.objects.filter(article_id=personal_action.id).count()
+                time2 = datetime(personal_action.created_time.year, personal_action.created_time.month, personal_action.created_time.day)
+                context['time'] = sort_time((time1 - time2).days, personal_action.created_time)
+                context_list.append(context)
+            context_list_json = json.dumps(context_list)
+            print(context_list_json)
+            return HttpResponse(context_list_json)
+        else:
+            context_list = []
+            context_list_json = json.dumps(context_list)
+            return HttpResponse(context_list_json)
+    else:
+        return HttpResponse(json.dumps({"status": 'fail'}, ensure_ascii=False))

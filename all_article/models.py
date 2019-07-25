@@ -28,3 +28,44 @@ class Email(models.Model):
     ask = models.CharField("问题",max_length=2000)
     answer=models.CharField("回答",max_length=2000)
     create_time = models.DateTimeField(auto_now_add=False)
+
+
+
+
+
+class ahuUser(models.Model):
+    Sno = models.CharField("学号",max_length=12)
+    userAvatar = models.ImageField("学生微信头像",upload_to='user_avatar',null=True, default="", blank=True)
+    class Meta:
+        verbose_name = '用户信息（动态）'
+        verbose_name_plural = '用户信息（动态）'
+    def __str__(self):
+        return "<学生学号：%s>" % self.Sno
+
+class UserAction(models.Model):
+    author = models.ForeignKey(ahuUser, on_delete=models.CASCADE)
+    excerpt = models.CharField("动态内容",max_length=300)
+    created_time = models.DateTimeField(auto_now_add=True)
+    img = models.ImageField("图片1", upload_to='action_img', null=True, default="", blank=True)
+    class Meta:
+        verbose_name = '已发内容（动态）'
+        verbose_name_plural = '已发内容（动态）'
+    def __str__(self):
+        return "<文章主键：%s>" % self.pk
+
+
+class BaseComment(models.Model):
+    '基础评论模型'
+    content = models.TextField('评论', max_length=500)
+    create_time = models.DateTimeField('评论时间', auto_now_add=True)
+    user = models.ForeignKey(ahuUser, on_delete=models.CASCADE, verbose_name='评论者')
+    class Meta:
+        abstract = True
+
+
+class ArticleComment(BaseComment):
+    '文章评论'
+    article = models.ForeignKey(UserAction, on_delete=models.CASCADE, related_name='comments', verbose_name='评论文章')
+    class Meta:
+        verbose_name = '评论（动态）'
+        verbose_name_plural = '评论（动态）'
