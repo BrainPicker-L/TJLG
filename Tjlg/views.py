@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from .forms import *
 from user.models import Profile
 from all_article.models import *
-import datetime
+from datetime import datetime
 import os
 from Tjlg.settings import MEDIA_ROOT,BASE_DIR
 from detail_article.models import DetailArticle
@@ -95,7 +95,7 @@ def edit_article(request, article_pk):
             article.title = article_form.cleaned_data["title"]
             article.detail_url = article_form.cleaned_data["detail_url"]
             article.excerpt = article_form.cleaned_data["excerpt"]
-            cur = datetime.datetime.now()
+            cur = datetime.now()
             article.created_time = "%s-%s-%s %s:%s"%(cur.year,cur.month,cur.day,cur.hour,cur.minute)
             article.last_updated_time = "%s-%s-%s %s:%s"%(cur.year,cur.month,cur.day,cur.hour,cur.minute)
             article.img1 = article_form.cleaned_data["img1"]
@@ -154,7 +154,7 @@ def edit_detail_article(request,article_pk):
             article.author = Profile.objects.filter(user=request.user)[0]
             article.title = article_form.cleaned_data["title"]
             article.content = article_form.cleaned_data["content"]
-            cur = datetime.datetime.now()
+            cur = datetime.now()
             article.created_time = "%s-%s-%s %s:%s"%(cur.year,cur.month,cur.day,cur.hour,cur.minute)
             article.last_updated_time = "%s-%s-%s %s:%s"%(cur.year,cur.month,cur.day,cur.hour,cur.minute)
             article.save()
@@ -378,7 +378,7 @@ def getarticle(request):
         articleObj.title = request.POST.get('title','')
         articleObj.detail_url = request.POST.get('detail_url','')
         articleObj.excerpt = request.POST.get('excerpt','')
-        cur = datetime.datetime.now()
+        cur = datetime.now()
         articleObj.created_time = "%s-%s-%s %s:%s" % (cur.year, cur.month, cur.day, cur.hour, cur.minute)
         articleObj.last_updated_time = "%s-%s-%s %s:%s" % (cur.year, cur.month, cur.day, cur.hour, cur.minute)
         titlelist = gettitlelist()
@@ -387,8 +387,8 @@ def getarticle(request):
             articleObj.save()
             return HttpResponse(json.dumps({"insert":"success"},ensure_ascii=False))
         return HttpResponse(json.dumps({"insert": "Error,缺少字段或字段为空或数据重复"}, ensure_ascii=False))
-    except:
-        return HttpResponse(json.dumps({"insert": "其他错误"}, ensure_ascii=False))
+    except Exception as e:
+        return HttpResponse(json.dumps({"insert": e}, ensure_ascii=False))
 
 
 def gettitlelist():
@@ -429,7 +429,7 @@ def sort_time(time, create_time):
 
 
 
-from datetime import datetime
+
 @csrf_exempt
 def useraction(request):
     if request.method == "POST":
