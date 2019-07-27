@@ -485,6 +485,8 @@ def useraction(request):
                     context['author_name'] = action.author.Sno
                     context['author_avatar'] = HOSTS + action.author.userAvatar.url
                     context['excerpt'] = action.excerpt
+                    context['like_num'] = action.like_num
+                    context['like_users'] = [i.user.Sno for i in UserActionLike.objects.filter(action_id=action.pk)]
                     if str(action.img) != '':
                         context['img'] = HOSTS + action.img.url
                     else:
@@ -540,39 +542,47 @@ def comment_action(request):
             return HttpResponse(json.dumps({"status": '未知错误，联系子哲'}, ensure_ascii=False))
     elif request.method == "GET":
         action_id = request.GET.get('action_id','')
+
         if action_id != '':
-            comments = ArticleComment.objects.filter(article_id=action_id)
-            context_dict = {}
-            context_list = []
-            time1 = datetime(datetime.now().year, datetime.now().month, datetime.now().day)
-            for comment in comments:
-                context = {}
-                context['action_id'] = comment.article.pk
-                context['commit_id'] = comment.pk
-                context["author_id"] = comment.user.pk
-                context['author_name'] = comment.user.Sno
-                context['author_avatar'] = HOSTS +comment.user.userAvatar.url
-                context['commit_content'] = comment.content
+            try:
+                comments = ArticleComment.objects.filter(article_id=action_id)
+                context_dict = {}
+                context_list = []
+                time1 = datetime(datetime.now().year, datetime.now().month, datetime.now().day)
+                for comment in comments:
+                    context = {}
+                    context['action_id'] = comment.article.pk
+                    context['commit_id'] = comment.pk
+                    context["author_id"] = comment.user.pk
+                    context['author_name'] = comment.user.Sno
+                    context['author_avatar'] = HOSTS +comment.user.userAvatar.url
+                    context['commit_content'] = comment.content
+                    context['like_num'] = comment.like_num
 
 
-                time2 = datetime(comment.create_time.year, comment.create_time.month, comment.create_time.day)
-                context['time'] = sort_time((time1 - time2).days, comment.create_time)
-                context_list.append(context)
-            action_obj = UserAction.objects.filter(id=action_id)[0]
-            context_dict['context_list'] = context_list
-            context_dict['action_author_id'] = action_obj.author.pk
-            context_dict['action_author'] = action_obj.author.Sno
-            context_dict['action_author_avatar'] = HOSTS + action_obj.author.userAvatar.url
-            context_dict['action_excerpt'] = action_obj.excerpt
-            if str(comment.article.img) != '':
-                context_dict['img'] = HOSTS + action_obj.img.url
-            else:
-                context_dict['img'] = ''
-            context_dict_json = json.dumps(context_dict)
-            return HttpResponse(context_dict_json)
+                    time2 = datetime(comment.create_time.year, comment.create_time.month, comment.create_time.day)
+                    context['time'] = sort_time((time1 - time2).days, comment.create_time)
+                    context_list.append(context)
+                action_obj = UserAction.objects.filter(id=action_id)[0]
+                context_dict['context_list'] = context_list
+                context_dict['action_author_id'] = action_obj.author.pk
+                context_dict['action_author'] = action_obj.author.Sno
+                context_dict['action_author_avatar'] = HOSTS + action_obj.author.userAvatar.url
+                context_dict['action_excerpt'] = action_obj.excerpt
+                context_dict['like_num'] = action_obj.like_num
+                if str(comment.article.img) != '':
+                    context_dict['img'] = HOSTS + action_obj.img.url
+                else:
+                    context_dict['img'] = ''
+                context_dict_json = json.dumps(context_dict)
+                return HttpResponse(context_dict_json)
+            except:
+                context_dict = {}
+                context_dict_json = json.dumps(context_dict)
+                return HttpResponse(context_dict_json)
         else:
             context_dict = {}
-            context_list_json = json.dumps(context_dict)
+            context_dict_json = json.dumps(context_dict)
             return HttpResponse(context_dict_json)
 
     else:
@@ -594,6 +604,8 @@ def personal_action(request):
                 context['author_name'] = personal_action.author.Sno
                 context['author_avatar'] = HOSTS + personal_action.author.userAvatar.url
                 context['excerpt'] = personal_action.excerpt
+                context['like_num'] = personal_action.like_num
+                context['like_users'] = [i.user.Sno for i in UserActionLike.objects.filter(action_id=personal_action.pk)]
                 if str(personal_action.img) != '':
                     context['img'] = HOSTS + personal_action.img.url
                 else:
@@ -611,7 +623,75 @@ def personal_action(request):
             return HttpResponse(context_dict_json)
         else:
             context_dict = {}
-            context_list_json = json.dumps(context_dict)
+            context_dict_json = json.dumps(context_dict)
             return HttpResponse(context_dict_json)
     else:
         return HttpResponse(json.dumps({"status": 'fail'}, ensure_ascii=False))
+
+
+@csrf_exempt
+def change_like_num_action(request):
+    if request.method == "POST":
+        try:
+            Sno = request.POST.get('OnsUha', '')
+            userAvatar = request.POST.get('userAvatar', '')
+            action_id = int(request.POST.get('action_id', 1))
+
+
+
+            os.chdir(BASE_DIR)
+            media_path = './media/'
+            avatar_file_path = 'user_avatar/' + Sno + '.gif'
+
+            if Sno != '' and action_id != '' and userAvatar != '':
+                with open(media_path + avatar_file_path, 'wb') as f:
+                    r = requests.get(url=userAvatar)
+                    f.write(r.content)
+                f.close()
+                user_obj, created = ahuUser.objects.get_or_create(Sno=Sno, userAvatar=avatar_file_path)
+                action_obj = UserAction.objects.get(pk=action_id)
+                like_num,like_num_created = UserActionLike.objects.get_or_create(user=user_obj, action=action_obj)
+                if like_num_created == True:
+                    action_obj.like_num += 1
+                else:
+                    action_obj.like_num -= 1
+                    UserActionLike.objects.get(user=user_obj, action=action_obj).delete()
+                action_obj.save()
+                return HttpResponse(json.dumps({"status": 'success'}, ensure_ascii=False))
+
+            else:
+                return HttpResponse(json.dumps({"status": 'post中有值为空'}, ensure_ascii=False))
+        except:
+            return HttpResponse(json.dumps({"status": '未知错误，联系子哲,查看action_id是否不存在'}, ensure_ascii=False))
+
+@csrf_exempt
+def change_like_num_comment(request):
+    if request.method == "POST":
+        try:
+            Sno = request.POST.get('OnsUha', '')
+            userAvatar = request.POST.get('userAvatar', '')
+            comment_id = int(request.POST.get('comment_id', 1))
+
+            os.chdir(BASE_DIR)
+            media_path = './media/'
+            avatar_file_path = 'user_avatar/' + Sno + '.gif'
+
+            if Sno != '' and comment_id != '' and userAvatar != '':
+                with open(media_path + avatar_file_path, 'wb') as f:
+                    r = requests.get(url=userAvatar)
+                    f.write(r.content)
+                f.close()
+                comment_obj = ArticleComment.objects.get(pk=comment_id)
+                user_obj, created = ahuUser.objects.get_or_create(Sno=Sno, userAvatar=avatar_file_path)
+                like_num, like_num_created = UserCommentLike.objects.get_or_create(user=user_obj, comment=comment_obj)
+                if like_num_created == True:
+                    comment_obj.like_num += 1
+                else:
+                    comment_obj.like_num -= 1
+                    UserCommentLike.objects.get(user=user_obj, comment=comment_obj).delete()
+                comment_obj.save()
+                return HttpResponse(json.dumps({"status": 'success'}, ensure_ascii=False))
+            else:
+                return HttpResponse(json.dumps({"status": 'post中有值为空'}, ensure_ascii=False))
+        except:
+            return HttpResponse(json.dumps({"status": '未知错误，联系子哲,查看comment_id是否不存在'}, ensure_ascii=False))

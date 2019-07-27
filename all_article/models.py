@@ -46,6 +46,7 @@ class UserAction(models.Model):
     author = models.ForeignKey(ahuUser, on_delete=models.CASCADE)
     excerpt = models.CharField("动态内容",max_length=300)
     created_time = models.DateTimeField(auto_now_add=True)
+    like_num = models.IntegerField("点赞数",default=0)
     img = models.ImageField("图片1", upload_to='action_img', null=True, default="", blank=True)
     class Meta:
         verbose_name = '已发内容（动态）'
@@ -58,6 +59,7 @@ class BaseComment(models.Model):
     '基础评论模型'
     content = models.TextField('评论', max_length=500)
     create_time = models.DateTimeField('评论时间', auto_now_add=True)
+    like_num = models.IntegerField("点赞数", default=0)
     user = models.ForeignKey(ahuUser, on_delete=models.CASCADE, verbose_name='评论者')
     class Meta:
         abstract = True
@@ -69,3 +71,13 @@ class ArticleComment(BaseComment):
     class Meta:
         verbose_name = '评论（动态）'
         verbose_name_plural = '评论（动态）'
+    def __str__(self):
+        return "<评论主键：%s>" % self.pk
+
+class UserActionLike(models.Model):
+    user = models.ForeignKey(ahuUser, on_delete=models.CASCADE)
+    action = models.ForeignKey(UserAction, on_delete=models.CASCADE, related_name='like_action', verbose_name='喜欢的文章')
+
+class UserCommentLike(models.Model):
+    user = models.ForeignKey(ahuUser, on_delete=models.CASCADE)
+    comment = models.ForeignKey(ArticleComment, on_delete=models.CASCADE, related_name='like_comments', verbose_name='喜欢的评论')
