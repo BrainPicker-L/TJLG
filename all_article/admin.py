@@ -31,3 +31,7 @@ class UserActionLikeAdmin(admin.ModelAdmin):
 @admin.register(UserCommentLike)
 class UserCommentLikeAdmin(admin.ModelAdmin):
     list_display = ('id','user','comment')
+
+@admin.register(SchoolLife)
+class SchoolLifeAdmin(admin.ModelAdmin):
+    list_display = ('id','author_name','avatar','weixin_link','background_img')

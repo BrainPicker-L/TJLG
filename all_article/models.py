@@ -81,3 +81,9 @@ class UserActionLike(models.Model):
 class UserCommentLike(models.Model):
     user = models.ForeignKey(ahuUser, on_delete=models.CASCADE)
     comment = models.ForeignKey(ArticleComment, on_delete=models.CASCADE, related_name='like_comments', verbose_name='喜欢的评论')
+
+class SchoolLife(models.Model):
+    author_name = models.CharField('作者名',max_length=20)
+    avatar = models.ImageField('作者头像',upload_to='user_avatar',null=True, default="", blank=True)
+    weixin_link = models.CharField('推文连接',max_length=100)
+    background_img = models.ImageField('背景图',upload_to='weixin_background_img',null=True, default="", blank=True)
