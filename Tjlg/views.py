@@ -482,8 +482,8 @@ def useraction(request):
                     context = {}
                     context['author_id'] = action.author.pk
                     context['action_id'] = action.pk
-                    context['author_name'] = action.author.Sno
-                    context['author_avatar'] = HOSTS + action.author.userAvatar.url
+                    context['author'] = action.author.Sno
+                    context['avatar'] = HOSTS + action.author.userAvatar.url
                     context['excerpt'] = action.excerpt
                     context['like_num'] = action.like_num
                     context['like_users'] = [i.user.Sno for i in UserActionLike.objects.filter(action_id=action.pk)]
@@ -554,8 +554,8 @@ def comment_action(request):
                     context['action_id'] = comment.article.pk
                     context['commit_id'] = comment.pk
                     context["author_id"] = comment.user.pk
-                    context['author_name'] = comment.user.Sno
-                    context['author_avatar'] = HOSTS +comment.user.userAvatar.url
+                    context['author'] = comment.user.Sno
+                    context['avatar'] = HOSTS +comment.user.userAvatar.url
                     context['commit_content'] = comment.content
                     context['like_num'] = comment.like_num
 
@@ -601,8 +601,8 @@ def personal_action(request):
                 context = {}
                 context['author_id'] = personal_action.author.pk
                 context['action_id'] = personal_action.pk
-                context['author_name'] = personal_action.author.Sno
-                context['author_avatar'] = HOSTS + personal_action.author.userAvatar.url
+                context['author'] = personal_action.author.Sno
+                context['avatar'] = HOSTS + personal_action.author.userAvatar.url
                 context['excerpt'] = personal_action.excerpt
                 context['like_num'] = personal_action.like_num
                 context['like_users'] = [i.user.Sno for i in UserActionLike.objects.filter(action_id=personal_action.pk)]
@@ -616,8 +616,8 @@ def personal_action(request):
                 context_list.append(context)
             author_obj = ahuUser.objects.filter(id=author_id)[0]
             context_dict['context_list'] = context_list
-            context_dict['author_name'] = author_obj.Sno
-            context_dict['author_avatar'] = HOSTS + author_obj.userAvatar.url
+            context_dict['author'] = author_obj.Sno
+            context_dict['avatar'] = HOSTS + author_obj.userAvatar.url
 
             context_dict_json = json.dumps(context_dict)
             return HttpResponse(context_dict_json)
