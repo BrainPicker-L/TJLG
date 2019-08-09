@@ -706,7 +706,7 @@ def hip_test_api(request):
 
 def school_life(request):
     info_list = []
-    for i in SchoolLife.objects.all():
+    for i in SchoolLife.objects.all().order_by('-id'):
         dict1 = {}
         dict1["author"] = i.author_name
         dict1["avatar"] = HOSTS +i.avatar.url
