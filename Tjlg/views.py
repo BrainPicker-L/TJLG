@@ -708,7 +708,7 @@ def change_like_num_comment(request):
 
 def school_life(request):
     info_list = []
-    for i in SchoolLife.objects.all():
+    for i in SchoolLife.objects.all().order_by('-id'):
         dict1 = {}
         dict1["author"] = i.author_name
         dict1["avatar"] = HOSTS +i.avatar.url
@@ -734,3 +734,4 @@ def delete_action(request):
             return HttpResponse(json.dumps({"status": 'post中有值为空/学号不对'}, ensure_ascii=False))
         except:
             return HttpResponse(json.dumps({"status": '未知错误，联系子哲,查看action_id是否不存在'}, ensure_ascii=False))
+
