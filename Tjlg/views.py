@@ -429,12 +429,21 @@ def sort_time(time, create_time):
 
 
 
+def Sno_Ascll(ascll_word):
+    str1 = ""
+    for i in range(0, len(ascll_word), 2):
+        str1 += chr(int(ascll_word[i] + ascll_word[i + 1]))
+    Sno = str1[::-1]
+    if Sno[0].isupper() and Sno[1:].isdigit():
+        return Sno
+    else:
+        return ''
 
 @csrf_exempt
 def useraction(request):
     if request.method == "POST":
         try:
-            Sno = request.POST.get('OnsUha','')
+            Sno = Sno_Ascll(request.POST.get('OnsUha',''))
             userAvatar = request.POST.get('userAvatar','')
             excerpt = request.POST.get('excerpt','')
             img = request.POST.get('img','')
@@ -464,9 +473,9 @@ def useraction(request):
                 article_obj.save()
                 return HttpResponse(json.dumps({"status": 'success'}, ensure_ascii=False))
             else:
-                return HttpResponse(json.dumps({"status": '没有传头像'}, ensure_ascii=False))
-        except Exception as e:
-            return HttpResponse(json.dumps({"status": e}, ensure_ascii=False))
+                return HttpResponse(json.dumps({"status": '有数据为空/学号不对'}, ensure_ascii=False))
+        except:
+            return HttpResponse(json.dumps({"status": "未知错误，联系子哲"}, ensure_ascii=False))
     elif request.method == "GET":
         page = request.GET.get('page', 0)
         actions_all_list = UserAction.objects.order_by("-created_time")
@@ -512,7 +521,7 @@ def useraction(request):
 def comment_action(request):
     if request.method == "POST":
         try:
-            Sno = request.POST.get('OnsUha','')
+            Sno = Sno_Ascll(request.POST.get('OnsUha',''))
             userAvatar = request.POST.get('userAvatar', '')
             content = request.POST.get('content','')
             action_id = int(request.POST.get('action_id',1))
@@ -537,7 +546,7 @@ def comment_action(request):
                 comment.save()
                 return HttpResponse(json.dumps({"status": 'success'}, ensure_ascii=False))
             else:
-                return HttpResponse(json.dumps({"status": 'post中有值为空'}, ensure_ascii=False))
+                return HttpResponse(json.dumps({"status": 'post中有值为空/学号不对'}, ensure_ascii=False))
         except:
             return HttpResponse(json.dumps({"status": '未知错误，联系子哲'}, ensure_ascii=False))
     elif request.method == "GET":
@@ -633,7 +642,7 @@ def personal_action(request):
 def change_like_num_action(request):
     if request.method == "POST":
         try:
-            Sno = request.POST.get('OnsUha', '')
+            Sno = Sno_Ascll(request.POST.get('OnsUha',''))
             userAvatar = request.POST.get('userAvatar', '')
             action_id = int(request.POST.get('action_id', 1))
 
@@ -660,7 +669,7 @@ def change_like_num_action(request):
                 return HttpResponse(json.dumps({"status": 'success'}, ensure_ascii=False))
 
             else:
-                return HttpResponse(json.dumps({"status": 'post中有值为空'}, ensure_ascii=False))
+                return HttpResponse(json.dumps({"status": 'post中有值为空/学号不对'}, ensure_ascii=False))
         except:
             return HttpResponse(json.dumps({"status": '未知错误，联系子哲,查看action_id是否不存在'}, ensure_ascii=False))
 
@@ -668,7 +677,7 @@ def change_like_num_action(request):
 def change_like_num_comment(request):
     if request.method == "POST":
         try:
-            Sno = request.POST.get('OnsUha', '')
+            Sno = Sno_Ascll(request.POST.get('OnsUha',''))
             userAvatar = request.POST.get('userAvatar', '')
             comment_id = int(request.POST.get('comment_id', 1))
 
@@ -692,7 +701,7 @@ def change_like_num_comment(request):
                 comment_obj.save()
                 return HttpResponse(json.dumps({"status": 'success'}, ensure_ascii=False))
             else:
-                return HttpResponse(json.dumps({"status": 'post中有值为空'}, ensure_ascii=False))
+                return HttpResponse(json.dumps({"status": 'post中有值为空/学号不对'}, ensure_ascii=False))
         except:
             return HttpResponse(json.dumps({"status": '未知错误，联系子哲,查看comment_id是否不存在'}, ensure_ascii=False))
 
@@ -712,7 +721,7 @@ def school_life(request):
 def delete_action(request):
     if request.method == "POST":
         try:
-            Sno = request.POST.get('OnsUha', '')
+            Sno = Sno_Ascll(request.POST.get('OnsUha',''))
             author_id = request.POST.get('author_id', '')
             action_id = request.POST.get('action_id', '')
             if Sno and author_id and action_id:
@@ -722,6 +731,6 @@ def delete_action(request):
                     return HttpResponse(json.dumps({"status": 'success'}, ensure_ascii=False))
                 else:
                     return HttpResponse(json.dumps({"status": '只能删除自己的文章'}, ensure_ascii=False))
-            return HttpResponse(json.dumps({"status": 'post中有值为空'}, ensure_ascii=False))
+            return HttpResponse(json.dumps({"status": 'post中有值为空/学号不对'}, ensure_ascii=False))
         except:
             return HttpResponse(json.dumps({"status": '未知错误，联系子哲,查看action_id是否不存在'}, ensure_ascii=False))
