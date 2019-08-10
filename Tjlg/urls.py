@@ -56,6 +56,6 @@ urlpatterns = [
     path('personal_action',views.personal_action,name='personal_action'),
     path('change_like_num_action',views.change_like_num_action,name='change_like_num_action'),
     path('change_like_num_comment',views.change_like_num_comment,name='change_like_num_comment'),
-    path('hip_test_api',views.hip_test_api,name='hip_test_api'),
     path('school_life',views.school_life,name='school_life'),
+    path('delete_action',views.delete_action,name='delete_action'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
