@@ -19,7 +19,7 @@ from django.urls import path
 from django.conf.urls import url,include
 from django.conf.urls.static import static
 from Tjlg import views
-from all_article.views import article_list
+from all_article.views import *
 urlpatterns = [
     path('', views.home, name='home'),
     path('admin/', admin.site.urls),
@@ -39,7 +39,8 @@ urlpatterns = [
     path('delete_detail_article/<int:article_pk>',views.delete_detail_article,name="delete_detail_article"),
     path('ckeditor',include('ckeditor_uploader.urls')),
     path('phone_detail_article/<int:article_pk>',views.phone_detail_article,name="phone_detail_article"),
-    path('all_article/',article_list, name="article_list"),
+    path('all_article',article_list_shetuan, name="article_list_shetuan"),
+    path('all_article_jiaowu',article_list_jiaowu, name="article_list_jiaowu"),
     path('start_school_day',views.start_school_day,name='start_school_day'),
     path('lecture',views.lecture,name="lecture"),
     path('menu',views.menu,name="menu"),
@@ -57,5 +58,6 @@ urlpatterns = [
     path('change_like_num_action',views.change_like_num_action,name='change_like_num_action'),
     path('change_like_num_comment',views.change_like_num_comment,name='change_like_num_comment'),
     path('school_life',views.school_life,name='school_life'),
+    path('TJLG_school_life',views.TJLG_school_life,name='TJLG_school_life'),
     path('delete_action',views.delete_action,name='delete_action'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -373,7 +373,7 @@ def emaildetail(request):
 @csrf_exempt
 def getarticle(request):
     try:
-        articleObj = Article()
+        articleObj = TJLG_Article_Pyspider()
         articleObj.author = Profile.objects.filter(user__username=request.POST.get('author',''))[0]
         articleObj.title = request.POST.get('title','')
         articleObj.detail_url = request.POST.get('detail_url','')
@@ -387,13 +387,13 @@ def getarticle(request):
             articleObj.save()
             return HttpResponse(json.dumps({"insert":"success"},ensure_ascii=False))
         return HttpResponse(json.dumps({"insert": "Error,缺少字段或字段为空或数据重复"}, ensure_ascii=False))
-    except Exception as e:
-        return HttpResponse(json.dumps({"insert": e}, ensure_ascii=False))
+    except:
+        return HttpResponse(json.dumps({"insert": "未知错误，联系子哲"}, ensure_ascii=False))
 
 
 def gettitlelist():
     titlelist = []
-    articles = Article.objects.all()
+    articles = TJLG_Article_Pyspider.objects.all()
     for article in articles:
         titlelist.append(article.title)
     return titlelist
@@ -716,6 +716,19 @@ def school_life(request):
         dict1["background_img"] = HOSTS +i.background_img.url
         info_list.append(dict1)
     return HttpResponse(json.dumps(info_list, ensure_ascii=False))
+
+def TJLG_school_life(request):
+    info_list = []
+    for i in SchoolLife_TJLG.objects.all().order_by('-id'):
+        dict1 = {}
+        dict1["author"] = i.author_name
+        dict1["avatar"] = HOSTS +i.avatar.url
+        dict1["weixin_link"] = i.weixin_link
+        dict1["background_img"] = HOSTS +i.background_img.url
+        info_list.append(dict1)
+    return HttpResponse(json.dumps(info_list, ensure_ascii=False))
+
+
 
 @csrf_exempt
 def delete_action(request):

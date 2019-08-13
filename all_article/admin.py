@@ -21,6 +21,9 @@ class UserActionAdmin(admin.ModelAdmin):
 class ArticleCommentAdmin(admin.ModelAdmin):
     list_display = ('id','content', 'like_num','create_time', 'user','article')
 
+@admin.register(TJLG_Article_Pyspider)
+class TJLG_Article_PyspiderAdmin(admin.ModelAdmin):
+    list_display = ('title', 'author', 'created_time', 'last_updated_time')
 
 @admin.register(UserActionLike)
 class UserActionLikeAdmin(admin.ModelAdmin):
@@ -34,4 +37,8 @@ class UserCommentLikeAdmin(admin.ModelAdmin):
 
 @admin.register(SchoolLife)
 class SchoolLifeAdmin(admin.ModelAdmin):
+    list_display = ('id','author_name','avatar','weixin_link','background_img')
+
+@admin.register(SchoolLife_TJLG)
+class SchoolLife_TJLGAdmin(admin.ModelAdmin):
     list_display = ('id','author_name','avatar','weixin_link','background_img')
