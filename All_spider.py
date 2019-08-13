@@ -339,43 +339,43 @@ class Test():
 
         s = requests.session()
 
-        #try:
-        while 1:
+        try:
+            while 1:
 
-            data = {
-                'j_username': user,           #测试用账号密码
-                'j_password': password,
-                'validateCode': self.getCheckCode(s),
-            }
-            print(data)
-            if data["validateCode"] == '':
-                continue
-            r = s.post(url,data=data,headers=headers)
-            return_info = r.text.split("\":")[0].replace("{", "").replace("\"", "")
-            print(return_info)
-            if return_info == "success":
-                break
-            elif return_info == "userNameOrPasswordError":
-                break
-            elif return_info == "validateCodeError":
-                continue
+                data = {
+                    'j_username': user,           #测试用账号密码
+                    'j_password': password,
+                    'validateCode': self.getCheckCode(s),
+                }
+                print(data)
+                if data["validateCode"] == '':
+                    continue
+                r = s.post(url,data=data,headers=headers)
+                return_info = r.text.split("\":")[0].replace("{", "").replace("\"", "")
+                print(return_info)
+                if return_info == "success":
+                    break
+                elif return_info == "userNameOrPasswordError":
+                    break
+                elif return_info == "validateCodeError":
+                    continue
 
 
 
-        if return_info == "userNameOrPasswordError":
-            info_json = json.dumps({"error":-2}, ensure_ascii=False)
+            if return_info == "userNameOrPasswordError":
+                info_json = json.dumps({"error":-2}, ensure_ascii=False)
+                return info_json
+            elif return_info == "success":
+                if choice == "1":
+                    info_json = self.getClass(s,headers)
+                elif choice == "2":
+                    info_json = self.getGrade(s,headers,"2018-2019",["1","2"],user)
+                elif choice == "3":
+                    info_json = self.getTest(s,headers)
+                elif choice == "4":
+                    info_json = self.getAllGrade(s,headers,user)
+                print(info_json)
+                return info_json
+        except:
+            info_json = json.dumps({"error":-4}, ensure_ascii=False)
             return info_json
-        elif return_info == "success":
-            if choice == "1":
-                info_json = self.getClass(s,headers)
-            elif choice == "2":
-                info_json = self.getGrade(s,headers,"2018-2019",["1","2"],user)
-            elif choice == "3":
-                info_json = self.getTest(s,headers)
-            elif choice == "4":
-                info_json = self.getAllGrade(s,headers,user)
-            print(info_json)
-            return info_json
-        # except:
-        #     info_json = json.dumps({"error":-4}, ensure_ascii=False)
-        #     return info_json
