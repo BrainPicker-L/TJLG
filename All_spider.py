@@ -135,18 +135,18 @@ class Test():
         xqj_num = [1,2,3,4,5,6,7]
         xqj_han = ["一","二","三","四","五","六","日"]
         url = "http://ssfw.tjut.edu.cn/ssfw/xkgl/xkjgcx.do"
-        data = {
-            'isHistory': 'ss',
-            'curPageNo': '1',
-            'iDisplayLength': '10',
-            'totalSize': '11',
-            'qXnxqdm': '2018-2019-2',
-            'qKcxzdm':'',
-            'qKclbdm':'',
-        }
-        r = s.post(url, headers=headers,data=data)
+        # data = {
+        #     'isHistory': 'ss',
+        #     'curPageNo': '1',
+        #     'iDisplayLength': '10',
+        #     'totalSize': '11',
+        #     'qXnxqdm': '2019-2020-1',
+        #     'qKcxzdm':'',
+        #     'qKclbdm':'',
+        # }
+        r = s.get(url, headers=headers)
         soup = BeautifulSoup(r.text, "lxml")
-        table = soup.find_all("table", attrs={"class":"ui_table ui_table_striped ui_table_style02"})[1]
+        table = soup.find_all("table", attrs={"class":"ui_table ui_table_striped ui_table_style02"})[0]
         tr_list = table.find_all("tr", attrs={"class":"t_con"})
         for tr in tr_list:
             classInfo_dict = {}
