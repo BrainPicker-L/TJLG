@@ -434,7 +434,7 @@ def Sno_Ascll(ascll_word):
     for i in range(0, len(ascll_word), 2):
         str1 += chr(int(ascll_word[i] + ascll_word[i + 1]))
     Sno = str1[::-1]
-    if Sno[0].isupper() and Sno[1:].isdigit():
+    if Sno[0].isupper() and Sno[2:].isdigit():
         return Sno
     else:
         return ''
