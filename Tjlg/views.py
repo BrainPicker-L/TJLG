@@ -495,7 +495,7 @@ def useraction(request):
                     context['avatar'] = HOSTS + action.author.userAvatar.url
                     context['excerpt'] = action.excerpt
                     context['like_num'] = action.like_num
-                    context['like_users'] = [i.user.Sno for i in UserActionLike.objects.filter(action_id=action.pk)]
+                    context['like_users'] = [{'author_id':i.user.id,'author':i.user.Sno,'avatar':HOSTS+i.user.userAvatar.url} for i in UserActionLike.objects.filter(action_id=action.pk)]
                     if str(action.img) != '':
                         context['img'] = HOSTS + action.img.url
                     else:
@@ -553,42 +553,47 @@ def comment_action(request):
         action_id = request.GET.get('action_id','')
 
         if action_id != '':
-            try:
-                comments = ArticleComment.objects.filter(article_id=action_id)
-                context_dict = {}
-                context_list = []
-                time1 = datetime(datetime.now().year, datetime.now().month, datetime.now().day)
-                for comment in comments:
-                    context = {}
-                    context['action_id'] = comment.article.pk
-                    context['commit_id'] = comment.pk
-                    context["author_id"] = comment.user.pk
-                    context['author'] = comment.user.Sno
-                    context['avatar'] = HOSTS +comment.user.userAvatar.url
-                    context['commit_content'] = comment.content
-                    context['like_num'] = comment.like_num
+            #try:
+            comments = ArticleComment.objects.filter(article_id=action_id)
+            context_dict = {}
+            context_list = []
+            time1 = datetime(datetime.now().year, datetime.now().month, datetime.now().day)
+            for comment in comments:
+                context = {}
+                context['action_id'] = comment.article.pk
+                context['commit_id'] = comment.pk
+                context["author_id"] = comment.user.pk
+                context['author'] = comment.user.Sno
+                context['avatar'] = HOSTS +comment.user.userAvatar.url
+                context['commit_content'] = comment.content
+                context['like_num'] = comment.like_num
+                context['like_users'] = [{'author_id':i.user.id,'author':i.user.Sno,'avatar':HOSTS+i.user.userAvatar.url} for i in
+                                              UserCommentLike.objects.filter(comment_id=comment.pk)]
 
-
-                    time2 = datetime(comment.create_time.year, comment.create_time.month, comment.create_time.day)
-                    context['time'] = sort_time((time1 - time2).days, comment.create_time)
-                    context_list.append(context)
-                action_obj = UserAction.objects.filter(id=action_id)[0]
-                context_dict['context_list'] = context_list
-                context_dict['action_author_id'] = action_obj.author.pk
-                context_dict['action_author'] = action_obj.author.Sno
-                context_dict['action_author_avatar'] = HOSTS + action_obj.author.userAvatar.url
-                context_dict['action_excerpt'] = action_obj.excerpt
-                context_dict['like_num'] = action_obj.like_num
-                if str(comment.article.img) != '':
-                    context_dict['img'] = HOSTS + action_obj.img.url
-                else:
-                    context_dict['img'] = ''
-                context_dict_json = json.dumps(context_dict)
-                return HttpResponse(context_dict_json)
-            except:
-                context_dict = {}
-                context_dict_json = json.dumps(context_dict)
-                return HttpResponse(context_dict_json)
+                time2 = datetime(comment.create_time.year, comment.create_time.month, comment.create_time.day)
+                context['time'] = sort_time((time1 - time2).days, comment.create_time)
+                context_list.append(context)
+            action_obj = UserAction.objects.filter(id=action_id)[0]
+            context_dict['context_list'] = context_list
+            context_dict['action_author_id'] = action_obj.author.pk
+            context_dict['action_author'] = action_obj.author.Sno
+            context_dict['action_author_avatar'] = HOSTS + action_obj.author.userAvatar.url
+            context_dict['action_excerpt'] = action_obj.excerpt
+            context_dict['like_num'] = action_obj.like_num
+            context_dict['like_users'] = [{'author_id':i.user.id,'author':i.user.Sno,'avatar':HOSTS+i.user.userAvatar.url} for i in UserActionLike.objects.filter(action_id=action_obj.pk)]
+            time2 = datetime(action_obj.created_time.year, action_obj.created_time.month, action_obj.created_time.day)
+            context_dict['commit_count'] = ArticleComment.objects.filter(article_id=action_obj.id).count()
+            context_dict['time'] = sort_time((time1 - time2).days, action_obj.created_time)
+            if str(action_obj.img) != '':
+                context_dict['img'] = HOSTS + action_obj.img.url
+            else:
+                context_dict['img'] = ''
+            context_dict_json = json.dumps(context_dict)
+            return HttpResponse(context_dict_json)
+        #     except:
+        #         context_dict = {}
+        #         context_dict_json = json.dumps(context_dict)
+        #         return HttpResponse(context_dict_json)
         else:
             context_dict = {}
             context_dict_json = json.dumps(context_dict)
