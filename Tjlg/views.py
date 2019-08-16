@@ -188,6 +188,10 @@ def psf(request):
     info_json = json.dumps({"flag":"2019"})
     return HttpResponse(info_json)
 
+def personal_flag(requset):
+    info_json = json.dumps({"flag": "0"})
+    return HttpResponse(info_json)
+
 from lectureApi.models import Lecture
 def lecture(request):
     querylist = Lecture.objects.all()

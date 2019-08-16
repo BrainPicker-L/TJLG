@@ -47,6 +47,7 @@ urlpatterns = [
     path('menu_list',views.menu_list,name="menu_list"),
     path('guake',views.guake,name="guake"),
     path('psf',views.psf,name="psf"),
+    path('personal_flag',views.personal_flag,name="personal_flag"),
     path('email',views.email,name='email'),
     path('searchemail',views.emailSearch,name='emailSearch'),
     path('emaildetail',views.emaildetail,name='emaildetail'),
