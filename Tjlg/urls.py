@@ -61,4 +61,5 @@ urlpatterns = [
     path('school_life',views.school_life,name='school_life'),
     path('TJLG_school_life',views.TJLG_school_life,name='TJLG_school_life'),
     path('delete_action',views.delete_action,name='delete_action'),
+    path('delete_commit',views.delete_commit,name='delete_commit'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

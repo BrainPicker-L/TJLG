@@ -757,3 +757,20 @@ def delete_action(request):
         except:
             return HttpResponse(json.dumps({"status": '未知错误，联系子哲,查看action_id是否不存在'}, ensure_ascii=False))
 
+@csrf_exempt
+def delete_commit(request):
+    if request.method == "POST":
+        try:
+            Sno = Sno_Ascll(request.POST.get('OnsUha',''))
+            commit_id = request.POST.get('commit_id', '')
+            action_id = request.POST.get('action_id', '')
+            if Sno and commit_id and action_id:
+                obj = ArticleComment.objects.get(article_id=action_id,id=commit_id)
+                if obj.user.Sno == Sno:
+                    obj.delete()
+                    return HttpResponse(json.dumps({"status": 'success'}, ensure_ascii=False))
+                else:
+                    return HttpResponse(json.dumps({"status": '只能删除自己的评论'}, ensure_ascii=False))
+            return HttpResponse(json.dumps({"status": 'post中有值为空/学号不对'}, ensure_ascii=False))
+        except:
+            return HttpResponse(json.dumps({"status": '未知错误，联系子哲,查看action_id是否不存在'}, ensure_ascii=False))
