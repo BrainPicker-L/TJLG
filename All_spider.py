@@ -308,7 +308,7 @@ class Test():
 
     def getTest(self,s,headers):     #拿到考试信息
         data = {
-            "xnxqdm": "2018-2019-2"
+            "xnxqdm": "2019-2020-1"
         }
         url = "http://ssfw.tjut.edu.cn/ssfw/xsks/kcxx.do"
         r = s.post(url,data=data,headers = headers)
