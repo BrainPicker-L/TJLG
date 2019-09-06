@@ -737,7 +737,14 @@ def TJLG_school_life(request):
         info_list.append(dict1)
     return HttpResponse(json.dumps(info_list, ensure_ascii=False))
 
-
+def ahu_advert(request):
+    info_list = []
+    for i in AhuAdvert.objects.all().order_by('-id'):
+        dict1 = {}
+        dict1["weixin_link"] = i.weixin_link
+        dict1["background_img"] = HOSTS +i.background_img.url
+        info_list.append(dict1)
+    return HttpResponse(json.dumps(info_list, ensure_ascii=False))
 
 @csrf_exempt
 def delete_action(request):

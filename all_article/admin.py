@@ -42,3 +42,7 @@ class SchoolLifeAdmin(admin.ModelAdmin):
 @admin.register(SchoolLife_TJLG)
 class SchoolLife_TJLGAdmin(admin.ModelAdmin):
     list_display = ('id','author_name','avatar','weixin_link','background_img')
+
+@admin.register(AhuAdvert)
+class SchoolLife_TJLGAdmin(admin.ModelAdmin):
+    list_display = ('id','weixin_link','background_img')
