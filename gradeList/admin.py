@@ -14,3 +14,7 @@ class gradeInfoAdmin(admin.ModelAdmin):
 @admin.register(Guake)
 class GuakeAdmin(admin.ModelAdmin):
     list_display = ('id','Name')
+
+@admin.register(ClassInfo)
+class ClassInfoAdmin(admin.ModelAdmin):
+    list_display = ('id','kcmc','ls','extra')
