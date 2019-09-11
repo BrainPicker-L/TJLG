@@ -63,5 +63,6 @@ urlpatterns = [
     path('delete_action',views.delete_action,name='delete_action'),
     path('delete_commit',views.delete_commit,name='delete_commit'),
     path('ahu_advert',views.ahu_advert,name='ahu_advert'),
+    path('get_class_info',views.get_class_info,name='get_class_info'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
