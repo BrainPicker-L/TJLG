@@ -114,6 +114,14 @@ class AhuAdvert(models.Model):
     weixin_link = models.CharField('推文连接',max_length=100)
     background_img = models.ImageField('背景图',upload_to='weixin_background_img',null=True, default="", blank=True)
 
+class TJLGAdvert(models.Model):
+    weixin_link = models.CharField('推文连接',max_length=100)
+    background_img = models.ImageField('背景图',upload_to='weixin_background_img',null=True, default="", blank=True)
+
+    class Meta:
+        verbose_name = '大个广告(天津理工)'
+        verbose_name_plural = '大个广告(天津理工)'
+
 class SchoolLife_TJLG(models.Model):
     author_name = models.CharField('作者名',max_length=20)
     avatar = models.ImageField('作者头像',upload_to='user_avatar',null=True, default="", blank=True)

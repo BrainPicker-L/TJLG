@@ -46,3 +46,7 @@ class SchoolLife_TJLGAdmin(admin.ModelAdmin):
 @admin.register(AhuAdvert)
 class SchoolLife_TJLGAdmin(admin.ModelAdmin):
     list_display = ('id','weixin_link','background_img')
+
+@admin.register(TJLGAdvert)
+class SchoolLife_TJLGAdmin(admin.ModelAdmin):
+    list_display = ('id','weixin_link','background_img')
