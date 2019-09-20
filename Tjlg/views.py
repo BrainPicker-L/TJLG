@@ -20,7 +20,7 @@ from django.views.decorators.csrf import csrf_exempt
 import time
 import requests
 from Tjlg.settings import HOSTS
-
+from gradeList.models import *
 def home(request):
     context = {}
 
@@ -791,3 +791,33 @@ def delete_commit(request):
             return HttpResponse(json.dumps({"status": 'post中有值为空/学号不对'}, ensure_ascii=False))
         except:
             return HttpResponse(json.dumps({"status": '未知错误，联系子哲,查看action_id是否不存在'}, ensure_ascii=False))
+
+def get_class_info(request):
+    search_text = request.GET.get('search_text', '')
+    page = request.GET.get('page', 0)
+    class_all_list = ClassInfo.objects.filter(kcmc__icontains=search_text)
+    paginator = Paginator(class_all_list, 10)
+    if int(page) <= paginator.num_pages:
+        if page != '':
+            context_list = []
+            page_of_class = paginator.get_page(int(page))
+            classes = page_of_class.object_list
+            for i in classes:
+                dct = {}
+                dct['kcmc'] = i.kcmc
+                dct['ls'] = i.ls
+                dct['kcdd'] = i.kcdd
+                dct['xqj'] = i.xqj
+                dct['skjc'] = i.skjc
+                dct['skcd'] = i.skcd
+                dct['qszs'] = i.qszs
+                dct['jszs'] = i.jszs
+                dct['dsz'] = i.dsz
+                dct['extra'] = i.extra
+                context_list.append(dct)
+            return HttpResponse(json.dumps(context_list, ensure_ascii=False))
+
+    else:
+        context_list = []
+        context_list_json = json.dumps(context_list)
+        return HttpResponse(context_list_json)

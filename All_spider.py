@@ -259,49 +259,57 @@ class Test():
             info_list = str(td_list[5].span).replace("<span>","").replace("</span>","").split("节<br/>")     #分割得到所有上课时间列表
             kcdd_list = str(td_list[6].span).replace("<span>","").replace("</span>","").split("<br/>")
             for i in info_list:
-
                 if i == '':
                     pass
                 else:
-                    try:
-                        if len(info_list)==1:
-                            range1 = (re.findall(r'\d-\d{1,2}节',i)[0])[:-1]
+                    #try:
+                    if len(info_list)==1:
+                        range1 = (re.findall(r'\d-\d{1,2}节',i)[0])[:-1]
 
+                    else:
+                        if info_list.index(i) == len(info_list)-1:
+                            range1 = (re.findall(r'\d-\d{1,2}节', i)[0])[:-1]
                         else:
-                            if info_list.index(i) == len(info_list)-1:
-                                range1 = (re.findall(r'\d-\d{1,2}节', i)[0])[:-1]
-                            else:
-                                range1 = (re.findall(r' \d-\d{1,2}', i)[0]).replace(' ','')
+                            range1 = (re.findall(r' \d-\d{1,2}', i)[0]).replace(' ','')
+                    classInfo_dict = classInfo_dict.copy()
+                    range1_list = range1.split("-")
+                    classInfo_dict['kcdd'] = kcdd_list[info_list.index(i)]
+                    xqj = (re.findall(r'星期.',i)[0])[-1]
+                    classInfo_dict["xqj"] = xqj_num[xqj_han.index(xqj)]
+                    # classInfo_dict["xqj"] = (re.findall(r'星期.', i)[0])[-1]
+                    classInfo_dict["skjc"] = int(range1_list[0])
+                    classInfo_dict["skcd"] = int(int(range1_list[1]) - int(range1_list[0]) + 1)
+                    range2 = re.finditer(r'\d{1,2}-\d{1,2}周(\(.\))?', i)
+                    for j in range2:
                         classInfo_dict = classInfo_dict.copy()
-                        range1_list = range1.split("-")
-                        classInfo_dict['kcdd'] = kcdd_list[info_list.index(i)]
-                        xqj = (re.findall(r'星期.',i)[0])[-1]
-                        classInfo_dict["xqj"] = xqj_num[xqj_han.index(xqj)]
-                        # classInfo_dict["xqj"] = (re.findall(r'星期.', i)[0])[-1]
-                        classInfo_dict["skjc"] = int(range1_list[0])
-                        classInfo_dict["skcd"] = int(int(range1_list[1]) - int(range1_list[0]) + 1)
-                        range2 = re.finditer(r'\d{1,2}-\d{1,2}周(\(.\))?', i)
-                        for j in range2:
-                            classInfo_dict = classInfo_dict.copy()
-                            range2_list = j.group().split("-")
-                            classInfo_dict["qszs"] = int(range2_list[0])
-                            range2_list2 = range2_list[1].split("周")
+                        range2_list = j.group().split("-")
+                        classInfo_dict["qszs"] = int(range2_list[0])
+                        range2_list2 = range2_list[1].split("周")
 
-                            classInfo_dict["jszs"] = int(re.findall('\d{1,2}',range2_list[1])[0])
+                        classInfo_dict["jszs"] = int(re.findall('\d{1,2}',range2_list[1])[0])
 
-                            if range2_list2[1] == "":
-                                classInfo_dict["dsz"] = 0
-                            else:
-                                if (range2_list2[1])[1] == '单':
-                                    classInfo_dict["dsz"] = 1
-                                elif (range2_list2[1])[1] == '双':
-                                    classInfo_dict["dsz"] = 2
-                            template = [classInfo_dict][:]
-                            class_all_list = class_all_list + template
+                        extra = "课程：%s\n老师：%s\n上课地点：%s\n上课时间：星期%s 第%s节-第%s节 %s-%s周" % (
+                        classInfo_dict['kcmc'], classInfo_dict["ls"], classInfo_dict['kcdd'], xqj,
+                        classInfo_dict["skjc"], classInfo_dict["skjc"] + classInfo_dict["skjc"],
+                        classInfo_dict["qszs"], classInfo_dict["jszs"])
+
+                        if range2_list2[1] == "":
+                            classInfo_dict["dsz"] = 0
+                        else:
+                            if (range2_list2[1])[1] == '单':
+                                classInfo_dict["dsz"] = 1
+                                extra += "(单周)"
+                            elif (range2_list2[1])[1] == '双':
+                                classInfo_dict["dsz"] = 2
+                                extra += "(双周)"
+                        template = [classInfo_dict][:]
+                        obj,created = ClassInfo.objects.get_or_create(kcmc=classInfo_dict['kcmc'],ls=classInfo_dict['ls'],kcdd=classInfo_dict['kcdd'],xqj=classInfo_dict['xqj'],skjc=classInfo_dict['skjc'],skcd=classInfo_dict['skcd'],qszs=classInfo_dict['qszs'],jszs=classInfo_dict['jszs'],dsz=classInfo_dict['dsz'],extra=extra)
+
+                        class_all_list = class_all_list + template
 
 
-                    except:
-                        print(1)
+                    # except:
+                    #     print(1)
 
         json_class_all_list = json.dumps(class_all_list, ensure_ascii=False)
         return json_class_all_list
@@ -339,43 +347,43 @@ class Test():
 
         s = requests.session()
 
-        try:
-            while 1:
+        # try:
+        while 1:
 
-                data = {
-                    'j_username': user,           #测试用账号密码
-                    'j_password': password,
-                    'validateCode': self.getCheckCode(s),
-                }
-                print(data)
-                if data["validateCode"] == '':
-                    continue
-                r = s.post(url,data=data,headers=headers)
-                return_info = r.text.split("\":")[0].replace("{", "").replace("\"", "")
-                print(return_info)
-                if return_info == "success":
-                    break
-                elif return_info == "userNameOrPasswordError":
-                    break
-                elif return_info == "validateCodeError":
-                    continue
+            data = {
+                'j_username': user,           #测试用账号密码
+                'j_password': password,
+                'validateCode': self.getCheckCode(s),
+            }
+            print(data)
+            if data["validateCode"] == '':
+                continue
+            r = s.post(url,data=data,headers=headers)
+            return_info = r.text.split("\":")[0].replace("{", "").replace("\"", "")
+            print(return_info)
+            if return_info == "success":
+                break
+            elif return_info == "userNameOrPasswordError":
+                break
+            elif return_info == "validateCodeError":
+                continue
 
 
 
-            if return_info == "userNameOrPasswordError":
-                info_json = json.dumps({"error":-2}, ensure_ascii=False)
-                return info_json
-            elif return_info == "success":
-                if choice == "1":
-                    info_json = self.getClass(s,headers)
-                elif choice == "2":
-                    info_json = self.getGrade(s,headers,"2018-2019",["1","2"],user)
-                elif choice == "3":
-                    info_json = self.getTest(s,headers)
-                elif choice == "4":
-                    info_json = self.getAllGrade(s,headers,user)
-                print(info_json)
-                return info_json
-        except:
-            info_json = json.dumps({"error":-4}, ensure_ascii=False)
+        if return_info == "userNameOrPasswordError":
+            info_json = json.dumps({"error":-2}, ensure_ascii=False)
             return info_json
+        elif return_info == "success":
+            if choice == "1":
+                info_json = self.getClass(s,headers)
+            elif choice == "2":
+                info_json = self.getGrade(s,headers,"2018-2019",["1","2"],user)
+            elif choice == "3":
+                info_json = self.getTest(s,headers)
+            elif choice == "4":
+                info_json = self.getAllGrade(s,headers,user)
+            print(info_json)
+            return info_json
+        # except:
+        #     info_json = json.dumps({"error":-4}, ensure_ascii=False)
+        #     return info_json
