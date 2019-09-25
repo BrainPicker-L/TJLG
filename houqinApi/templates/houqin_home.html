@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}我的网站{% endblock %}
+{% block nav_blog_active %}active{% endblock %}
+
+{% load staticfiles %}
+{% block header_extends %}
+    <link rel="stylesheet" href="{% static 'blog/blog.css' %}">
+{% endblock %}
+
+{# 页面内容 #}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{status_now}}列表（一共有{{ gongdans|length }}篇博客）</div>
+                            <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                              <div class="btn-group" role="group" style="magr">
+                                <a type="button" class="btn btn-default" href="?status=未处理">未处理</a>
+                              </div>
+                              <div class="btn-group" role="group">
+                                <a type="button" class="btn btn-default" href="?status=已处理">已处理</a>
+                              </div>
+                              <div class="btn-group" role="group">
+                                <a type="button" class="btn btn-default" href="?status=维修完成">维修完成</a>
+                              </div>
+                            </div>
+
+                    <div class="panel-body">
+                        {% for gongdan in gongdans %}
+                            <div class="blog">
+                                <h3>
+                                    <a href="{% url 'houqin_detail' gongdan.pk %}">工单号：{{ gongdan.gongdanid }}</a> {{ gongdan.status.name }}
+
+                                </h3>
+                                <form action="" method="post">
+                                    {% csrf_token %}
+                                    <input type='hidden' name="status" value="{{ gongdan.status.name }}" />
+                                    <input type='hidden' name="gd_pk" value="{{ gongdan.pk }}" />
+                                    <p>
+                                        <select name="sel_value" class="form-control" style="width:200px">
+                                        {% for key,value in select_form.SELVALUE %}
+                                        <option value="{{ value }}" {% if gongdan.status.name == key %} selected {% endif %} >{{ key }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </p>
+                                <p>
+                                    <select name="sel_value2" class="form-control" style="width:200px">
+                                    {% for key,value in select_form.SELVALUE2 %}
+                                    <option value="{{ value }}" {% if gongdan.repair_man.name == key %} selected {% endif %} >{{ key }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </p>
+
+                                <p class="gongdan-info">
+                                    <span class="glyphicon glyphicon-time"></span>{{ gongdan.created_time|date:"Y-m-d" }}
+                                </p>
+
+                                <p>故障概要：{{ gongdan.excerpt }}</p>
+                                <p>学生姓名：{{ gongdan.name }}</p>
+                                <p>学生电话：{{ gongdan.phonenum }}</p>
+                                <p>可维修时间：{{ gongdan.abletime }}</p>
+                                        <input type="submit">
+                                </form>
+                            </div>
+                        {% empty %}
+                            <div class="blog">
+                                <h3>-- 暂无工单 --</h3>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="hidden-xs col-sm-4 col-md-3 col-lg-2">
+            </div>
+        </div>
+    </div>
+{% endblock %}
