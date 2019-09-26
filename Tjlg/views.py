@@ -70,8 +70,11 @@ def register(request):
 def manage_article(request):
     context = {}
     author = request.user
-    author = Profile.objects.filter(user=author)[0]
-    context['articles'] =  Article.objects.filter(author=author)
+    try:
+        author = Profile.objects.filter(user=author)[0]
+        context['articles'] =  Article.objects.filter(author=author)
+    except:
+        context['articles'] = []
     return render(request, 'manage_article.html', context)
 
 
