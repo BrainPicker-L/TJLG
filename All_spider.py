@@ -38,27 +38,12 @@ class Test():
         img_src = "http://ssfw.tjut.edu.cn/ssfw/jwcaptcha.do?"
         response = s.get(img_src,headers=headers)
         image = Image.open(BytesIO(response.content))
-        image.save('/home/TJLG/checkcode1.jpg')
-        print("正在拿验证码")
-        im = Image.open("/home/TJLG/checkcode1.jpg")
         # imgry = im.convert('L')
         # # 转化到灰度图
         # imgry.save('gray-' + "checkcode1.jpg")
-        text = pytesseract.image_to_string(im,lang='fontyp')
-        os.remove("/home/TJLG/checkcode1.jpg")
+        text = pytesseract.image_to_string(image,lang='fontyp')
         return text
 
-    def judgeCode(self):    #识别验证码
-        # pytesseract.pytesseract.tesseract_cmd = 'd://Tesseract-OCR//tesseract.exe'
-        # tessdata_dir_config = '--tessdata-dir "d://Tesseract-OCR//tessdata"'
-        while 1:
-            im = Image.open("/home/TJLG/checkcode1.jpg")
-            # imgry = im.convert('L')
-            # # 转化到灰度图
-            # imgry.save('gray-' + "checkcode1.jpg")
-            text = pytesseract.image_to_string(im,lang='fontyp')
-            os.remove("/home/TJLG/checkcode1.jpg")
-            return text
 
     def getGrade(self,s,headers,term_year,term_num_list,user):            #拿到全部成绩
         list2 = []
