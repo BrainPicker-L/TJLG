@@ -1,15 +1,11 @@
 import requests
 
-
-data = {
-
-    'sno' :'Y21614010',
-    'name' :'子哲',
-    'phonenum' :'18815516404',
-    'pos' :'食堂aaa',
-    'abletime' :'全天aaa',
-    'excerpt' :'桌子坏了aaa',
-}
-
-res =  requests.post('http://127.0.0.1:8000/houqin/add_gongdan',data=data)
-print(res.text)
+for i in range(10):
+    data = {
+        'sno' :'Y21614010',
+        'name' :'刘子哲',
+        'excerpt' :'空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调空调',
+    }
+    #
+    res =  requests.post('http://127.0.0.1:8000/houqin/add_gongdan',data=data)
+    print(res.text)

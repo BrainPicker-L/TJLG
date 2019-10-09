@@ -6,11 +6,8 @@ from .models import *
 
 @admin.register(Gongdan)
 class WorksAdmin(admin.ModelAdmin):
-    list_display = ('gongdanid','status','repair_man','name','phonenum','pos','abletime','excerpt','created_time')
+    list_display = ('gongdanid','status','name','excerpt','reply','created_time')
 
-@admin.register(RepairMan)
-class RepairManAdmin(admin.ModelAdmin):
-    list_display = ('id','name','phonenum')
 
 
 @admin.register(StatusName)

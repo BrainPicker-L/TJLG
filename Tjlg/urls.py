@@ -65,7 +65,7 @@ urlpatterns = [
     path('ahu_advert',views.ahu_advert,name='ahu_advert'),
     path('tjlg_advert',views.tjlg_advert,name='tjlg_advert'),
     path('get_class_info',views.get_class_info,name='get_class_info'),
-    path('houqin',include("houqinApi.urls")),
+    path('houqin/',include("houqinApi.urls")),
 
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -12,8 +12,12 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
+                <form class="navbar-form navbar-right" action="" method="GET">
+                        {{ search_form }}
+                    <input type="submit" value="搜索" class="btn btn-primary pull-right">
+                    </form>
                 <div class="panel panel-default">
-                    <div class="panel-heading">{{status_now}}列表（一共有{{ gongdans|length }}个工单）</div>
+                    <div class="panel-heading">{{status_now}}列表（一共有{{ gongdans|length }}个工单） </div>
                             <div class="btn-group btn-group-justified" role="group" aria-label="...">
                               <div class="btn-group" role="group" style="magr">
                                 <a type="button" class="btn btn-danger" href="?status=未处理">未处理</a>
@@ -22,7 +26,7 @@
                                 <a type="button" class="btn btn-warning" href="?status=已处理">已处理</a>
                               </div>
                               <div class="btn-group" role="group">
-                                <a type="button" class="btn btn-success" href="?status=维修完成">维修完成</a>
+                                <a type="button" class="btn btn-success" href="?status=已收录">已收录</a>
                               </div>
                             </div>
 
@@ -36,7 +40,7 @@
                                     {% elif gongdan.status.name == "已处理" %}
                                         <a type="button" class="btn btn-warning" href="?status=已处理">已处理</a>
                                     {% else %}
-                                        <a type="button" class="btn btn-success" href="?status=维修完成">维修完成</a>
+                                        <a type="button" class="btn btn-success" href="?status=已收录">已收录</a>
                                     {% endif %}
 
                                 </h3>
@@ -44,15 +48,8 @@
                                     {% csrf_token %}
                                     <input type='hidden' name="status" value="{{ gongdan.status.name }}" />
                                     <input type='hidden' name="gd_pk" value="{{ gongdan.pk }}" />
-
-                                    <p>
-                                        <select name="sel_value" class="form-control" style="width:250px">
-                                        {% for key,value in select_form.SELVALUE %}
-                                        <option value="{{ value }}" {% if gongdan.repair_man.name == key %} selected {% endif %} >{{ key }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </p>
                                 <p>
+
                                     <select name="sel_value2" class="form-control" style="width:250px">
                                     {% for key,value in select_form.SELVALUE2 %}
                                     <option value="{{ value }}" {% if gongdan.status.name == key %} selected {% endif %} >{{ key }}</option>
@@ -64,10 +61,10 @@
                                     <span class="glyphicon glyphicon-time"></span>{{ gongdan.created_time|date:"Y-m-d H:m" }}
                                 </p>
 
+                                <p>学生姓名：{{ gongdan.name }} &nbsp&nbsp&nbsp 学号：{{ gongdan.sno }}</p>
                                 <p>故障概要：{{ gongdan.excerpt }}</p>
-                                <p>学生姓名：{{ gongdan.name }}</p>
-                                <p>学生电话：{{ gongdan.phonenum }}</p>
-                                <p>可维修时间：{{ gongdan.abletime }}</p>
+                                <p>后勤回复：</p>
+                                    <p><textarea name="reply" rows="10" cols="40">{{ gongdan.reply }}</textarea ></p>
                                         <input type="submit" value="确认修改">
                                 </form>
                             </div>
@@ -77,6 +74,48 @@
                             </div>
                         {% endfor %}
                     </div>
+                </div>
+
+
+                <div class="paginator">
+                    <ul class="pagination">
+                        {# 上一页 #}
+                        <li>
+                            {% if page_of_gongdans.has_previous %}
+                                <a href="?page={{ page_of_gongdans.previous_page_number }}&status={{status_now}}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            {% else %}
+                                <span aria-hidden="true">&laquo;</span>
+                            {% endif %}
+                        </li>
+                        {# 全部页码 #}
+                        {% for page_num in page_range %}
+                            {% if page_num == page_of_gongdans.number %}
+                                <li class="active"><span>{{ page_num }}</span></li>
+                            {% else %}
+                                {% if page_num == '...' %}
+                                    <li><span>{{ page_num }}</span></li>
+                                {% else %}
+                                    <li><a href="?page={{ page_num }}&status={{status_now}}">{{ page_num }}</a></li>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        {# 下一页 #}
+                        <li>
+                            {% if page_of_gongdans.has_next %}
+                                <a href="?page={{ page_of_gongdans.next_page_number }}&status={{status_now}}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            {% else %}
+                                <span aria-hidden="true">&raquo;</span>
+                            {% endif %}
+                        </li>
+                    </ul>
+                    <p>
+                        共有{{ page_of_gongdans.paginator.count }}个工单，
+                        当前第{{ page_of_gongdans.number }}页，共{{ page_of_gongdans.paginator.num_pages }}页
+                    </p>
                 </div>
             </div>
             <div class="hidden-xs col-sm-4 col-md-3 col-lg-2">

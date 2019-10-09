@@ -12,14 +12,12 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-10 col-xs-offset-1">
-                <h3>{{ gongdan.gongdanid }}</h3>
+                <h3>工单号：{{ gongdan.gongdanid }}</h3>
                 <div class="blog">
                     <p>工单提交时间：{{ gongdan.created_time }}</p>
-                    <p>维修工：{{ gongdan.repair_man.name}}</p>
-                    <p>故障位置：{{ gongdan.pos }}</p>
                     <p>故障概要：{{ gongdan.excerpt }}</p>
-                    <p>学生姓名：{{ gongdan.name }}&nbsp&nbsp&nbsp学生学号：{{ gongdan.sno }}&nbsp&nbsp&nbsp学生电话：{{ gongdan.phonenum }}</p>
-                    <p>可维修时间：{{ gongdan.abletime }}</p>
+                    <p>学生姓名：{{ gongdan.name }}&nbsp&nbsp&nbsp学生学号：{{ gongdan.sno }}&nbsp&nbsp&nbsp</p>
+                    <p>后勤回复：{{ gongdan.reply }}</p>
                 </div>
                 <div class="blog-content">{{ blog.content }}</div>
             </div>
