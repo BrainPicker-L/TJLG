@@ -72,7 +72,7 @@ def manage_article(request):
     author = request.user
     try:
         author = Profile.objects.filter(user=author)[0]
-        context['articles'] =  Article.objects.filter(author=author)
+        context['articles'] =  TJLG_Article_Pyspider.objects.filter(author=author)
     except:
         context['articles'] = []
     return render(request, 'manage_article.html', context)
@@ -93,7 +93,7 @@ def edit_article(request, article_pk):
     if request.method == 'POST':
         article_form = ArticleForm(request.POST or None,request.FILES or None)
         if article_form.is_valid():
-            article = Article()
+            article = TJLG_Article_Pyspider()
             article.author = Profile.objects.filter(user=request.user)[0]
             article.title = article_form.cleaned_data["title"]
             article.detail_url = article_form.cleaned_data["detail_url"]
@@ -127,7 +127,7 @@ def edit_article(request, article_pk):
         if str(article_pk) == "0":
             pass
         else:
-            Article.objects.get(pk=article_pk).delete()
+            TJLG_Article_Pyspider.objects.get(pk=article_pk).delete()
     return render(request, 'edit_article.html', context)
 
 
@@ -135,7 +135,7 @@ def edit_article(request, article_pk):
 
 def delete_article(request,article_pk):
     context = {}
-    Article.objects.get(pk=article_pk).delete()
+    TJLG_Article_Pyspider.objects.get(pk=article_pk).delete()
     return redirect(request.GET.get('from', reverse('manage_article')))
 
 
