@@ -30,13 +30,15 @@
                     </li>
                     {% if not user.is_authenticated %}
 
-                    {% elif  user.username == '后勤服务中心' %}
+                    {% elif  user.username == '后勤管理处综合信息中心' %}
 
                         <li class="{% block nav_houqin_home_active %}{% endblock %}">
                             <a href="{% url 'houqin_home' %}">工单管理</a>
                         </li>
                     {% else %}
 
+
+                    {% endif %}
                         <li class="{% block nav_manage_article_active %}{% endblock %}">
                             <a href="{% url 'manage_article' %}">文章管理</a>
                         </li>
@@ -49,7 +51,6 @@
                         <li class="{% block nav_edit_detail_article_active %}{% endblock %}">
                             <a href="{% url 'edit_detail_article' 0 %}">详情文章发布</a>
                         </li>
-                    {% endif %}
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">

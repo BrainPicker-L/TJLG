@@ -44,29 +44,14 @@
                                     {% endif %}
 
                                 </h3>
-                                <form action="" method="post">
-                                    {% csrf_token %}
-                                    <input type='hidden' name="status" value="{{ gongdan.status.name }}" />
-                                    <input type='hidden' name="gd_pk" value="{{ gongdan.pk }}" />
-                                <p>
-
-                                    <select name="sel_value2" class="form-control" style="width:250px">
-                                    {% for key,value in select_form.SELVALUE2 %}
-                                    <option value="{{ value }}" {% if gongdan.status.name == key %} selected {% endif %} >{{ key }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </p>
-
                                 <p class="gongdan-info">
                                     <span class="glyphicon glyphicon-time"></span>{{ gongdan.created_time|date:"Y-m-d H:m" }}
                                 </p>
 
-                                <p>学生姓名：{{ gongdan.name }} &nbsp&nbsp&nbsp 学号：{{ gongdan.sno }}</p>
-                                <p>故障概要：{{ gongdan.excerpt }}</p>
-                                <p>后勤回复：</p>
-                                    <p><textarea name="reply" rows="10" cols="40">{{ gongdan.reply }}</textarea ></p>
-                                        <input type="submit" value="确认修改">
-                                </form>
+                                <p>学生姓名：{{ gongdan.name }} &nbsp&nbsp&nbsp 学号：{{ gongdan.sno }}&nbsp&nbsp&nbsp 手机：{{ gongdan.phone_num }}</p>
+                                <p>问题描述：{{ gongdan.excerpt|striptags|truncatechars:30}}...</p>
+
+
                             </div>
                         {% empty %}
                             <div class="blog">

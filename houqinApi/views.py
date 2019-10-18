@@ -12,24 +12,12 @@ from fuzzywuzzy import fuzz
 
 def houqin_home(request):
     context = {}
-    if request.user.username == "后勤服务中心":
+    if request.user.username == "后勤管理处综合信息中心":
         context["search_form"] = SearchForm()
-        context["select_form"] = SelectForm()
 
-        if request.method == "POST":
 
-            status_pk = request.POST.get("sel_value2", StatusName.objects.get(name="未处理").pk)
-            gd_pk = request.POST.get("gd_pk", '')
-            status = request.POST.get("status", '未处理')
-            reply = request.POST.get("reply", '')
-            print(reply)
-            context["status_now"] = status
-            obj = Gongdan.objects.get(pk=gd_pk)
-            obj.status = StatusName.objects.get(pk=status_pk)
-            obj.reply = reply
-            obj.save()
-            context["gongdans"] = Gongdan.objects.filter(status__name=status).order_by('-created_time')
-        elif request.method == "GET":
+
+        if request.method == "GET":
             status = request.GET.get('status','未处理')
             context["status_now"] = status
             searchtext = request.GET.get('searchtext','')
@@ -74,7 +62,22 @@ def houqin_home(request):
 
 def houqin_detail(request,gd_pk):   #传入参数工单pk
     context={}
-    context["gongdan"] = Gongdan.objects.get(id=int(gd_pk))
+
+    context["select_form"] = SelectForm()
+    if request.method == "POST":
+        status_pk = request.POST.get("sel_value2", StatusName.objects.get(name="未处理").pk)
+        gd_pk = request.POST.get("gd_pk", '')
+        status = request.POST.get("status", '未处理')
+        reply = request.POST.get("reply", '')
+        context["status_now"] = status
+        obj = Gongdan.objects.get(pk=gd_pk)
+        obj.status = StatusName.objects.get(pk=status_pk)
+        obj.reply = reply
+        obj.save()
+        context["gongdan"] = Gongdan.objects.get(id=int(gd_pk))
+
+    elif request.method == "GET":
+        context["gongdan"] = Gongdan.objects.get(id=int(gd_pk))
     print(gd_pk)
     return render(request, 'houqin_detail.html', context)
 
@@ -85,12 +88,14 @@ def add_gongdan(request):
     sno = request.POST.get('sno','')
     name = request.POST.get('name','')
     excerpt = request.POST.get('excerpt','')
+    phone_num = request.POST.get('phone_num','')
     if not (sno and name and excerpt):
         return HttpResponse(json.dumps({"error":"所有字段不能为空"}, ensure_ascii=False))
     obj = Gongdan()
-    obj.gongdanid = time.strftime("%Y%m%d")+sno+str(random.randint(1,1000)).zfill(4)
+    obj.gongdanid = time.strftime("%Y%m%d")+sno+str(len(Gongdan.objects.all())).zfill(6)
     obj.sno = sno
     obj.name = name
+    obj.phone_num = phone_num
     obj.excerpt = excerpt
     obj.status = StatusName.objects.get(name="未处理")
     obj.save()

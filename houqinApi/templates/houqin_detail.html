@@ -15,9 +15,26 @@
                 <h3>工单号：{{ gongdan.gongdanid }}</h3>
                 <div class="blog">
                     <p>工单提交时间：{{ gongdan.created_time }}</p>
-                    <p>故障概要：{{ gongdan.excerpt }}</p>
-                    <p>学生姓名：{{ gongdan.name }}&nbsp&nbsp&nbsp学生学号：{{ gongdan.sno }}&nbsp&nbsp&nbsp</p>
+                    <p>问题描述：{{ gongdan.excerpt }}</p>
+                    <p>学生姓名：{{ gongdan.name }}&nbsp&nbsp&nbsp学生学号：{{ gongdan.sno }}&nbsp&nbsp&nbsps手机号：{{ gongdan.phone }}&nbsp&nbsp&nbsp</p>
                     <p>后勤回复：{{ gongdan.reply }}</p>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <input type='hidden' name="status" value="{{ gongdan.status.name }}" />
+                        <input type='hidden' name="gd_pk" value="{{ gongdan.pk }}" />
+                    <p>
+
+                        <select name="sel_value2" class="form-control" style="width:250px">
+                        {% for key,value in select_form.SELVALUE2 %}
+                        <option value="{{ value }}" {% if gongdan.status.name == key %} selected {% endif %} >{{ key }}</option>
+                            {% endfor %}
+                        </select>
+                    </p>
+
+                        <p>后勤回复：</p>
+                        <p><textarea name="reply" rows="10" cols="40">{{ gongdan.reply }}</textarea ></p>
+                            <input type="submit" value="确认修改">
+                    </form>
                 </div>
                 <div class="blog-content">{{ blog.content }}</div>
             </div>

@@ -6,7 +6,7 @@ from .models import *
 
 @admin.register(Gongdan)
 class WorksAdmin(admin.ModelAdmin):
-    list_display = ('gongdanid','status','name','excerpt','reply','created_time')
+    list_display = ('gongdanid','status','name','phone_num','excerpt','reply','created_time')
 
 
 
