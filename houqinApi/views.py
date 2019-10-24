@@ -92,7 +92,7 @@ def add_gongdan(request):
     if not (sno and name and excerpt):
         return HttpResponse(json.dumps({"error":"所有字段不能为空"}, ensure_ascii=False))
     obj = Gongdan()
-    obj.gongdanid = time.strftime("%Y%m%d")+sno+str(len(Gongdan.objects.all())).zfill(6)
+    obj.gongdanid = time.strftime("%Y%m%d")+str(len(Gongdan.objects.all())).zfill(6)
     obj.sno = sno
     obj.name = name
     obj.phone_num = phone_num
