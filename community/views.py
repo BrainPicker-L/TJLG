@@ -399,6 +399,7 @@ def notice_lst(request):
     page = request.GET.get('page',1)
 
     #将未读消息数置零
+    print(Sno)
     ahuUesr_obj = ahuUser.objects.get(Sno=Sno)
     ahuUesr_obj.unread_num = 0
     ahuUesr_obj.save()
@@ -419,6 +420,7 @@ def notice_lst(request):
                 context['movementer_name'] = notice.movementer.Sno
                 context['movementer_avatar'] = HOSTS+notice.movementer.userAvatar.url
                 context['excerpt'] = '学号为%s的同学评论了动态'%context['movementer_name']
+                context['action_id'] = notice.action.pk
                 time2 = datetime(notice.create_time.year, notice.create_time.month, notice.create_time.day)
                 print(time2)
                 print(time1)
