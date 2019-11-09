@@ -357,6 +357,29 @@ def change_like_num_comment(request):
             return HttpResponse(json.dumps({"status": '未知错误，联系子哲,查看comment_id是否不存在'}, ensure_ascii=False))
 
 @csrf_exempt
+def get_author_id(request):
+    if request.method == "POST":
+        try:
+            Sno = Sno_Ascll_TJLG(request.POST.get('OnsUha',''))
+            userAvatar = request.POST.get('userAvatar', '')
+            os.chdir(BASE_DIR)
+            media_path = './media/'
+            avatar_file_path = 'user_avatar/' + Sno + '.gif'
+
+            if Sno != '' and userAvatar != '':
+                with open(media_path + avatar_file_path, 'wb') as f:
+                    r = requests.get(url=userAvatar)
+                    f.write(r.content)
+                f.close()
+                user_obj, created = ahuUser.objects.get_or_create(Sno=Sno, userAvatar=avatar_file_path)
+                return HttpResponse(json.dumps({"author_id": str(user_obj.pk)}, ensure_ascii=False))
+            else:
+                return HttpResponse(json.dumps({"status": 'post中有值为空/学号不对'}, ensure_ascii=False))
+
+        except:
+            return HttpResponse(json.dumps({"status": '未知错误，联系子哲'}, ensure_ascii=False))
+
+@csrf_exempt
 def delete_action(request):
     if request.method == "POST":
         try:

@@ -12,5 +12,6 @@ urlpatterns = [
     path('delete_action', views.delete_action, name='delete_action'),
     path('delete_comment', views.delete_comment, name='delete_comment'),
     path('notice_lst',views.notice_lst,name='notice_lst'),
-    path('get_unread_num',views.get_unread_num,name='get_unread_num')
+    path('get_unread_num',views.get_unread_num,name='get_unread_num'),
+    path('get_author_id',views.get_author_id,name='get_author_id'),
 ]
