@@ -53,19 +53,13 @@ urlpatterns = [
     path('emaildetail',views.emaildetail,name='emaildetail'),
     path('getarticle',views.getarticle,name='getarticle'),
     path('jspj',views.jspj,name='jspj'),
-    path('useraction',views.useraction,name='useraction'),
-    path('comment_action',views.comment_action,name='comment_action'),
-    path('personal_action',views.personal_action,name='personal_action'),
-    path('change_like_num_action',views.change_like_num_action,name='change_like_num_action'),
-    path('change_like_num_comment',views.change_like_num_comment,name='change_like_num_comment'),
     path('school_life',views.school_life,name='school_life'),
     path('TJLG_school_life',views.TJLG_school_life,name='TJLG_school_life'),
-    path('delete_action',views.delete_action,name='delete_action'),
-    path('delete_commit',views.delete_commit,name='delete_commit'),
     path('ahu_advert',views.ahu_advert,name='ahu_advert'),
     path('tjlg_advert',views.tjlg_advert,name='tjlg_advert'),
     path('get_class_info',views.get_class_info,name='get_class_info'),
     path('houqin/',include("houqinApi.urls")),
+    path('community/',include("community.urls")),
 
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
