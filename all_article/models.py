@@ -20,8 +20,8 @@ class Article(models.Model):
     img8 = models.ImageField("图片8",upload_to='img',null=True,default="",blank=True)
     img9 = models.ImageField("图片9",upload_to='img',null=True,default="",blank=True)
     class Meta:
-        verbose_name = '社团动态（天津理工）'
-        verbose_name_plural = '社团动态（天津理工）'
+        verbose_name = '校招实习（天津理工）'
+        verbose_name_plural = '校招实习（天津理工）'
 
 class TJLG_Article_Pyspider(models.Model):
     author = models.ForeignKey(Profile, on_delete=models.CASCADE)
@@ -40,8 +40,8 @@ class TJLG_Article_Pyspider(models.Model):
     img8 = models.ImageField("图片8",upload_to='img',null=True,default="",blank=True)
     img9 = models.ImageField("图片9",upload_to='img',null=True,default="",blank=True)
     class Meta:
-        verbose_name = '教务通知（天津理工）'
-        verbose_name_plural = '教务通知（天津理工）'
+        verbose_name = '资讯通知（天津理工）'
+        verbose_name_plural = '资讯通知（天津理工）'
 
 
 

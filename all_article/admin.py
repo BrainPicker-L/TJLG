@@ -5,6 +5,10 @@ from .models import *
 class BlogAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'created_time', 'last_updated_time')
 
+@admin.register(TJLG_Article_Pyspider)
+class TJLG_Article_PyspiderAdmin(admin.ModelAdmin):
+    list_display = ('title', 'author', 'created_time', 'last_updated_time')
+
 @admin.register(Email)
 class EmailAdmin(admin.ModelAdmin):
     list_display = ('title','create_time')
