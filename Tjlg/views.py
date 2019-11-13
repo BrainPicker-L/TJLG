@@ -252,7 +252,7 @@ def menu(request):
 
 
 def menu_list(request):
-    f = open('/home/TJLG/memu/memu.txt.utf8')
+    f = open(BASE_DIR+'/memu/memu.txt.utf8')
 
     menu_list = f.read().split("\n")
 
@@ -277,23 +277,6 @@ def menu_list(request):
     all_list.append(list1)
     json_all_list = json.dumps(all_list, ensure_ascii=False)
     return HttpResponse(json_all_list)
-    menu_all_list = Menu.objects.all()
-    # menu_all_list = Menu.objects.filter(namePrice__contains=text_to_search)
-    # if menu_all_list == 0:
-    #     menu_all_list = Menu.objects.filter(diningRoom__contains=text_to_search)
-    list1 = []
-    for i in menu_all_list:
-        value = fuzz.token_sort_ratio(text_to_search, i.namePrice)
-        if value >= 40:
-            dict1 = {}
-            dict1["diningRoom"] = i.diningRoom
-            dict1["winNum"] = i.winNum
-            dict1["namePrice"] = i.namePrice
-            dict1["value"] = value
-            list1.append(dict1)
-    list1 = sorted(list1, key=lambda a: a['value'], reverse=True)
-    info_json = json.dumps(list1, ensure_ascii=False)
-    return HttpResponse(info_json)
 
 def guake(request):
     searchtext = request.GET.get("searchtext",'')
