@@ -308,9 +308,9 @@ class Test():
         selector = etree.HTML(r.text)
         all_list = []
 
-        name_list = selector.xpath("/html/body/div[1]/div/fieldset[1]/table//tr/td[3]/text()")
-        time_list = selector.xpath("/html/body/div[1]/div/fieldset[1]/table//tr/td[7]/text()")
-        position_list = selector.xpath("/html/body/div[1]/div/fieldset[1]/table//tr/td[8]/text()")
+        name_list = selector.xpath('//div[@class="div_body"]/fieldset[1]/table[@class="ui_table ui_table_hover ui_table_striped ui_table_style02"]//tr[@class="t_con"]/td[3]//text()')
+        time_list = selector.xpath('//div[@class="div_body"]/fieldset[1]/table[@class="ui_table ui_table_hover ui_table_striped ui_table_style02"]//tr[@class="t_con"]/td[7]//text()')
+        position_list = selector.xpath('//div[@class="div_body"]/fieldset[1]/table[@class="ui_table ui_table_hover ui_table_striped ui_table_style02"]//tr[@class="t_con"]/td[8]//text()')
         for i in range(len(name_list)):
             dict1 = {}
             dict1['KCMC'] = name_list[i]
