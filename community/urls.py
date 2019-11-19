@@ -14,5 +14,5 @@ urlpatterns = [
     path('notice_lst',views.notice_lst,name='notice_lst'),
     path('get_unread_num',views.get_unread_num,name='get_unread_num'),
     path('get_author_id',views.get_author_id,name='get_author_id'),
-    path('uoload_img',views.upload_img,name='upload_img')
+    path('upload_img',views.upload_img,name='upload_img')
 ]

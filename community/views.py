@@ -167,17 +167,17 @@ def sort_time(time, create_time):
         time_text = "未来 %s" % h_m
     return time_text
 
-
-def upload_img(self,request):
+@csrf_exempt
+def upload_img(request):
     response = []
     files = request.FILES #获取返回来的图片
     for key,value in files.items():
         content = value.read()
         md5 = hashlib.md5(content).hexdigest()
-        path = os.path.join(md5+'.jpg')
+        path = os.path.join(MEDIA_ROOT,"community",os.path.join(md5+'.jpg'))
         with open(path, 'wb') as f:
             f.write(content)
-        response.append({'name':key, 'md5':md5}) #返回前台
+        response.append({'name':key, 'img_path':os.path.join(HOSTS,"media","community",md5+'.jpg')}) #返回前台
     return HttpResponse(response)
 
 @csrf_exempt
