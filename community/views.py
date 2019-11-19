@@ -174,7 +174,7 @@ def useraction(request):
 
         Sno = Sno_Ascll_TJLG(request.POST.get('OnsUha',''))
         userAvatar = request.POST.get('userAvatar','')
-        excerpt = request.POST.get('excerpt','')
+        excerpt = check(request.POST.get('excerpt',''))
         img = request.POST.get('img','')
         print(Sno,userAvatar,excerpt,img)
         print(img)
@@ -253,7 +253,7 @@ def comment_action(request):
             #拿到post的数据
             Sno = Sno_Ascll_TJLG(request.POST.get('OnsUha',''))
             userAvatar = request.POST.get('userAvatar', '')
-            content = request.POST.get('content','')
+            content = check(request.POST.get('content',''))
             action_id = int(request.POST.get('action_id',1))
 
             #拿到用户头像的路径
