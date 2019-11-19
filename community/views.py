@@ -15,7 +15,7 @@ from datetime import datetime
 
 from django.http import JsonResponse
 import jieba
-
+import hashlib
 # Create your views here.
 
 dirty_dict = {
@@ -167,6 +167,18 @@ def sort_time(time, create_time):
         time_text = "未来 %s" % h_m
     return time_text
 
+
+def upload_img(self,request):
+    response = []
+    files = request.FILES #获取返回来的图片
+    for key,value in files.items():
+        content = value.read()
+        md5 = hashlib.md5(content).hexdigest()
+        path = os.path.join(md5+'.jpg')
+        with open(path, 'wb') as f:
+            f.write(content)
+        response.append({'name':key, 'md5':md5}) #返回前台
+    return HttpResponse(response)
 
 @csrf_exempt
 def useraction(request):
