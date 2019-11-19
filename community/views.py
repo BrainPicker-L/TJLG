@@ -188,13 +188,11 @@ def useraction(request):
         userAvatar = request.POST.get('userAvatar','')
         excerpt = check(request.POST.get('excerpt',''))
         img = request.POST.get('img','')
-        print(Sno,userAvatar,excerpt,img)
-        print(img)
+
         os.chdir(BASE_DIR)
         media_path = './media/'
         avatar_file_path = 'user_avatar/'+Sno+'.gif'
 
-        img_file_path = 'action_img/'+Sno+'_'+str(time.time())+'.gif'
 
         if userAvatar!='' and excerpt != '' and Sno != '':#"20" in Sno and len(Sno)<12 and userAvatar!='':
             with open(media_path + avatar_file_path, 'wb') as f:
@@ -206,11 +204,7 @@ def useraction(request):
             article_obj.author = user_obj
             article_obj.excerpt = excerpt
             if img!='':
-                with open(media_path + img_file_path, 'wb') as f:
-                    r = requests.get(url=img)
-                    f.write(r.content)
-                f.close()
-                article_obj.img = img_file_path
+                article_obj.img = img.replace(HOSTS+"/media/",'')
             article_obj.save()
             return HttpResponse(json.dumps({"status": 'success'}, ensure_ascii=False))
         else:
