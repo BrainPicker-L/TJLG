@@ -178,8 +178,7 @@ def upload_img(request):
         with open(path, 'wb') as f:
             f.write(content)
         response.append({'name':key, 'img_path':os.path.join(HOSTS,"media","community",md5+'.jpg')}) #返回前台
-    return HttpResponse(response)
-
+    return HttpResponse(json.dumps(response, ensure_ascii=False))
 @csrf_exempt
 def useraction(request):
     if request.method == "POST":
