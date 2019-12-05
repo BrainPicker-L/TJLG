@@ -131,23 +131,15 @@ def check(content):
 
 def Sno_Ascll(ascll_word):
     str1 = ""
-    for i in range(0, len(ascll_word), 2):
-        str1 += chr(int(ascll_word[i] + ascll_word[i + 1]))
-    Sno = str1[::-1]
-    if Sno[0].isupper() and Sno[2:].isdigit():
-        return Sno
-    else:
-        return ''
-#天津理工大学学号解密
-def Sno_Ascll_TJLG(ascll_word):
-    str1 = ""
-    for i in range(0, len(ascll_word), 2):
-        str1 += chr(int(ascll_word[i] + ascll_word[i + 1]))
-    Sno = str1[::-1]
-    if Sno[0:2]=='yk' or Sno[0:2]=='20':
-        return Sno
-    else:
-        return ''
+    return ascll_word
+    # for i in range(0, len(ascll_word), 2):
+    #     str1 += chr(int(ascll_word[i] + ascll_word[i + 1]))
+    # Sno = str1[::-1]
+    # if Sno[0].isupper() and Sno[2:].isdigit():
+    #     return Sno
+    # else:
+    #     return ''
+
 
 def sort_time(time, create_time):
     h_m = str(create_time.strftime("%H:%M"))
@@ -179,15 +171,17 @@ def upload_img(request):
             f.write(content)
         response.append({'name':key, 'img_path':os.path.join(HOSTS,"media","community",md5+'.jpg')}) #返回前台
     return HttpResponse(json.dumps(response, ensure_ascii=False))
+
 @csrf_exempt
 def useraction(request):
     if request.method == "POST":
 
-        Sno = Sno_Ascll_TJLG(request.POST.get('OnsUha',''))
+        Sno = Sno_Ascll(request.POST.get('OnsUha',''))
+        wx_name = request.POST.get('wx_name','')
         userAvatar = request.POST.get('userAvatar','')
         excerpt = check(request.POST.get('excerpt',''))
+        position = request.POST.get('position', '')
         img = request.POST.get('img','')
-
         os.chdir(BASE_DIR)
         media_path = './media/'
         avatar_file_path = 'user_avatar/'+Sno+'.gif'
@@ -198,9 +192,13 @@ def useraction(request):
                 r = requests.get(url=userAvatar)
                 f.write(r.content)
             f.close()
-            user_obj, created = ahuUser.objects.get_or_create(Sno=Sno,userAvatar=avatar_file_path)
+            user_obj, created = ahuUser.objects.get_or_create(Sno=Sno)
+            user_obj.userAvatar = avatar_file_path
+            user_obj.wx_name = wx_name
+            user_obj.save()
             article_obj = UserAction()
             article_obj.author = user_obj
+            article_obj.position = position
             article_obj.excerpt = excerpt
             if img!='':
                 article_obj.img = img.replace(HOSTS+"/media/",'')
@@ -211,13 +209,41 @@ def useraction(request):
         # except:
         #     return HttpResponse(json.dumps({"status": "未知错误，联系子哲"}, ensure_ascii=False))
     elif request.method == "GET":
-        page = request.GET.get('page', 0)
+        page = int(request.GET.get('page', 0))
         actions_all_list = UserAction.objects.order_by("-created_time")
         paginator = Paginator(actions_all_list, 7)
+        context_list = []
+        stickie_actions = stickieAction.objects.all()
         time1 = datetime(datetime.now().year, datetime.now().month, datetime.now().day)
+
+        # 增加置顶动态列表
+        if page == 1:
+            for action in stickie_actions:
+                context = {}
+                context['author_id'] = action.action.author.pk
+                context['action_id'] = action.action.pk
+                context['author'] = action.action.author.Sno
+                context['wx_name'] = action.action.author.wx_name
+                context['avatar'] = HOSTS + action.action.author.userAvatar.url
+                context['position'] = action.action.position
+                context['excerpt'] = action.action.excerpt
+                context['like_num'] = action.action.like_num
+                context['like_users'] = [
+                    {'author_id': i.user.id, 'author': i.user.Sno, 'avatar': HOSTS + i.user.userAvatar.url} for i in
+                    UserActionLike.objects.filter(action_id=action.action.pk)]
+                if str(action.action.img) != '':
+                    context['img'] = HOSTS + action.action.img.url
+                else:
+                    context['img'] = ''
+                context['commit_count'] = ArticleComment.objects.filter(article_id=action.action.id).count()
+                time2 = datetime(action.action.created_time.year, action.action.created_time.month, action.action.created_time.day)
+                context['time'] = sort_time((time1 - time2).days, action.action.created_time)
+                context_list.append(context)
+
+        #增加动态列表
         if int(page) <= paginator.num_pages:
             if page != '':
-                context_list = []
+
                 page_of_actions = paginator.get_page(int(page))
                 actions = page_of_actions.object_list
 
@@ -226,7 +252,9 @@ def useraction(request):
                     context['author_id'] = action.author.pk
                     context['action_id'] = action.pk
                     context['author'] = action.author.Sno
+                    context['wx_name'] = action.author.wx_name
                     context['avatar'] = HOSTS + action.author.userAvatar.url
+                    context['position'] = action.position
                     context['excerpt'] = action.excerpt
                     context['like_num'] = action.like_num
                     context['like_users'] = [{'author_id':i.user.id,'author':i.user.Sno,'avatar':HOSTS+i.user.userAvatar.url} for i in UserActionLike.objects.filter(action_id=action.pk)]
@@ -256,7 +284,8 @@ def comment_action(request):
     if request.method == "POST":
         try:
             #拿到post的数据
-            Sno = Sno_Ascll_TJLG(request.POST.get('OnsUha',''))
+            Sno = Sno_Ascll(request.POST.get('OnsUha',''))
+            wx_name = request.POST.get('wx_name', '')
             userAvatar = request.POST.get('userAvatar', '')
             content = check(request.POST.get('content',''))
             action_id = int(request.POST.get('action_id',1))
@@ -274,7 +303,10 @@ def comment_action(request):
                 f.close()
 
                 # 评论数据入评论数据表
-                user_obj, created = ahuUser.objects.get_or_create(Sno=Sno, userAvatar=avatar_file_path)
+                user_obj, created = ahuUser.objects.get_or_create(Sno=Sno)
+                user_obj.userAvatar = avatar_file_path
+                user_obj.wx_name = wx_name
+                user_obj.save()
                 comment = ArticleComment()
                 article_obj = UserAction.objects.get(pk=action_id)
                 comment.article = article_obj
@@ -319,7 +351,7 @@ def comment_action(request):
 
         if action_id != '':
             #try:
-            comments = ArticleComment.objects.filter(article_id=action_id)
+            comments = ArticleComment.objects.filter(article_id=action_id).order_by("-like_num")
             context_dict = {}
             context_list = []
             time1 = datetime(datetime.now().year, datetime.now().month, datetime.now().day)
@@ -329,6 +361,7 @@ def comment_action(request):
                 context['commit_id'] = comment.pk
                 context["author_id"] = comment.user.pk
                 context['author'] = comment.user.Sno
+                context['wx_name'] = comment.user.wx_name
                 context['avatar'] = HOSTS +comment.user.userAvatar.url
                 context['commit_content'] = comment.content
                 context['like_num'] = comment.like_num
@@ -342,6 +375,8 @@ def comment_action(request):
             context_dict['context_list'] = context_list
             context_dict['action_author_id'] = action_obj.author.pk
             context_dict['action_author'] = action_obj.author.Sno
+            context_dict['action_position'] = action_obj.position
+            context_dict['action_author_wx_name'] = action_obj.author.wx_name
             context_dict['action_author_avatar'] = HOSTS + action_obj.author.userAvatar.url
             context_dict['action_excerpt'] = action_obj.excerpt
             context_dict['like_num'] = action_obj.like_num
@@ -381,8 +416,10 @@ def personal_action(request):
                 context['author_id'] = personal_action.author.pk
                 context['action_id'] = personal_action.pk
                 context['author'] = personal_action.author.Sno
+                context['wx_name'] = personal_action.author.wx_name
                 context['avatar'] = HOSTS + personal_action.author.userAvatar.url
                 context['excerpt'] = personal_action.excerpt
+                context['position'] = personal_action.position
                 context['like_num'] = personal_action.like_num
                 context['like_users'] = [i.user.Sno for i in UserActionLike.objects.filter(action_id=personal_action.pk)]
                 if str(personal_action.img) != '':
@@ -396,6 +433,7 @@ def personal_action(request):
             author_obj = ahuUser.objects.filter(id=author_id)[0]
             context_dict['context_list'] = context_list
             context_dict['author'] = author_obj.Sno
+            context_dict['author_wx_name'] = author_obj.wx_name
             context_dict['avatar'] = HOSTS + author_obj.userAvatar.url
 
             context_dict_json = json.dumps(context_dict)
@@ -412,9 +450,10 @@ def personal_action(request):
 def change_like_num_action(request):
     if request.method == "POST":
         try:
-            Sno = Sno_Ascll_TJLG(request.POST.get('OnsUha',''))
+            Sno = Sno_Ascll(request.POST.get('OnsUha',''))
             userAvatar = request.POST.get('userAvatar', '')
             action_id = int(request.POST.get('action_id', ''))
+            wx_name = request.POST.get('wx_name','')
 
 
 
@@ -429,7 +468,10 @@ def change_like_num_action(request):
                 f.close()
 
                 #将新数据写入动态点赞表
-                user_obj, created = ahuUser.objects.get_or_create(Sno=Sno, userAvatar=avatar_file_path)
+                user_obj, created = ahuUser.objects.get_or_create(Sno=Sno)
+                user_obj.userAvatar=avatar_file_path
+                user_obj.wx_name=wx_name
+                user_obj.save()
                 action_obj = UserAction.objects.get(pk=action_id)
                 like_num,like_num_created = UserActionLike.objects.get_or_create(user=user_obj, action=action_obj)
                 if like_num_created == True:
@@ -450,10 +492,10 @@ def change_like_num_action(request):
 def change_like_num_comment(request):
     if request.method == "POST":
         try:
-            Sno = Sno_Ascll_TJLG(request.POST.get('OnsUha',''))
+            Sno = Sno_Ascll(request.POST.get('OnsUha',''))
             userAvatar = request.POST.get('userAvatar', '')
             comment_id = int(request.POST.get('comment_id', ''))
-
+            wx_name = request.POST.get('wx_name', '')
             os.chdir(BASE_DIR)
             media_path = './media/'
             avatar_file_path = 'user_avatar/' + Sno + '.gif'
@@ -464,8 +506,11 @@ def change_like_num_comment(request):
                     f.write(r.content)
                 f.close()
                 comment_obj = ArticleComment.objects.get(pk=comment_id)
-                user_obj, created = ahuUser.objects.get_or_create(Sno=Sno, userAvatar=avatar_file_path)
-                like_num, like_num_created = UserCommentLike.objects.get_or_create(user=user_obj, comment=comment_obj)
+                user_obj, created = ahuUser.objects.get_or_create(Sno=Sno)
+                user_obj.userAvatar = avatar_file_path
+                user_obj.wx_name = wx_name
+                user_obj.save()
+                like_num, like_num_created = UserCommentLike.objects.get_or_create(user=user_obj, comment=comment_obj,)
                 if like_num_created == True:
                     comment_obj.like_num += 1
                 else:
@@ -482,8 +527,9 @@ def change_like_num_comment(request):
 def get_author_id(request):
     if request.method == "POST":
         try:
-            Sno = Sno_Ascll_TJLG(request.POST.get('OnsUha',''))
+            Sno = Sno_Ascll(request.POST.get('OnsUha',''))
             userAvatar = request.POST.get('userAvatar', '')
+            wx_name = request.POST.get('wx_name','')
             os.chdir(BASE_DIR)
             media_path = './media/'
             avatar_file_path = 'user_avatar/' + Sno + '.gif'
@@ -493,7 +539,10 @@ def get_author_id(request):
                     r = requests.get(url=userAvatar)
                     f.write(r.content)
                 f.close()
-                user_obj, created = ahuUser.objects.get_or_create(Sno=Sno, userAvatar=avatar_file_path)
+                user_obj, created = ahuUser.objects.get_or_create(Sno=Sno)
+                user_obj.userAvatar = avatar_file_path
+                user_obj.wx_name = wx_name
+                user_obj.save()
                 return HttpResponse(json.dumps({"author_id": str(user_obj.pk)}, ensure_ascii=False))
             else:
                 return HttpResponse(json.dumps({"status": 'post中有值为空/学号不对'}, ensure_ascii=False))
@@ -505,7 +554,7 @@ def get_author_id(request):
 def delete_action(request):
     if request.method == "POST":
         try:
-            Sno = Sno_Ascll_TJLG(request.POST.get('OnsUha',''))
+            Sno = Sno_Ascll(request.POST.get('OnsUha',''))
             author_id = request.POST.get('author_id', '')
             action_id = request.POST.get('action_id', '')
             if Sno and author_id and action_id:
@@ -523,7 +572,7 @@ def delete_action(request):
 def delete_comment(request):
     if request.method == "POST":
         try:
-            Sno = Sno_Ascll_TJLG(request.POST.get('OnsUha',''))
+            Sno = Sno_Ascll(request.POST.get('OnsUha',''))
             comment_id = request.POST.get('comment_id', '')
             action_id = request.POST.get('action_id', '')
             if Sno and comment_id and action_id:
@@ -540,7 +589,7 @@ def delete_comment(request):
 
 #获得个人的通知列表
 def notice_lst(request):
-    Sno = Sno_Ascll_TJLG(request.GET.get('OnsUha', ''))
+    Sno = Sno_Ascll(request.GET.get('OnsUha', ''))
     page = request.GET.get('page',1)
 
     #将未读消息数置零
@@ -562,9 +611,9 @@ def notice_lst(request):
             for notice in notices:
                 context = {}
                 context['movement'] = notice.movement
-                context['movementer_name'] = notice.movementer.Sno
+                context['movementer_name'] = notice.movementer.wx_name
                 context['movementer_avatar'] = HOSTS+notice.movementer.userAvatar.url
-                context['excerpt'] = '学号为%s的同学评论了动态'%context['movementer_name']
+                context['excerpt'] = '【%s】同学评论了动态'%context['movementer_name']
                 context['action_id'] = notice.action.pk
                 time2 = datetime(notice.create_time.year, notice.create_time.month, notice.create_time.day)
                 print(time2)
@@ -585,7 +634,7 @@ def notice_lst(request):
 
 
 def get_unread_num(request):
-    Sno = Sno_Ascll_TJLG(request.GET.get('OnsUha', ''))
+    Sno = Sno_Ascll(request.GET.get('OnsUha', ''))
     context = {}
     try:
         context['unread_num'] = ahuUser.objects.get(Sno=Sno).unread_num

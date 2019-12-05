@@ -5,6 +5,7 @@ class ahuUser(models.Model):
     Sno = models.CharField("学号", max_length=12)
     userAvatar = models.ImageField("学生微信头像", upload_to='user_avatar', null=True, default="", blank=True)
     unread_num = models.IntegerField("未阅读消息数", default=0)
+    wx_name = models.CharField("微信名称", max_length=100, null=True, default="", blank=True)
 
     class Meta:
         verbose_name = '用户信息（动态）'
@@ -17,6 +18,7 @@ class ahuUser(models.Model):
 class UserAction(models.Model):
     author = models.ForeignKey(ahuUser, on_delete=models.CASCADE)
     excerpt = models.CharField("动态内容", max_length=300)
+    position = models.CharField("地点",max_length=300,default="")
     created_time = models.DateTimeField(auto_now_add=True)
     like_num = models.IntegerField("点赞数", default=0)
     img = models.ImageField("图片1", upload_to='action_img', null=True, default="", blank=True)
@@ -76,3 +78,6 @@ class allNotice(models.Model):
     class Meta:
         verbose_name = '动态通知表'
         verbose_name_plural = '动态通知表'
+
+class stickieAction(models.Model):
+    action = models.ForeignKey(UserAction,on_delete=models.CASCADE)

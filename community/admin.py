@@ -3,11 +3,11 @@ from .models import *
 # Register your models here.
 @admin.register(ahuUser)
 class ahuUserAdmin(admin.ModelAdmin):
-    list_display = ('id','Sno','userAvatar','unread_num')
+    list_display = ('id','Sno','wx_name','userAvatar','unread_num')
 
 @admin.register(UserAction)
 class UserActionAdmin(admin.ModelAdmin):
-    list_display = ('id','author', 'excerpt','like_num','created_time','img')
+    list_display = ('id','author', 'excerpt','position','like_num','created_time','img')
 
 @admin.register(ArticleComment)
 class ArticleCommentAdmin(admin.ModelAdmin):
@@ -27,3 +27,7 @@ class UserCommentLikeAdmin(admin.ModelAdmin):
 @admin.register(allNotice)
 class allNoticeAdmin(admin.ModelAdmin):
     list_display = ('id','movement','movementer','noticeer','action','create_time')
+
+@admin.register(stickieAction)
+class stickieActionAdmin(admin.ModelAdmin):
+    list_display = ('id','action')
