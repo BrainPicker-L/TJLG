@@ -218,26 +218,27 @@ def useraction(request):
 
         # 增加置顶动态列表
         if page == 1:
-            for action in stickie_actions:
+            for stickie_action in stickie_actions:
+                action = UserAction.objects.get(pk=int(stickie_action.action_id))
                 context = {}
-                context['author_id'] = action.action.author.pk
-                context['action_id'] = action.action.pk
-                context['author'] = action.action.author.Sno
-                context['wx_name'] = action.action.author.wx_name
-                context['avatar'] = HOSTS + action.action.author.userAvatar.url
-                context['position'] = action.action.position
-                context['excerpt'] = action.action.excerpt
-                context['like_num'] = action.action.like_num
+                context['author_id'] = action.author.pk
+                context['action_id'] = action.pk
+                context['author'] = action.author.Sno
+                context['wx_name'] = action.author.wx_name
+                context['avatar'] = HOSTS + action.author.userAvatar.url
+                context['position'] = action.position
+                context['excerpt'] = action.excerpt
+                context['like_num'] = action.like_num
                 context['like_users'] = [
                     {'author_id': i.user.id, 'author': i.user.Sno, 'avatar': HOSTS + i.user.userAvatar.url} for i in
-                    UserActionLike.objects.filter(action_id=action.action.pk)]
-                if str(action.action.img) != '':
-                    context['img'] = HOSTS + action.action.img.url
+                    UserActionLike.objects.filter(action_id=action.pk)]
+                if str(action.img) != '':
+                    context['img'] = HOSTS + action.img.url
                 else:
                     context['img'] = ''
-                context['commit_count'] = ArticleComment.objects.filter(article_id=action.action.id).count()
-                time2 = datetime(action.action.created_time.year, action.action.created_time.month, action.action.created_time.day)
-                context['time'] = sort_time((time1 - time2).days, action.action.created_time)
+                context['commit_count'] = ArticleComment.objects.filter(article_id=action.id).count()
+                time2 = datetime(action.created_time.year, action.created_time.month, action.created_time.day)
+                context['time'] = sort_time((time1 - time2).days, action.created_time)
                 context_list.append(context)
 
         #增加动态列表

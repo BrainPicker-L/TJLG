@@ -80,4 +80,4 @@ class allNotice(models.Model):
         verbose_name_plural = '动态通知表'
 
 class stickieAction(models.Model):
-    action = models.ForeignKey(UserAction,on_delete=models.CASCADE)
+    action_id = models.IntegerField('文章id',default=0)

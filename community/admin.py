@@ -30,4 +30,4 @@ class allNoticeAdmin(admin.ModelAdmin):
 
 @admin.register(stickieAction)
 class stickieActionAdmin(admin.ModelAdmin):
-    list_display = ('id','action')
+    list_display = ('id','action_id')
