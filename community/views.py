@@ -18,6 +18,10 @@ import jieba
 import hashlib
 # Create your views here.
 
+import requests
+import base64
+
+
 dirty_dict = {
     "无修正": "",
     "被插": "", "裸舞视": "", "春药": "", "秘唇": "", "爱液": "", "乳头": "", "娘西皮": "", "骚水": "", "色情小说": "", "鸡奸": "",
@@ -114,6 +118,29 @@ dirty_dict = {
     "档中央": "", "拱铲": "", "共c党": "", "供铲裆": "", "北京政权": "", "阿共": "", "仇共": "", "共一产一党": "", "中央zf": "", "中华帝国": "",
     "大陆官方": "", "邪党": "", "狗产蛋": "", "日你": "", "先人板板": "","江泽民":"","膜蛤":"","习近平":"","港独":"","废青":"","胡锦涛":"",
 }
+
+def img_judge(img_path):
+
+    with open(BASE_DIR+img_path.replace(HOSTS,''), 'rb') as f:
+        data = {
+            "image": base64.b64encode(f.read())
+        }
+    f.close()
+    headers = {
+        "Content-Type": "application/x-www-form-urlencoded"
+    }
+    res = requests.post(
+        url="https://aip.baidubce.com/rest/2.0/solution/v1/img_censor/v2/user_defined?access_token=24.dad89e68902da20d5e7530078ef331f0.2592000.1578565617.282335-17990387",
+        data=data,
+        headers=headers,
+    )
+    print(res.text)
+    if json.loads(res.text)["conclusion"] != "合规":
+        return os.path.join(HOSTS,"media","community",'img_illegal.png')
+    return img_path
+
+
+
 def check(content):
     print(content)
     s = jieba.cut(content,cut_all=True)
@@ -169,7 +196,8 @@ def upload_img(request):
         path = os.path.join(MEDIA_ROOT,"community",os.path.join(md5+'.jpg'))
         with open(path, 'wb') as f:
             f.write(content)
-        response.append({'name':key, 'img_path':os.path.join(HOSTS,"media","community",md5+'.jpg')}) #返回前台
+        img_path = img_judge(os.path.join(HOSTS,"media","community",md5+'.jpg'))
+        response.append({'name':key, 'img_path':img_path}) #返回前台
     return HttpResponse(json.dumps(response, ensure_ascii=False))
 
 @csrf_exempt
