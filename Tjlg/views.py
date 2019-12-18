@@ -571,7 +571,7 @@ def get_class_info(request):
                 dct = {}
                 dct['kcmc'] = i.kcmc
                 dct['ls'] = i.ls
-                dct['kcdd'] = i.kcdd
+                dct['kcdd'] = i.kcdd 
                 dct['xqj'] = i.xqj
                 dct['skjc'] = i.skjc
                 dct['skcd'] = i.skcd

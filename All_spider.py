@@ -117,124 +117,127 @@ class Test():
 
     def getAllGrade(self,s,headers,user):            #拿到全部成绩
 
+        try:
+            data = {
+                'optype': 'query',
+                'isFirst': '1',
+                'qXndm_ys': '',  # 改变学年
+                'qXqdm_ys': '',  # 改变学期
+                'qKclbdm_ys': '',
+                'qKcxzdm_ys': '',
+                'qXdlx_ys': '',
+                'qKch_ys': '',
+                'qKcm_ys': '',
+                'currentSelectTabId': '01',
+            }
+            r2 = s.post("http://ssfw.tjut.edu.cn/ssfw/zhcx/cjxx.do", data=data, headers=headers)
+    
+    
+    
+            soup = BeautifulSoup(r2.text, "lxml")
+            b = soup.find("div", attrs={"class": "ui_alert ui_alert_block"})
+    
+    
+            a = soup.find_all("div", attrs={"tabid": "01"})[0]
+            tr_list = a.find_all('tr', attrs={"class": "t_con"})
+    
+            obj, created = student_Id.objects.get_or_create(xuehao=user)
+            xnxq_lst = []
+    
+            xq_dict = {"一":'1',"二":'2','三':'3'}
+            all_list = []
+            zongjidian = re.findall(r'\d\.\d|\d', str(b))[0]
+            dict1 = {"xn":'','xq':'','zongjidian':zongjidian,'xq_jidian':0,'xn_jidian':0,'all_credit':0,'all_credit_jiaquan':0,'grade_list':[]}
+    
+            for tr in tr_list:
+                gradeInfo_dict = {}
+                td_list = tr.find_all('td')
+                # gradeInfo_dict['xueqi'] = td_list[2].string
+                grade_id = td_list[3].string
+                xn = re.findall(r'(.*)学年', td_list[2].string)[0]
+                xq = xq_dict[re.findall(r'学年第(.*?)学期', td_list[2].string)[0]]
+                if xn +"_"+xq not in xnxq_lst:
+                    xnxq_lst.append(xn +"_"+xq)
+                    if dict1["all_credit"]:
+                        dict1["xq_jidian"] = round(dict1['all_credit_jiaquan']/dict1["all_credit"],2)
+                    all_list.append(dict1)
+                    dict1 = {"xn": '', 'xq': '', 'zongjidian': zongjidian, 'xq_jidian': 0, 'xn_jidian': 0, 'all_credit': 0,
+                             'all_credit_jiaquan': 0, 'grade_list': []}
+                    dict1["xn"] = xn
+                    dict1["xq"] = xq
+    
+                gradeInfo_dict['subject'] = td_list[4].string
+                gradeInfo_dict['property'] = (td_list[5].string).replace("\xa0", "")
+                gradeInfo_dict['credit'] = float((td_list[8].string)[-4:-1])
+                gradeInfo_dict['grade'] = re.findall(r'\d{1,3}', str(td_list[9]))[0]
+                if int(gradeInfo_dict['grade']) >= 60:
+                   # gradeInfo_dict['pa'] = str(1 + round((int(gradeInfo_dict['grade']) - 60) * 0.1, 2))
+                    gradeInfo_dict['pa'] = ((int(gradeInfo_dict['grade']))-60)//5*0.5+1
+                else:
+                    gradeInfo_dict['pa'] = 0
+                dict1["all_credit"] += gradeInfo_dict["credit"]
+                dict1["all_credit_jiaquan"] += gradeInfo_dict["pa"] * gradeInfo_dict["credit"]
+                dict1["grade_list"].append(gradeInfo_dict)
+                obj, created = gradeInfo.objects.get_or_create(grade_id=grade_id, unique_key=user + "_" + grade_id,
+                                                               subject=gradeInfo_dict['subject'],
+                                                               property=gradeInfo_dict['property'],
+                                                               grade=gradeInfo_dict['grade'])
+            xnxq_lst.append(xn + "_" + xq)
+            if dict1["all_credit"]:
+                dict1["xq_jidian"] = round(dict1['all_credit_jiaquan'] / dict1["all_credit"], 2)
+            all_list.append(dict1)
+    
+            all_list = all_list[1:]
+    
+            pre = ''
+            xuefen_xuenian = 0
+            xuefen_xuenian_all = 0
+            xueian_dict = {}
+            for j in all_list:
+                if j['xn'] == pre or pre == '':
+                    xuefen_xuenian += j["all_credit"]
+                    xuefen_xuenian_all += j["all_credit_jiaquan"]
+                elif j['xn'] != pre and pre != '':
+                    xueian_dict[pre] = round(xuefen_xuenian_all / xuefen_xuenian, 2)
+                    xuefen_xuenian = 0
+                    xuefen_xuenian_all = 0
+                    xuefen_xuenian += j["all_credit"]
+                    xuefen_xuenian_all += j["all_credit_jiaquan"]
+                pre = j['xn']
+            xueian_dict[pre] = round(xuefen_xuenian_all / xuefen_xuenian, 2)
+            print(xueian_dict)
+            for i in all_list:
+                for k, v in xueian_dict.items():
+                    if i['xn'] == k:
+                        i["xn_jidian"] = v
+                        break
+    
+    
+    
+            json_list_all = json.dumps(all_list, ensure_ascii=False)
+            return json_list_all
 
-        data = {
-            'optype': 'query',
-            'isFirst': '1',
-            'qXndm_ys': '',  # 改变学年
-            'qXqdm_ys': '',  # 改变学期
-            'qKclbdm_ys': '',
-            'qKcxzdm_ys': '',
-            'qXdlx_ys': '',
-            'qKch_ys': '',
-            'qKcm_ys': '',
-            'currentSelectTabId': '01',
-        }
-        r2 = s.post("http://ssfw.tjut.edu.cn/ssfw/zhcx/cjxx.do", data=data, headers=headers)
-
-
-
-        soup = BeautifulSoup(r2.text, "lxml")
-        b = soup.find("div", attrs={"class": "ui_alert ui_alert_block"})
-
-
-        a = soup.find_all("div", attrs={"tabid": "01"})[0]
-        tr_list = a.find_all('tr', attrs={"class": "t_con"})
-
-        obj, created = student_Id.objects.get_or_create(xuehao=user)
-        xnxq_lst = []
-
-        xq_dict = {"一":'1',"二":'2','三':'3'}
-        all_list = []
-        zongjidian = re.findall(r'\d\.\d|\d', str(b))[0]
-        dict1 = {"xn":'','xq':'','zongjidian':zongjidian,'xq_jidian':0,'xn_jidian':0,'all_credit':0,'all_credit_jiaquan':0,'grade_list':[]}
-
-        for tr in tr_list:
-            gradeInfo_dict = {}
-            td_list = tr.find_all('td')
-            # gradeInfo_dict['xueqi'] = td_list[2].string
-            grade_id = td_list[3].string
-            xn = re.findall(r'(.*)学年', td_list[2].string)[0]
-            xq = xq_dict[re.findall(r'学年第(.*?)学期', td_list[2].string)[0]]
-            if xn +"_"+xq not in xnxq_lst:
-                xnxq_lst.append(xn +"_"+xq)
-                if dict1["all_credit"]:
-                    dict1["xq_jidian"] = round(dict1['all_credit_jiaquan']/dict1["all_credit"],2)
-                all_list.append(dict1)
-                dict1 = {"xn": '', 'xq': '', 'zongjidian': zongjidian, 'xq_jidian': 0, 'xn_jidian': 0, 'all_credit': 0,
-                         'all_credit_jiaquan': 0, 'grade_list': []}
-                dict1["xn"] = xn
-                dict1["xq"] = xq
-
-            gradeInfo_dict['subject'] = td_list[4].string
-            gradeInfo_dict['property'] = (td_list[5].string).replace("\xa0", "")
-            gradeInfo_dict['credit'] = float((td_list[8].string)[-4:-1])
-            gradeInfo_dict['grade'] = re.findall(r'\d{1,3}', str(td_list[9]))[0]
-            if int(gradeInfo_dict['grade']) >= 60:
-               # gradeInfo_dict['pa'] = str(1 + round((int(gradeInfo_dict['grade']) - 60) * 0.1, 2))
-                gradeInfo_dict['pa'] = ((int(gradeInfo_dict['grade']))-60)//5*0.5+1
-            else:
-                gradeInfo_dict['pa'] = 0
-            dict1["all_credit"] += gradeInfo_dict["credit"]
-            dict1["all_credit_jiaquan"] += gradeInfo_dict["pa"] * gradeInfo_dict["credit"]
-            dict1["grade_list"].append(gradeInfo_dict)
-            obj, created = gradeInfo.objects.get_or_create(grade_id=grade_id, unique_key=user + "_" + grade_id,
-                                                           subject=gradeInfo_dict['subject'],
-                                                           property=gradeInfo_dict['property'],
-                                                           grade=gradeInfo_dict['grade'])
-        xnxq_lst.append(xn + "_" + xq)
-        if dict1["all_credit"]:
-            dict1["xq_jidian"] = round(dict1['all_credit_jiaquan'] / dict1["all_credit"], 2)
-        all_list.append(dict1)
-
-        all_list = all_list[1:]
-
-        pre = ''
-        xuefen_xuenian = 0
-        xuefen_xuenian_all = 0
-        xueian_dict = {}
-        for j in all_list:
-            if j['xn'] == pre or pre == '':
-                xuefen_xuenian += j["all_credit"]
-                xuefen_xuenian_all += j["all_credit_jiaquan"]
-            elif j['xn'] != pre and pre != '':
-                xueian_dict[pre] = round(xuefen_xuenian_all / xuefen_xuenian, 2)
-                xuefen_xuenian = 0
-                xuefen_xuenian_all = 0
-                xuefen_xuenian += j["all_credit"]
-                xuefen_xuenian_all += j["all_credit_jiaquan"]
-            pre = j['xn']
-        xueian_dict[pre] = round(xuefen_xuenian_all / xuefen_xuenian, 2)
-        print(xueian_dict)
-        for i in all_list:
-            for k, v in xueian_dict.items():
-                if i['xn'] == k:
-                    i["xn_jidian"] = v
-                    break
-
-
-
-        json_list_all = json.dumps(all_list, ensure_ascii=False)
-        return json_list_all
-
+        except:
+            json_list_all = json.dumps({"error": "暂未评教，请登录信息门户评教后可查看"}, ensure_ascii=False)
+            return json_list_all
 
     def getClass(self,s,headers):
         class_all_list = []
         xqj_num = [1,2,3,4,5,6,7]
         xqj_han = ["一","二","三","四","五","六","日"]
         url = "http://ssfw.tjut.edu.cn/ssfw/xkgl/xkjgcx.do"
-        # data = {
-        #     'isHistory': 'ss',
-        #     'curPageNo': '1',
-        #     'iDisplayLength': '10',
-        #     'totalSize': '11',
-        #     'qXnxqdm': '2019-2020-1',
-        #     'qKcxzdm':'',
-        #     'qKclbdm':'',
-        # }
-        r = s.get(url, headers=headers)
+        data = {
+            'isHistory': 'ss',
+            'curPageNo': '1',
+            'iDisplayLength': '20',
+            'totalSize': '20',
+            'qXnxqdm': '2019-2020-1',
+            'qKcxzdm':'',
+            'qKclbdm':'',
+        }
+        r = s.post(url, headers=headers,data=data)
         soup = BeautifulSoup(r.text, "lxml")
-        table = soup.find_all("table", attrs={"class":"ui_table ui_table_striped ui_table_style02"})[0]
+        table = soup.find_all("table", attrs={"class":"ui_table ui_table_striped ui_table_style02"})[1]
         tr_list = table.find_all("tr", attrs={"class":"t_con"})
         for tr in tr_list:
             classInfo_dict = {}
