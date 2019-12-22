@@ -60,6 +60,7 @@ urlpatterns = [
     path('get_class_info',views.get_class_info,name='get_class_info'),
     path('houqin/',include("houqinApi.urls")),
     path('community/',include("community.urls")),
+    path('insert_guake',views.insert_guake,name='insert_guake'),
 
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

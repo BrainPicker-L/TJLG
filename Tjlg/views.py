@@ -586,3 +586,26 @@ def get_class_info(request):
         context_list = []
         context_list_json = json.dumps(context_list)
         return HttpResponse(context_list_json)
+
+
+def insert_guake(request):
+    key = request.GET.get("key",'')
+    if key != "666666":
+        return HttpResponse(json.dumps({"error":"key error"}, ensure_ascii=False))
+
+    with open(BASE_DIR+'/grade.txt', 'r') as f:
+        json_data = json.loads(f.read())
+    for data in json_data:
+        guake_obj = Guake()
+        guake_obj.Category = data["Category"]
+        guake_obj.Code = data["Code"]
+        guake_obj.Name = data["Name"]
+        guake_obj.Number = data["Number"]
+        # "0-59": "6.98%", "60-69": "16.28%", "70-79": "23.26%", "80-89": "25.58%", "90-100": "27.91%
+        guake_obj.P0_59 = data["0-59"]
+        guake_obj.P60_69 = data["60-69"]
+        guake_obj.P70_79 = data["70-79"]
+        guake_obj.P80_89 = data["80-89"]
+        guake_obj.P90_100 = data["90-100"]
+        guake_obj.save()
+    return HttpResponse(json.dumps({"status": "insert sucess"}, ensure_ascii=False))
