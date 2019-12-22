@@ -474,6 +474,109 @@ def getarticle(request):
         return HttpResponse(json.dumps({"insert": "Error,缺少字段或字段为空或数据重复"}, ensure_ascii=False))
     except:
         return HttpResponse(json.dumps({"status": '未知错误，联系子哲'}, ensure_ascii=False))
+
+@csrf_exempt
+def getarticle_sx(request):
+    try:
+        articleObj = Article()
+        articleObj.author = Profile.objects.filter(user__username=request.POST.get('author', ''))[0]
+        articleObj.title = request.POST.get('title', '')
+        articleObj.detail_url = request.POST.get('detail_url', '')
+        articleObj.excerpt = request.POST.get('excerpt', '')
+        url_img1 = request.POST.get('img1', '')
+        url_img2 = request.POST.get('img2', '')
+        url_img3 = request.POST.get('img3', '')
+        url_img4 = request.POST.get('img4', '')
+        url_img5 = request.POST.get('img5', '')
+        url_img6 = request.POST.get('img6', '')
+        url_img7 = request.POST.get('img7', '')
+        url_img8 = request.POST.get('img8', '')
+        url_img9 = request.POST.get('img9', '')
+        os.chdir(BASE_DIR)
+        media_path = './media/'
+        img1_file_path = 'img/' + url_img1.split("/")[-1]
+        img2_file_path = 'img/' + url_img2.split("/")[-1]
+        img3_file_path = 'img/' + url_img3.split("/")[-1]
+        img4_file_path = 'img/' + url_img4.split("/")[-1]
+        img5_file_path = 'img/' + url_img5.split("/")[-1]
+        img6_file_path = 'img/' + url_img6.split("/")[-1]
+        img7_file_path = 'img/' + url_img7.split("/")[-1]
+        img8_file_path = 'img/' + url_img8.split("/")[-1]
+        img9_file_path = 'img/' + url_img9.split("/")[-1]
+        if url_img1 != '':
+            with open(media_path + img1_file_path, 'wb') as f:
+                r = requests.get(url=url_img1)
+                f.write(r.content)
+            f.close()
+            smaller_img(media_path + img1_file_path)
+            articleObj.img1 = img1_file_path
+        if url_img2 != '':
+            with open(media_path + img2_file_path, 'wb') as f:
+                r = requests.get(url=url_img2)
+                f.write(r.content)
+            f.close()
+            smaller_img(media_path + img1_file_path)
+            articleObj.img2 = img2_file_path
+        if url_img3 != '':
+            with open(media_path + img3_file_path, 'wb') as f:
+                r = requests.get(url=url_img3)
+                f.write(r.content)
+            f.close()
+            smaller_img(media_path + img1_file_path)
+            articleObj.img3 = img3_file_path
+        if url_img4 != '':
+            with open(media_path + img4_file_path, 'wb') as f:
+                r = requests.get(url=url_img4)
+                f.write(r.content)
+            f.close()
+            smaller_img(media_path + img1_file_path)
+            articleObj.img4 = img4_file_path
+        if url_img5 != '':
+            with open(media_path + img5_file_path, 'wb') as f:
+                r = requests.get(url=url_img5)
+                f.write(r.content)
+            f.close()
+            smaller_img(media_path + img1_file_path)
+            articleObj.img5 = img5_file_path
+        if url_img6 != '':
+            with open(media_path + img6_file_path, 'wb') as f:
+                r = requests.get(url=url_img6)
+                f.write(r.content)
+            f.close()
+            smaller_img(media_path + img1_file_path)
+            articleObj.img6 = img6_file_path
+        if url_img7 != '':
+            with open(media_path + img7_file_path, 'wb') as f:
+                r = requests.get(url=url_img7)
+                f.write(r.content)
+            f.close()
+            smaller_img(media_path + img1_file_path)
+            articleObj.img7 = img7_file_path
+        if url_img8 != '':
+            with open(media_path + img8_file_path, 'wb') as f:
+                r = requests.get(url=url_img8)
+                f.write(r.content)
+            f.close()
+            smaller_img(media_path + img1_file_path)
+            articleObj.img8 = img8_file_path
+        if url_img9 != '':
+            with open(media_path + img9_file_path, 'wb') as f:
+                r = requests.get(url=url_img9)
+                f.write(r.content)
+            f.close()
+            smaller_img(media_path + img1_file_path)
+            articleObj.img9 = img9_file_path
+        cur = datetime.now()
+        articleObj.created_time = "%s-%s-%s %s:%s" % (cur.year, cur.month, cur.day, cur.hour, cur.minute)
+        articleObj.last_updated_time = "%s-%s-%s %s:%s" % (cur.year, cur.month, cur.day, cur.hour, cur.minute)
+        titlelist = gettitlelist()
+        # print(titlelist,articleObj.detail_url)
+        if request.POST.get('title','') and articleObj.title and articleObj.excerpt and articleObj.title not in titlelist:
+            articleObj.save()
+            return HttpResponse(json.dumps({"insert": "success"}, ensure_ascii=False))
+        return HttpResponse(json.dumps({"insert": "Error,缺少字段或字段为空或数据重复"}, ensure_ascii=False))
+    except:
+        return HttpResponse(json.dumps({"status": '未知错误，联系子哲'}, ensure_ascii=False))
 def gettitlelist():
     titlelist = []
     articles = TJLG_Article_Pyspider.objects.all()
