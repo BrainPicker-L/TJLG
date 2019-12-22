@@ -233,12 +233,13 @@ def useraction(request):
 
 
         if userAvatar!='' and excerpt != '' and Sno != '':#"20" in Sno and len(Sno)<12 and userAvatar!='':
-            with open(media_path + avatar_file_path, 'wb') as f:
-                r = requests.get(url=userAvatar)
-                f.write(r.content)
-            f.close()
             user_obj, created = ahuUser.objects.get_or_create(Sno=Sno)
-            user_obj.userAvatar = avatar_file_path
+            if len(Sno)>4:
+                with open(media_path + avatar_file_path, 'wb') as f:
+                    r = requests.get(url=userAvatar)
+                    f.write(r.content)
+                f.close()
+                user_obj.userAvatar = avatar_file_path
             user_obj.wx_name = wx_name
             user_obj.save()
             article_obj = UserAction()
