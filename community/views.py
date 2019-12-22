@@ -188,17 +188,34 @@ def sort_time(time, create_time):
 
 @csrf_exempt
 def upload_img(request):
+    choose = request.POST.get("choose","file")
+    url = request.POST.get("url","")
+    print(choose,url)
     response = []
-    files = request.FILES #获取返回来的图片
-    for key,value in files.items():
-        content = value.read()
-        md5 = hashlib.md5(content).hexdigest()
-        path = os.path.join(MEDIA_ROOT,"community",os.path.join(md5+'.jpg'))
-        with open(path, 'wb') as f:
-            f.write(content)
-        img_path = img_judge(os.path.join(HOSTS,"media","community",md5+'.jpg'))
-        response.append({'name':key, 'img_path':img_path}) #返回前台
-    return HttpResponse(json.dumps(response, ensure_ascii=False))
+    if choose == "url":
+        if url != '':
+            content = requests.get(url=url).content
+            print(content)
+
+            md5 = hashlib.md5(content).hexdigest()
+            path = os.path.join(MEDIA_ROOT, "community", os.path.join(md5 + '.jpg'))
+            with open(path, 'wb') as f:
+                f.write(content)
+            img_path = img_judge(os.path.join(HOSTS, "media", "community", md5 + '.jpg'))
+            response.append({'1': "1", 'img_path': img_path})  # 返回前台
+            return HttpResponse(json.dumps(response, ensure_ascii=False))
+    else:
+
+        files = request.FILES #获取返回来的图片
+        for key,value in files.items():
+            content = value.read()
+            md5 = hashlib.md5(content).hexdigest()
+            path = os.path.join(MEDIA_ROOT,"community",os.path.join(md5+'.jpg'))
+            with open(path, 'wb') as f:
+                f.write(content)
+            img_path = img_judge(os.path.join(HOSTS,"media","community",md5+'.jpg'))
+            response.append({'name':key, 'img_path':img_path}) #返回前台
+        return HttpResponse(json.dumps(response, ensure_ascii=False))
 
 @csrf_exempt
 def useraction(request):
