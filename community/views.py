@@ -201,7 +201,7 @@ def upload_img(request):
             path = os.path.join(MEDIA_ROOT, "community", os.path.join(md5 + '.jpg'))
             with open(path, 'wb') as f:
                 f.write(content)
-            img_path = img_judge(os.path.join(HOSTS, "media", "community", md5 + '.jpg'))
+            img_path = os.path.join(HOSTS, "media", "community", md5 + '.jpg')#img_judge(os.path.join(HOSTS, "media", "community", md5 + '.jpg'))
             response.append({'1': "1", 'img_path': img_path})  # 返回前台
             return HttpResponse(json.dumps(response, ensure_ascii=False))
     else:
@@ -213,7 +213,7 @@ def upload_img(request):
             path = os.path.join(MEDIA_ROOT,"community",os.path.join(md5+'.jpg'))
             with open(path, 'wb') as f:
                 f.write(content)
-            img_path = img_judge(os.path.join(HOSTS,"media","community",md5+'.jpg'))
+            img_path = os.path.join(HOSTS, "media", "community", md5 + '.jpg')#img_judge(os.path.join(HOSTS,"media","community",md5+'.jpg'))
             response.append({'name':key, 'img_path':img_path}) #返回前台
         return HttpResponse(json.dumps(response, ensure_ascii=False))
 

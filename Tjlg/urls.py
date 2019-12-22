@@ -52,6 +52,7 @@ urlpatterns = [
     path('searchemail',views.emailSearch,name='emailSearch'),
     path('emaildetail',views.emaildetail,name='emaildetail'),
     path('getarticle',views.getarticle,name='getarticle'),
+    path('getarticle_sx',views.getarticle_sx,name='getarticle_sx'),
     path('jspj',views.jspj,name='jspj'),
     path('school_life',views.school_life,name='school_life'),
     path('TJLG_school_life',views.TJLG_school_life,name='TJLG_school_life'),
