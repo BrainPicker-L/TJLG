@@ -154,6 +154,7 @@ class Test():
                 td_list = tr.find_all('td')
                 # gradeInfo_dict['xueqi'] = td_list[2].string
                 grade_id = td_list[3].string
+                print(grade_id)
                 xn = re.findall(r'(.*)学年', td_list[2].string)[0]
                 xq = xq_dict[re.findall(r'学年第(.*?)学期', td_list[2].string)[0]]
                 if xn +"_"+xq not in xnxq_lst:
@@ -166,7 +167,10 @@ class Test():
                     dict1["xn"] = xn
                     dict1["xq"] = xq
     
-                gradeInfo_dict['subject'] = td_list[4].string
+                gradeInfo_dict['subject'] = str(td_list[4].string)
+                if gradeInfo_dict['subject'] == 'None':
+                    gradeInfo_dict['subject'] = re.findall(r'<td align="center" valign="middle">(.*?)</s></td>',str(td_list[4]))[0].replace('<br/><s style="color: red">','\\')
+                print(gradeInfo_dict['subject'],td_list[4],td_list[4].string)
                 gradeInfo_dict['property'] = (td_list[5].string).replace("\xa0", "")
                 gradeInfo_dict['credit'] = td_list[8].string
                 if gradeInfo_dict['credit'] != None:
@@ -180,14 +184,16 @@ class Test():
                     dict1["all_credit"] += gradeInfo_dict["credit"]
                     dict1["all_credit_jiaquan"] += gradeInfo_dict["pa"] * gradeInfo_dict["credit"]
                 else:
-                    gradeInfo_dict['grade'] = re.findall(r'<strong>(.*?)</strong>',str(td_list[9]))[0].replace(' ','')
-                    print(gradeInfo_dict['grade'])
-                print(gradeInfo_dict)
+                    gradeInfo_dict['grade'] = re.findall(r'<strong>(.*?)</strong>',str(td_list[9]))
+                    if gradeInfo_dict['grade'] == []:
+                        gradeInfo_dict['grade'] = re.findall(r'\d{1,3}', str(td_list[9]))[0]
+                    else:
+                        gradeInfo_dict['grade'] = gradeInfo_dict['grade'][0]
                 dict1["grade_list"].append(gradeInfo_dict)
-                obj, created = gradeInfo.objects.get_or_create(grade_id=grade_id, unique_key=user + "_" + grade_id,
-                                                                   subject=gradeInfo_dict['subject'],
-                                                                   property=gradeInfo_dict['property'],
-                                                                   grade=gradeInfo_dict['grade'])
+                # obj, created = gradeInfo.objects.get_or_create(grade_id=grade_id, unique_key=user + "_" + grade_id,
+                #                                                    subject=gradeInfo_dict['subject'],
+                #                                                    property=gradeInfo_dict['property'],
+                #                                                    grade=gradeInfo_dict['grade'])
                     
             xnxq_lst.append(xn + "_" + xq)
             if dict1["all_credit"]:
