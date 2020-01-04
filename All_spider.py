@@ -168,20 +168,27 @@ class Test():
     
                 gradeInfo_dict['subject'] = td_list[4].string
                 gradeInfo_dict['property'] = (td_list[5].string).replace("\xa0", "")
-                gradeInfo_dict['credit'] = float((td_list[8].string)[-4:-1])
-                gradeInfo_dict['grade'] = re.findall(r'\d{1,3}', str(td_list[9]))[0]
-                if int(gradeInfo_dict['grade']) >= 60:
-                   # gradeInfo_dict['pa'] = str(1 + round((int(gradeInfo_dict['grade']) - 60) * 0.1, 2))
-                    gradeInfo_dict['pa'] = ((int(gradeInfo_dict['grade']))-60)//5*0.5+1
+                gradeInfo_dict['credit'] = td_list[8].string
+                if gradeInfo_dict['credit'] != None:
+                    gradeInfo_dict['credit'] = float(gradeInfo_dict['credit'][-4:-1])
+                    gradeInfo_dict['grade'] = re.findall(r'\d{1,3}', str(td_list[9]))[0]
+                    if int(gradeInfo_dict['grade']) >= 60:
+                       # gradeInfo_dict['pa'] = str(1 + round((int(gradeInfo_dict['grade']) - 60) * 0.1, 2))
+                        gradeInfo_dict['pa'] = ((int(gradeInfo_dict['grade']))-60)//5*0.5+1
+                    else:
+                        gradeInfo_dict['pa'] = 0
+                    dict1["all_credit"] += gradeInfo_dict["credit"]
+                    dict1["all_credit_jiaquan"] += gradeInfo_dict["pa"] * gradeInfo_dict["credit"]
                 else:
-                    gradeInfo_dict['pa'] = 0
-                dict1["all_credit"] += gradeInfo_dict["credit"]
-                dict1["all_credit_jiaquan"] += gradeInfo_dict["pa"] * gradeInfo_dict["credit"]
+                    gradeInfo_dict['grade'] = re.findall(r'<strong>(.*?)</strong>',str(td_list[9]))[0].replace(' ','')
+                    print(gradeInfo_dict['grade'])
+                print(gradeInfo_dict)
                 dict1["grade_list"].append(gradeInfo_dict)
                 obj, created = gradeInfo.objects.get_or_create(grade_id=grade_id, unique_key=user + "_" + grade_id,
-                                                               subject=gradeInfo_dict['subject'],
-                                                               property=gradeInfo_dict['property'],
-                                                               grade=gradeInfo_dict['grade'])
+                                                                   subject=gradeInfo_dict['subject'],
+                                                                   property=gradeInfo_dict['property'],
+                                                                   grade=gradeInfo_dict['grade'])
+                    
             xnxq_lst.append(xn + "_" + xq)
             if dict1["all_credit"]:
                 dict1["xq_jidian"] = round(dict1['all_credit_jiaquan'] / dict1["all_credit"], 2)
