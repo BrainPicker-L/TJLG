@@ -116,7 +116,7 @@ dirty_dict = {
     "贡挡": "",
     "贪污": "", "供产": "", "共狗": "", "工产党": "", "中gong": "", "g匪": "", "政zhi": "", "gcd": "", "共产党腐败": "", "中珙": "",
     "档中央": "", "拱铲": "", "共c党": "", "供铲裆": "", "北京政权": "", "阿共": "", "仇共": "", "共一产一党": "", "中央zf": "", "中华帝国": "",
-    "大陆官方": "", "邪党": "", "狗产蛋": "", "日你": "", "先人板板": "","江泽民":"","膜蛤":"","习近平":"","港独":"","废青":"","胡锦涛":"",
+    "大陆官方": "", "邪党": "", "狗产蛋": "", "日你": "", "先人板板": "","江泽民":"","膜蛤":"","习近平":"","港独":"","废青":"","胡锦涛":"","郭文贵":""
 }
 
 BAIDU_AI = 1
@@ -143,18 +143,32 @@ def img_judge(img_path):
 
 
 def check(content):
-    print(content)
-    s = jieba.cut(content,cut_all=True)
-    str = '*'.join(s)
-    jieba_list = str.split('*')
-    print(jieba_list)
-    jieba_list = [i for i in list(set(jieba_list)) if len(i) > 0]
-    print(jieba_list)
-    jieba_list.append(content)
-    for k in jieba_list:
-        if k in dirty_dict:
-            content = content.replace(k, '*' * len(k))
-    return content
+    if BAIDU_AI != 0:
+        data = {
+            "text":content,
+        }
+        res = requests.post(url="https://aip.baidubce.com/rest/2.0/solution/v1/text_censor/v2/user_defined?access_token=24.d2dda7bdf439d1c373aabddd49391702.2592000.1581318251.282335-17990387",data=data)
+        if json.loads(res.text)["conclusion"] != "合规":
+            return "社区内请文明发言"
+    else:
+        return content
+    # print(content)
+    # s = jieba.cut(content,cut_all=True)
+    # str = '*'.join(s)
+    # jieba_list = str.split('*')
+    # print(jieba_list)
+    # jieba_list = [i for i in list(set(jieba_list)) if len(i) > 0]
+    # print(jieba_list)
+    # jieba_list.append(content)
+    # for k in jieba_list:
+    #     if k in dirty_dict:
+    #         content = content.replace(k, '*' * len(k))
+    # for k,v in dirty_dict.items():
+    #     print(k)
+    #     if k in content:
+    #         content.replace(k,'*' * len(k))
+    #
+    # return content
 
 
 def Sno_Ascll(ascll_word):
