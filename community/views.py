@@ -119,6 +119,8 @@ dirty_dict = {
     "大陆官方": "", "邪党": "", "狗产蛋": "", "日你": "", "先人板板": "","江泽民":"","膜蛤":"","习近平":"","港独":"","废青":"","胡锦涛":"",
 }
 
+BAIDU_AI = 1
+
 def img_judge(img_path):
 
     with open(BASE_DIR+img_path.replace(HOSTS,''), 'rb') as f:
@@ -130,7 +132,7 @@ def img_judge(img_path):
         "Content-Type": "application/x-www-form-urlencoded"
     }
     res = requests.post(
-        url="https://aip.baidubce.com/rest/2.0/solution/v1/img_censor/v2/user_defined?access_token=24.dad89e68902da20d5e7530078ef331f0.2592000.1578565617.282335-17990387",
+        url="https://aip.baidubce.com/rest/2.0/solution/v1/img_censor/v2/user_defined?access_token=24.d2dda7bdf439d1c373aabddd49391702.2592000.1581318251.282335-17990387",
         data=data,
         headers=headers,
     )
@@ -138,7 +140,6 @@ def img_judge(img_path):
     if json.loads(res.text)["conclusion"] != "合规":
         return os.path.join(HOSTS,"media","community",'img_illegal.png')
     return img_path
-
 
 
 def check(content):
@@ -195,13 +196,14 @@ def upload_img(request):
     if choose == "url":
         if url != '':
             content = requests.get(url=url).content
-            print(content)
-
             md5 = hashlib.md5(content).hexdigest()
             path = os.path.join(MEDIA_ROOT, "community", os.path.join(md5 + '.jpg'))
             with open(path, 'wb') as f:
                 f.write(content)
-            img_path = os.path.join(HOSTS, "media", "community", md5 + '.jpg')#img_judge(os.path.join(HOSTS, "media", "community", md5 + '.jpg'))
+            if BAIDU_AI == 0:
+                img_path = os.path.join(HOSTS, "media", "community", md5 + '.jpg')#img_judge(os.path.join(HOSTS, "media", "community", md5 + '.jpg'))
+            else:
+                img_path = img_judge(os.path.join(HOSTS, "media", "community", md5 + '.jpg'))
             response.append({'1': "1", 'img_path': img_path})  # 返回前台
             return HttpResponse(json.dumps(response, ensure_ascii=False))
     else:
@@ -213,7 +215,11 @@ def upload_img(request):
             path = os.path.join(MEDIA_ROOT,"community",os.path.join(md5+'.jpg'))
             with open(path, 'wb') as f:
                 f.write(content)
-            img_path = os.path.join(HOSTS, "media", "community", md5 + '.jpg')#img_judge(os.path.join(HOSTS,"media","community",md5+'.jpg'))
+            if BAIDU_AI == 0:
+                img_path = os.path.join(HOSTS, "media", "community",
+                                        md5 + '.jpg')  # img_judge(os.path.join(HOSTS, "media", "community", md5 + '.jpg'))
+            else:
+                img_path = img_judge(os.path.join(HOSTS, "media", "community", md5 + '.jpg'))
             response.append({'name':key, 'img_path':img_path}) #返回前台
         return HttpResponse(json.dumps(response, ensure_ascii=False))
 
