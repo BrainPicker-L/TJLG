@@ -140,8 +140,10 @@ class Test():
 
         a = soup.find_all("div", attrs={"tabid": "01"})[0]
         tr_list = a.find_all('tr', attrs={"class": "t_con"})
-
-        obj, created = student_Id.objects.get_or_create(xuehao=user)
+        try:
+            obj, created = student_Id.objects.get_or_create(xuehao=user)
+        except:
+            pass
         xnxq_lst = []
 
         xq_dict = {"一":'1',"二":'2','三':'3'}
