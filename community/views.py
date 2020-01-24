@@ -119,7 +119,7 @@ dirty_dict = {
     "大陆官方": "", "邪党": "", "狗产蛋": "", "日你": "", "先人板板": "","江泽民":"","膜蛤":"","习近平":"","港独":"","废青":"","胡锦涛":"","郭文贵":""
 }
 
-BAIDU_AI = 1
+BAIDU_AI = 0
 
 def img_judge(img_path):
 
@@ -240,6 +240,7 @@ def upload_img(request):
 @csrf_exempt
 def useraction(request):
     if request.method == "POST":
+        choice = request.POST.get('choice','1')
 
         Sno = Sno_Ascll(request.POST.get('OnsUha',''))
         wx_name = request.POST.get('wx_name','')
@@ -250,6 +251,7 @@ def useraction(request):
         os.chdir(BASE_DIR)
         media_path = './media/'
         avatar_file_path = 'user_avatar/'+Sno+'.gif'
+
 
 
         if userAvatar!='' and excerpt != '' and Sno != '':#"20" in Sno and len(Sno)<12 and userAvatar!='':
@@ -265,9 +267,26 @@ def useraction(request):
             article_obj = UserAction()
             article_obj.author = user_obj
             article_obj.position = position
+            print(excerpt)
             article_obj.excerpt = excerpt
             if img!='':
                 article_obj.img = img.replace(HOSTS+"/media/",'')
+            if choice == "1":
+                article_obj.type = ActionType.objects.get(name="个人动态")
+            elif choice == "2":
+                article_obj.type = ActionType.objects.get(name="失物招领")
+            elif choice == "3":
+                article_obj.type = ActionType.objects.get(name="有偿悬赏")
+            elif choice == "4":
+                article_obj.type = ActionType.objects.get(name="二手交易")
+            elif choice == "5":
+                article_obj.type = ActionType.objects.get(name="校内拼车")
+            elif choice == "6":
+                article_obj.type = ActionType.objects.get(name="官方")
+            elif choice == "7":
+                article_obj.type = ActionType.objects.get(name="院系")
+            else:
+                return  HttpResponse(json.dumps({"status": 'choice不在范围内'}, ensure_ascii=False))
             article_obj.save()
             return HttpResponse(json.dumps({"status": 'success'}, ensure_ascii=False))
         else:
@@ -275,15 +294,39 @@ def useraction(request):
         # except:
         #     return HttpResponse(json.dumps({"status": "未知错误，联系子哲"}, ensure_ascii=False))
     elif request.method == "GET":
+        choice = request.GET.get('choice', "0")
         page = int(request.GET.get('page', 0))
-        actions_all_list = UserAction.objects.order_by("-created_time")
+        if choice == "0":
+            actions_all_list = UserAction.objects.order_by("-created_time")
+        elif choice == "1":
+            tmp_name = "个人动态"
+            actions_all_list = UserAction.objects.filter(type__name=tmp_name).order_by("-created_time")
+        elif choice == "2":
+            tmp_name = "失物招领"
+            actions_all_list = UserAction.objects.filter(type__name=tmp_name).order_by("-created_time")
+        elif choice == "3":
+            tmp_name = "有偿悬赏"
+            actions_all_list = UserAction.objects.filter(type__name=tmp_name).order_by("-created_time")
+        elif choice == "4":
+            tmp_name = "二手交易"
+            actions_all_list = UserAction.objects.filter(type__name=tmp_name).order_by("-created_time")
+        elif choice == "5":
+            tmp_name = "校内拼车"
+            actions_all_list = UserAction.objects.filter(type__name=tmp_name).order_by("-created_time")
+        elif choice == "6":
+            tmp_name = "官方"
+            actions_all_list = UserAction.objects.filter(type__name=tmp_name).order_by("-created_time")
+        elif choice == "7":
+            tmp_name = "院系"
+            actions_all_list = UserAction.objects.filter(type__name=tmp_name).order_by("-created_time")
+
         paginator = Paginator(actions_all_list, 7)
         context_list = []
         stickie_actions = stickieAction.objects.all()
         time1 = datetime(datetime.now().year, datetime.now().month, datetime.now().day)
 
         # 增加置顶动态列表
-        if page == 1:
+        if page == 1 and choice == "0":
             for stickie_action in stickie_actions:
                 action = UserAction.objects.get(pk=int(stickie_action.action_id))
                 context = {}
@@ -291,10 +334,18 @@ def useraction(request):
                 context['action_id'] = action.pk
                 context['author'] = action.author.Sno
                 context['wx_name'] = action.author.wx_name
-                context['avatar'] = HOSTS + action.author.userAvatar.url
+
+                if str(action.author.userAvatar) != '':
+                    context['avatar'] = HOSTS + action.author.userAvatar.url
+                else:
+                    context['avatar'] = ''
                 context['position'] = action.position
                 context['excerpt'] = action.excerpt
                 context['like_num'] = action.like_num
+                if action.type == None:
+                    context['type'] = '个人动态'
+                else:
+                    context['type'] = action.type.name
                 context['like_users'] = [
                     {'author_id': i.user.id, 'author': i.user.Sno, 'avatar': HOSTS + i.user.userAvatar.url} for i in
                     UserActionLike.objects.filter(action_id=action.pk)]
@@ -324,6 +375,10 @@ def useraction(request):
                     context['position'] = action.position
                     context['excerpt'] = action.excerpt
                     context['like_num'] = action.like_num
+                    if action.type == None:
+                        context['type'] = '个人动态'
+                    else:
+                        context['type'] = action.type.name
                     context['like_users'] = [{'author_id':i.user.id,'author':i.user.Sno,'avatar':HOSTS+i.user.userAvatar.url} for i in UserActionLike.objects.filter(action_id=action.pk)]
                     if str(action.img) != '':
                         context['img'] = HOSTS + action.img.url
@@ -447,6 +502,10 @@ def comment_action(request):
             context_dict['action_author_avatar'] = HOSTS + action_obj.author.userAvatar.url
             context_dict['action_excerpt'] = action_obj.excerpt
             context_dict['like_num'] = action_obj.like_num
+            if action_obj.type == None:
+                context_dict['type'] = '个人动态'
+            else:
+                context_dict['type'] = action_obj.type.name
             context_dict['like_users'] = [{'author_id':i.user.id,'author':i.user.Sno,'avatar':HOSTS+i.user.userAvatar.url} for i in UserActionLike.objects.filter(action_id=action_obj.pk)]
             time2 = datetime(action_obj.created_time.year, action_obj.created_time.month, action_obj.created_time.day)
             context_dict['commit_count'] = ArticleComment.objects.filter(article_id=action_obj.id).count()
@@ -487,6 +546,10 @@ def personal_action(request):
                 context['avatar'] = HOSTS + personal_action.author.userAvatar.url
                 context['excerpt'] = personal_action.excerpt
                 context['position'] = personal_action.position
+                if personal_action.type == None:
+                    context_dict['type'] = '个人动态'
+                else:
+                    context['type'] = personal_action.type.name
                 context['like_num'] = personal_action.like_num
                 context['like_users'] = [i.user.Sno for i in UserActionLike.objects.filter(action_id=personal_action.pk)]
                 if str(personal_action.img) != '':

@@ -5,9 +5,13 @@ from .models import *
 class ahuUserAdmin(admin.ModelAdmin):
     list_display = ('id','Sno','wx_name','userAvatar','unread_num')
 
+@admin.register(ActionType)
+class ActionTypeAdmin(admin.ModelAdmin):
+    list_display = ('id','name')
+
 @admin.register(UserAction)
 class UserActionAdmin(admin.ModelAdmin):
-    list_display = ('id','author', 'excerpt','position','like_num','created_time','img')
+    list_display = ('id','type','author', 'excerpt','position','like_num','created_time','img')
 
 @admin.register(ArticleComment)
 class ArticleCommentAdmin(admin.ModelAdmin):

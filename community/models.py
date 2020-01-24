@@ -15,8 +15,14 @@ class ahuUser(models.Model):
         return "<学生学号：%s>" % self.Sno
 
 
+class ActionType(models.Model):
+    name = models.CharField('动态种类名称',max_length=50)
+    def __str__(self):
+            return "<动态种类：%s>" % self.name
+
 class UserAction(models.Model):
     author = models.ForeignKey(ahuUser, on_delete=models.CASCADE)
+    type = models.ForeignKey(ActionType, on_delete=models.CASCADE,blank=True,null=True)
     excerpt = models.CharField("动态内容", max_length=300)
     position = models.CharField("地点",max_length=300,default="")
     created_time = models.DateTimeField(auto_now_add=True)
@@ -81,3 +87,4 @@ class allNotice(models.Model):
 
 class stickieAction(models.Model):
     action_id = models.IntegerField('文章id',default=0)
+
