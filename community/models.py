@@ -24,7 +24,7 @@ class UserAction(models.Model):
     author = models.ForeignKey(ahuUser, on_delete=models.CASCADE)
     type = models.ForeignKey(ActionType, on_delete=models.CASCADE,blank=True,null=True)
     excerpt = models.CharField("动态内容", max_length=300)
-    position = models.CharField("地点",max_length=300,default="")
+    position = models.CharField("地点",max_length=300,default="",null=True,blank=True)
     created_time = models.DateTimeField(auto_now_add=True)
     like_num = models.IntegerField("点赞数", default=0)
     img = models.ImageField("图片1", upload_to='action_img', null=True, default="", blank=True)
