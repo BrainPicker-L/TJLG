@@ -119,7 +119,7 @@ dirty_dict = {
     "大陆官方": "", "邪党": "", "狗产蛋": "", "日你": "", "先人板板": "","江泽民":"","膜蛤":"","习近平":"","港独":"","废青":"","胡锦涛":"","郭文贵":""
 }
 
-BAIDU_AI = 0
+BAIDU_AI = 1
 
 def img_judge(img_path):
 
@@ -132,7 +132,7 @@ def img_judge(img_path):
         "Content-Type": "application/x-www-form-urlencoded"
     }
     res = requests.post(
-        url="https://aip.baidubce.com/rest/2.0/solution/v1/img_censor/v2/user_defined?access_token=24.6c5e1ff107f0e8bcef8c46d3424a0e78.2592000.1485516651.282335-8574074",
+        url="https://aip.baidubce.com/rest/2.0/solution/v1/img_censor/v2/user_defined?access_token=24.7da754b9dee9b8a9ac57c164e48f6d6c.2592000.1584883961.282335-17990387",
         data=data,
         headers=headers,
     )
@@ -147,9 +147,12 @@ def check(content):
         data = {
             "text":content,
         }
-        res = requests.post(url="https://aip.baidubce.com/rest/2.0/solution/v1/text_censor/v2/user_defined?access_token=24.6c5e1ff107f0e8bcef8c46d3424a0e78.2592000.1485516651.282335-8574074",data=data)
+        res = requests.post(url="https://aip.baidubce.com/rest/2.0/solution/v1/text_censor/v2/user_defined?access_token=24.7da754b9dee9b8a9ac57c164e48f6d6c.2592000.1584883961.282335-17990387",data=data)
+        print(res.text)
         if json.loads(res.text)["conclusion"] != "合规":
             return "社区内请文明发言"
+        else:
+            return content
     else:
         return content
     # print(content)
