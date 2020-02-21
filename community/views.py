@@ -132,7 +132,7 @@ def img_judge(img_path):
         "Content-Type": "application/x-www-form-urlencoded"
     }
     res = requests.post(
-        url="https://aip.baidubce.com/rest/2.0/solution/v1/img_censor/v2/user_defined?access_token=24.d2dda7bdf439d1c373aabddd49391702.2592000.1581318251.282335-17990387",
+        url="https://aip.baidubce.com/rest/2.0/solution/v1/img_censor/v2/user_defined?access_token=24.6c5e1ff107f0e8bcef8c46d3424a0e78.2592000.1485516651.282335-8574074",
         data=data,
         headers=headers,
     )
@@ -147,7 +147,7 @@ def check(content):
         data = {
             "text":content,
         }
-        res = requests.post(url="https://aip.baidubce.com/rest/2.0/solution/v1/text_censor/v2/user_defined?access_token=24.d2dda7bdf439d1c373aabddd49391702.2592000.1581318251.282335-17990387",data=data)
+        res = requests.post(url="https://aip.baidubce.com/rest/2.0/solution/v1/text_censor/v2/user_defined?access_token=24.6c5e1ff107f0e8bcef8c46d3424a0e78.2592000.1485516651.282335-8574074",data=data)
         if json.loads(res.text)["conclusion"] != "合规":
             return "社区内请文明发言"
     else:
