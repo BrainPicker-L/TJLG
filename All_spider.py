@@ -350,27 +350,28 @@ class Test():
         }
 
         s = requests.session()
-
+        return json.dumps({"error": "服务器维护中"}, ensure_ascii=False)
         # try:
-        while 1:
-
-            data = {
-                'j_username': user,           #测试用账号密码
-                'j_password': password,
-                'validateCode': self.getCheckCode(s),
-            }
-            print(data)
-            if data["validateCode"] == '':
-                continue
-            r = s.post(url,data=data,headers=headers)
-            return_info = r.text.split("\":")[0].replace("{", "").replace("\"", "")
-            print(return_info)
-            if return_info == "success":
-                break
-            elif return_info == "userNameOrPasswordError":
-                break
-            elif return_info == "validateCodeError":
-                continue
+        # i = 0
+        # while i<5:
+        #     i = i+1
+        #     data = {
+        #         'j_username': user,           #测试用账号密码
+        #         'j_password': password,
+        #         'validateCode': self.getCheckCode(s),
+        #     }
+        #     print(data)
+        #     if data["validateCode"] == '':
+        #         continue
+        #     r = s.post(url,data=data,headers=headers)
+        #     return_info = r.text.split("\":")[0].replace("{", "").replace("\"", "")
+        #     print(return_info)
+        #     if return_info == "success":
+        #         break
+        #     elif return_info == "userNameOrPasswordError":
+        #         break
+        #     elif return_info == "validateCodeError":
+        #         continue
 
 
 
