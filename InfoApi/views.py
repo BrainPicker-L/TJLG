@@ -4,6 +4,7 @@ from django.shortcuts import render
 # coding:utf-8
 from django.shortcuts import render
 from django.http import HttpResponse
+import spider_test
 
 # 引入我们创建的表单类
 from .forms import InfoForm
@@ -19,7 +20,6 @@ def info(request):
     print(user,password)
     if user=='' or password=='' or choice=='':
         return HttpResponse(json.dumps({"error":-2}, ensure_ascii=False))
-    a = Test()
-    info_json = a.main(user,password,choice)
+    info_json = spider_test.main(user,password,choice)
     return HttpResponse(info_json)
 
