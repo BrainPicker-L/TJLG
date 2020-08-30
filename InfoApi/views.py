@@ -10,7 +10,7 @@ import spider_test
 from .forms import InfoForm
 from All_spider import *
 from django.views.decorators.csrf import csrf_exempt
-
+from InfoApi.models import *
 @csrf_exempt
 def info(request):
 
@@ -23,3 +23,10 @@ def info(request):
     info_json = spider_test.main(user,password,choice)
     return HttpResponse(info_json)
 
+def get_start_school_day(request):
+    start_school_day_obj = StartSchoolDay.objects.all()
+    if len(start_school_day_obj) == 0:
+        return HttpResponse(json.dumps({"error": "没有设置开学日期"}, ensure_ascii=False))
+    else:
+        start_school_day_obj = start_school_day_obj[0]
+        return HttpResponse(json.dumps({"start_school_day":"%s-%s-%s"%(start_school_day_obj.time.year,start_school_day_obj.time.month,start_school_day_obj.time.day)}, ensure_ascii=False))
