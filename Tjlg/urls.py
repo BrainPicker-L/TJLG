@@ -24,7 +24,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('admin/', admin.site.urls),
     path("library/",include("LibraryApi.urls")),
-    path("info/",include("InfoApi.urls")),
+    path("info",include("InfoApi.urls")),
     path("top_article/",include("top_article.urls")),
     path("detail_article/",include("detail_article.urls")),
     path("manage_detail/",views.manage_detail,name="manage_detail"),
