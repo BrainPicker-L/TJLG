@@ -120,13 +120,15 @@ def upload_img(request):
             content = requests.get(url=url).content
             md5 = hashlib.md5(content).hexdigest()
             path = os.path.join(MEDIA_ROOT, "community", os.path.join(md5 + '.jpg'))
+            if not os.path.exists(os.path.join(MEDIA_ROOT, "community")):
+                os.system("mkdir -p %s"%os.path.join(MEDIA_ROOT, "community"))
             with open(path, 'wb') as f:
                 f.write(content)
             if BAIDU_AI == 0:
                 img_path = os.path.join(HOSTS, "media", "community", md5 + '.jpg')#img_judge(os.path.join(HOSTS, "media", "community", md5 + '.jpg'))
             else:
                 img_path = img_judge(os.path.join(HOSTS, "media", "community", md5 + '.jpg'))
-            response.append({'1': "1", 'img_path': img_path})  # 返回前台
+            response.append({'1': "1", 'img_path': img_path.replace("\\","/")})  # 返回前台
             return HttpResponse(json.dumps(response, ensure_ascii=False))
     else:
 
@@ -141,9 +143,12 @@ def upload_img(request):
                 img_path = os.path.join(HOSTS, "media", "community",
                                         md5 + '.jpg')  # img_judge(os.path.join(HOSTS, "media", "community", md5 + '.jpg'))
             else:
+                print(os.path.join(HOSTS, "media", "community", md5 + '.jpg'))
                 img_path = img_judge(os.path.join(HOSTS, "media", "community", md5 + '.jpg'))
-            response.append({'name':key, 'img_path':img_path}) #返回前台
+
+            response.append({'name':key, 'img_path':img_path.replace("\\","/")}) #返回前台
         return HttpResponse(json.dumps(response, ensure_ascii=False))
+
 
 @csrf_exempt
 def useraction(request):
