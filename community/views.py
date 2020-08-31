@@ -24,7 +24,7 @@ import base64
 
 
 
-BAIDU_AI = 0
+BAIDU_AI = 1
 
 def img_judge(img_path):
 
@@ -37,7 +37,7 @@ def img_judge(img_path):
         "Content-Type": "application/x-www-form-urlencoded"
     }
     res = requests.post(
-        url="https://aip.baidubce.com/rest/2.0/solution/v1/img_censor/v2/user_defined?access_token=24.7da754b9dee9b8a9ac57c164e48f6d6c.2592000.1584883961.282335-17990387",
+        url="https://aip.baidubce.com/rest/2.0/solution/v1/img_censor/v2/user_defined?access_token=24.2c524098f37ac837ee40240c2914a5ae.2592000.1601442473.282335-17990387",
         data=data,
         headers=headers,
     )
@@ -52,7 +52,7 @@ def check(content):
         data = {
             "text":content,
         }
-        res = requests.post(url="https://aip.baidubce.com/rest/2.0/solution/v1/text_censor/v2/user_defined?access_token=24.7da754b9dee9b8a9ac57c164e48f6d6c.2592000.1584883961.282335-17990387",data=data)
+        res = requests.post(url="https://aip.baidubce.com/rest/2.0/solution/v1/text_censor/v2/user_defined?access_token=24.2c524098f37ac837ee40240c2914a5ae.2592000.1601442473.282335-17990387",data=data)
         print(res.text)
         if json.loads(res.text)["conclusion"] != "合规":
             return "社区内请文明发言"
@@ -120,13 +120,15 @@ def upload_img(request):
             content = requests.get(url=url).content
             md5 = hashlib.md5(content).hexdigest()
             path = os.path.join(MEDIA_ROOT, "community", os.path.join(md5 + '.jpg'))
+            if not os.path.exists(os.path.join(MEDIA_ROOT, "community")):
+                os.system("mkdir -p %s"%os.path.join(MEDIA_ROOT, "community"))
             with open(path, 'wb') as f:
                 f.write(content)
             if BAIDU_AI == 0:
                 img_path = os.path.join(HOSTS, "media", "community", md5 + '.jpg')#img_judge(os.path.join(HOSTS, "media", "community", md5 + '.jpg'))
             else:
                 img_path = img_judge(os.path.join(HOSTS, "media", "community", md5 + '.jpg'))
-            response.append({'1': "1", 'img_path': img_path})  # 返回前台
+            response.append({'1': "1", 'img_path': img_path.replace("\\","/")})  # 返回前台
             return HttpResponse(json.dumps(response, ensure_ascii=False))
     else:
 
@@ -141,9 +143,12 @@ def upload_img(request):
                 img_path = os.path.join(HOSTS, "media", "community",
                                         md5 + '.jpg')  # img_judge(os.path.join(HOSTS, "media", "community", md5 + '.jpg'))
             else:
+                print(os.path.join(HOSTS, "media", "community", md5 + '.jpg'))
                 img_path = img_judge(os.path.join(HOSTS, "media", "community", md5 + '.jpg'))
-            response.append({'name':key, 'img_path':img_path}) #返回前台
+
+            response.append({'name':key, 'img_path':img_path.replace("\\","/")}) #返回前台
         return HttpResponse(json.dumps(response, ensure_ascii=False))
+
 
 @csrf_exempt
 def useraction(request):
