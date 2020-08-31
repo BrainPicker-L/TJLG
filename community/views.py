@@ -24,7 +24,7 @@ import base64
 
 
 
-BAIDU_AI = 0
+BAIDU_AI = 1
 
 def img_judge(img_path):
 
@@ -37,7 +37,7 @@ def img_judge(img_path):
         "Content-Type": "application/x-www-form-urlencoded"
     }
     res = requests.post(
-        url="https://aip.baidubce.com/rest/2.0/solution/v1/img_censor/v2/user_defined?access_token=24.7da754b9dee9b8a9ac57c164e48f6d6c.2592000.1584883961.282335-17990387",
+        url="https://aip.baidubce.com/rest/2.0/solution/v1/img_censor/v2/user_defined?access_token=24.2c524098f37ac837ee40240c2914a5ae.2592000.1601442473.282335-17990387",
         data=data,
         headers=headers,
     )
@@ -52,7 +52,7 @@ def check(content):
         data = {
             "text":content,
         }
-        res = requests.post(url="https://aip.baidubce.com/rest/2.0/solution/v1/text_censor/v2/user_defined?access_token=24.7da754b9dee9b8a9ac57c164e48f6d6c.2592000.1584883961.282335-17990387",data=data)
+        res = requests.post(url="https://aip.baidubce.com/rest/2.0/solution/v1/text_censor/v2/user_defined?access_token=24.2c524098f37ac837ee40240c2914a5ae.2592000.1601442473.282335-17990387",data=data)
         print(res.text)
         if json.loads(res.text)["conclusion"] != "合规":
             return "社区内请文明发言"
