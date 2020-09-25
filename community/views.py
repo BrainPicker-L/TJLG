@@ -24,7 +24,7 @@ import base64
 
 
 
-BAIDU_AI = 1
+BAIDU_AI = 0
 
 def img_judge(img_path):
 
