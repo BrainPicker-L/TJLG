@@ -132,13 +132,13 @@ def getClass(s,xk_headers):
             else:
                 #try:
                 if len(info_list)==1:
-                    range1 = (re.findall(r'\d-\d{1,2}节',i)[0])[:-1]
+                    range1 = (re.findall(r'\d{1,2}-\d{1,2}节',i)[0])[:-1]
 
                 else:
                     if info_list.index(i) == len(info_list)-1:
-                        range1 = (re.findall(r'\d-\d{1,2}节', i)[0])[:-1]
+                        range1 = (re.findall(r'\d{1,2}-\d{1,2}节', i)[0])[:-1]
                     else:
-                        range1 = (re.findall(r' \d-\d{1,2}', i)[0]).replace(' ','')
+                        range1 = (re.findall(r' \d{1,2}-\d{1,2}', i)[0]).replace(' ','')
                 classInfo_dict = classInfo_dict.copy()
                 range1_list = range1.split("-")
                 classInfo_dict['kcdd'] = kcdd_list[info_list.index(i)]
@@ -464,6 +464,6 @@ def main(stu_num,password,choice):
 
 
 if __name__ == "__main__":
-    stu_num = '20173729'  # input("请输入学号：")
-    password = 'ZWTabby123456'  # input("请输入密码：")
-    print(main(stu_num,password,2))
+    stu_num = '20200631'  # input("请输入学号：")
+    password = 'zky-200101040011'  # input("请输入密码：")
+    print(main(stu_num,password,1))
