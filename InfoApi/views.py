@@ -29,4 +29,4 @@ def get_start_school_day(request):
         return HttpResponse(json.dumps({"error": "没有设置开学日期"}, ensure_ascii=False))
     else:
         start_school_day_obj = start_school_day_obj[0]
-        return HttpResponse(json.dumps({"start_school_day":"%s-%s-%s"%(start_school_day_obj.time.year,start_school_day_obj.time.month,start_school_day_obj.time.day)}, ensure_ascii=False))
+        return HttpResponse(json.dumps({"start_school_day":"%s%s%s"%(start_school_day_obj.time.year,str(start_school_day_obj.time.month).zfill(2),str(start_school_day_obj.time.day).zfill(2))}, ensure_ascii=False))
