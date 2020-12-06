@@ -374,7 +374,7 @@ def getAllGrade(s,xk_headers):            #拿到全部成绩
 
 def getTest(s,xk_headers):     #拿到考试信息
     data = {
-        "xnxqdm": "2019-2020-1"
+        "xnxqdm": "2020-2021-1"
     }
     url = "http://ssfw.tjut.edu.cn/ssfw/xsks/kcxx.do"
     r = s.post(url,data=data,headers = xk_headers)
