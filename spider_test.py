@@ -6,6 +6,7 @@ from requests.adapters import HTTPAdapter
 from lxml import etree
 from bs4 import BeautifulSoup
 import random
+import traceback
 
 
 def pre_log_tj(s,stu_num, password,headers):
@@ -324,9 +325,17 @@ def getAllGrade(s,xk_headers):            #拿到全部成绩
         else:
             gradeInfo_dict['grade'] = re.findall(r'<strong>(.*?)</strong>',str(td_list[9]))
             if gradeInfo_dict['grade'] == []:
-                gradeInfo_dict['grade'] = re.findall(r'\d{1,3}', str(td_list[9]))[0]
+                try:
+                    gradeInfo_dict['grade'] = re.findall(r'\d{1,3}', str(td_list[9]))[0]
+                except:
+                    gradeInfo_dict['grade'] = re.findall(r'[\u4e00-\u9fa5]+', str(td_list[9]))
+                    if gradeInfo_dict != []:
+                        gradeInfo_dict['grade'] = gradeInfo_dict['grade'][0]
+                    else:
+                        gradeInfo_dict['grade'] = ""
             else:
                 gradeInfo_dict['grade'] = gradeInfo_dict['grade'][0]
+        #print(str(td_list[9]))
         dict1["grade_list"].append(gradeInfo_dict)
         # obj, created = gradeInfo.objects.get_or_create(grade_id=grade_id, unique_key=user + "_" + grade_id,
         #                                                    subject=gradeInfo_dict['subject'],
@@ -460,6 +469,7 @@ def main(stu_num,password,choice):
             info_json = "choice error"
         return info_json
     except:
+        #print(traceback.format_exc())
         return  json.dumps({"error": "用户名/密码错误"}, ensure_ascii=False)
 
 
