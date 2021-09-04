@@ -8,10 +8,12 @@ from bs4 import BeautifulSoup
 import random
 import execjs
 import traceback
-
+import os
 
 def _load_js():
-    with open("script/sdk.js", mode="r", encoding="utf-8") as f:
+    print(os.path.dirname(__file__))
+    os.chdir(os.path.dirname(__file__))
+    with open("./script/sdk.js", mode="r", encoding="utf-8") as f:
         return execjs.compile(f.read())
 
 

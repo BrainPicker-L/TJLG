@@ -11,3 +11,4 @@ class SelectForm(forms.Form):
 
 class SearchForm(forms.Form):
     searchtext = forms.CharField(max_length=50,label="输入工单号搜索")
+    
