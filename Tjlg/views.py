@@ -192,7 +192,7 @@ def phone_detail_article(request,article_pk):
     return render(request, 'phone_detail_article.html', context)
 
 def start_school_day(request):
-    info_json = json.dumps({"start": "20210906"}, ensure_ascii=False)
+    info_json = json.dumps({"start": "20210831"}, ensure_ascii=False)
     return HttpResponse(info_json)
 def psf(request):
     info_json = json.dumps({"flag":"2019"})
