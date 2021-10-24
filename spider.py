@@ -284,15 +284,15 @@ class TJLG_University:
 
 
 if __name__ == "__main__":
-    username = "20200631"#input("请输入学号：").strip()
-    pwd = "zky-200101040011"#input("请输入密码：").strip()
+    username = "20195517"#input("请输入学号：").strip()
+    pwd = "TJUTzh666"#input("请输入密码：").strip()
     tjlg = TJLG_University(username, pwd)
     """登录"""
     tjlg.login()
-    """课程"""
-    tjlg.parse_course({"xn": "2020-2021", "xq": "1"})
-    # """成绩"""
-    # tjlg.parse_grade({"xn": "", "xq": ""})
+    # """课程"""
+    # tjlg.parse_course({"xn": "2020-2021", "xq": "1"})
+    """成绩"""
+    tjlg.parse_grade({"xn": "", "xq": ""})
     # """空教室"""
     # tjlg.parse_empty_classroom({"xn": "2020-2021", "xq": "2", "day": "3", "week": "3", "session": "1"})
     # """考试"""

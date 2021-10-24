@@ -9,12 +9,14 @@ import random
 import execjs
 import traceback
 import os
+import sys
 
 def _load_js():
     print(os.path.dirname(__file__))
-    os.chdir(os.path.dirname(__file__))
+    #os.chdir(os.path.dirname(__file__))
     with open("./script/sdk.js", mode="r", encoding="utf-8") as f:
         return execjs.compile(f.read())
+
 
 
 def login(s, login_url, username, pwd):
@@ -418,7 +420,56 @@ def getAllGrade(s):  # 拿到全部成绩
     #     json_list_all = json.dumps({"error": "暂未评教，请登录信息门户评教后可查看"}, ensure_ascii=False)
     #     return json_list_all
 
+def parse_grade(s, username):
+    api = "http://ssfw.tjut.edu.cn/ssfw/zhcx/cjxx.do"
+    data = {
+        "optype": "quer",
+        "isFirst": "1",
+        "qXndm_ys": "",
+        "qXqdm_ys": "",
+        "qKclbdm_ys": "",
+        "qKcxzdm_ys": "",
+        "qXdlx_ys": "",
+        "qKch_ys": "",
+        "qKcm_ys": "",
+        "currentSelectTabId": "01"
+    }
+    response = s.post(api, data=data)
+    xpathor = etree.HTML(response.text)
+    tr_list = xpathor.xpath(".//tr[@class='t_con']")
 
+    data_list = []
+    for index, tr in enumerate(tr_list):
+        stuId = username
+        className = tr.xpath("./td[5]/text()")[0].replace("\xa0", "")
+        try:
+            grade = int(list(filter(None, [_.replace("\r", "").replace("\t", "").strip() for _ in tr.xpath("./td[10]//text()")]))[0])
+        except ValueError:
+            grade = list(filter(None, [_.replace("\r", "").replace("\t", "").strip() for _ in tr.xpath("./td[10]//text()")]))[0]
+        classId = tr.xpath("./td[4]/text()")[0].replace("\xa0", "")
+        category = tr.xpath("./td[6]/text()")[0].replace("\xa0", "")
+        try:
+            score = float(tr.xpath('./td[9]/text()')[0].replace("\xa0", "").strip())
+        except IndexError:
+            score = ""
+        classNature = tr.xpath("./td[7]/text()")[0].replace("\xa0", "")
+        term = tr.xpath("./td[3]/text()")[0].replace("\xa0", "")
+        studyMethod = tr.xpath("./td[11]/text()")[0].replace("\xa0", "")
+        dict_data = {
+            "stuId": stuId,
+            "className": className,
+            "grade": grade,
+            "classId": classId,
+            "category": category,
+            "score": score,
+            "classNature": classNature,
+            "term": term,
+            "studyMethod": studyMethod,
+        }
+        data_list.append(dict_data)
+    return data_list
+    
+    
 def getTest(s):  # 拿到考试信息
     data = {
         "xnxqdm": "2020-2021-1"
@@ -511,7 +562,7 @@ def main(stu_num, password, choice):
         elif choice == "3":
             info_json = getTest(s)
         elif choice == "4":
-            info_json = getAllGrade(s)
+            info_json = parse_grade(s, stu_num)
         else:
             info_json = "choice error"
         return info_json
@@ -521,6 +572,12 @@ def main(stu_num, password, choice):
 
 
 if __name__ == "__main__":
-    stu_num = '20194345'  # input("请输入学号：")
-    password = '186218qq@'  # input("请输入密码：")
-    print(main(stu_num, password, 1))
+    stu_num = sys.argv[1]
+    password = sys.argv[2]
+    choice = sys.argv[3]
+    #stu_num = '20194345'  # input("请输入学号：")
+    #password = '186218qq@'  # input("请输入密码：")
+
+    stu_num1 = "20195517"
+    password1 = "TJUTzh666"
+    print(main(stu_num, password, choice))
