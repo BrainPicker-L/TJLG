@@ -197,7 +197,7 @@ def getClass(s, param_dict):
                         _by_info_get_dict_data(data_list, j, info)
                 elif len(info) == 3:
                     _by_info_get_dict_data(data_list, j, info)
-    return data_list
+    return json.dumps(data_list, ensure_ascii=False)
 
 # def getClass(s):
 #     class_all_list = []
