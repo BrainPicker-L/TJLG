@@ -614,7 +614,7 @@ def main(stu_num, password, choice):
             return json.dumps({"error": "用户名/密码错误"}, ensure_ascii=False)
 
         if choice == "1":
-            info_json = getClass(s, {"xn": "2020-2021", "xq": "1"})
+            info_json = getClass(s, {"xn": "2021-2022", "xq": "1"})
         elif choice == "2":
             info_json = getGrade(s, "2018-2019", ["1", "2"])
         elif choice == "3":
