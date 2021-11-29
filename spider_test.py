@@ -140,89 +140,147 @@ def pre_log_tj(s, stu_num, password, headers):
 #
 #     return xk_headers
 #
+def _by_info_get_dict_data(data_list, j, info):
+    xqj_dict = {1: "一", 2: "二", 3: "三", 4: "四", 5: "五", 6: "六", 7: "日"}
+    dsz_dict = {"单": 1, "双": 2}
+    kcmc = info[0].split(" ")[0].split("[")[0]
+    ls = info[1]
+    kcdd = info[2].strip()
+    xqj = j + 1
+    sk = re.findall(r"\d+", info[0].split(" ")[2])
+    skjc = sk[0]
+    skcd = len(sk)
+    zs_info = info[0].split(" ")[1]
+    ds_info = re.findall(r"\((.*?)\)", zs_info, re.S)
+    if not ds_info:
+        dsz = 0
+    else:
+        dsz = dsz_dict[ds_info[0]]
+    zs_info_list = zs_info.split(",")
+    for zs_info in zs_info_list:
+        zs = re.findall(r"\d+", zs_info)
+        qszs = zs[0]
+        jszs = zs[1]
+        extra = f"课程：{kcmc}\n老师：{ls}\n上课地点：{kcdd}\n上课时间：星期{xqj_dict[xqj]} {info[0].split(' ')[2][1:-1]} {zs_info}"
+        dict_data = {
+            "kcmc": kcmc,
+            "ls": ls,
+            "kcdd": kcdd,
+            "xqj": xqj,
+            "skjc": int(skjc),
+            "skcd": int(skcd),
+            "qszs": int(qszs),
+            "jszs": int(jszs),
+            "dsz": dsz,
+            "extra": extra,
+        }
+        data_list.append(dict_data)
 
-def getClass(s):
-    class_all_list = []
-    xqj_num = [1, 2, 3, 4, 5, 6, 7]
-    xqj_han = ["一", "二", "三", "四", "五", "六", "日"]
-    url = r'http://ssfw.tjut.edu.cn/ssfw/xkgl/xkjgcx.do'
-    # data = {
-    #     'isHistory': 'ss',
-    #     'curPageNo': '1',
-    #     'iDisplayLength': '20',
-    #     'totalSize': '20',
-    #     'qXnxqdm': '2019-2020-2',
-    #     'qKcxzdm':'',
-    #     'qKclbdm':'',
-    # }
-    # r = s.post(url, headers=headers,data=data)
+def getClass(s, param_dict):
+    url = f"http://ssfw.tjut.edu.cn/ssfw/pkgl/kcbxx/4/{param_dict['xn']}-{param_dict['xq']}.do"
+    print(url)
+    response = s.get(url)
+    xpathor = etree.HTML(response.text)
+    tr_list = xpathor.xpath(".//table[@id='1']/tr")[1:-1]
 
-    r_text = s.get(url).text
-    soup = BeautifulSoup(r_text, "lxml")
-    table = soup.find_all("table", attrs={"class": "ui_table ui_table_striped ui_table_style02"})[0]
-    tr_list = table.find_all("tr", attrs={"class": "t_con"})
-    for tr in tr_list:
-        classInfo_dict = {}
-        td_list = tr.find_all("td")
-        classInfo_dict["kcmc"] = td_list[2].string
-        classInfo_dict["ls"] = str(td_list[7].span).replace("<span>", "").replace("</span>", "").replace("<br/>", ",")
-        info_list = str(td_list[5].span).replace("<span>", "").replace("</span>", "").split("节<br/>")  # 分割得到所有上课时间列表
-        kcdd_list = str(td_list[6].span).replace("<span>", "").replace("</span>", "").split("<br/>")
-        for i in info_list:
-            if i == '':
-                pass
+    data_list = []
+    for i, tr in enumerate(tr_list):
+        for j, td in enumerate(tr.xpath("./td")[2:]):
+            info = [text.replace("\xa0", "").strip("\n") for text in td.xpath(".//text()")]
+            if info == [""]:
+                continue
             else:
-                # try:
-                if len(info_list) == 1:
-                    range1 = (re.findall(r'\d{1,2}-\d{1,2}节', i)[0])[:-1]
+                info = list(filter(None, info))
+                if len(info) == 6:
+                    infos = [[info[0], info[1], info[2]], [info[3], info[4], info[5]]]
+                    for info in infos:
+                        _by_info_get_dict_data(data_list, j, info)
+                elif len(info) == 3:
+                    _by_info_get_dict_data(data_list, j, info)
+    return data_list
 
-                else:
-                    if info_list.index(i) == len(info_list) - 1:
-                        range1 = (re.findall(r'\d{1,2}-\d{1,2}节', i)[0])[:-1]
-                    else:
-                        range1 = (re.findall(r' \d{1,2}-\d{1,2}', i)[0]).replace(' ', '')
-                classInfo_dict = classInfo_dict.copy()
-                range1_list = range1.split("-")
-                classInfo_dict['kcdd'] = kcdd_list[info_list.index(i)]
-                xqj = (re.findall(r'星期.', i)[0])[-1]
-                classInfo_dict["xqj"] = xqj_num[xqj_han.index(xqj)]
-                # classInfo_dict["xqj"] = (re.findall(r'星期.', i)[0])[-1]
-                classInfo_dict["skjc"] = int(range1_list[0])
-                classInfo_dict["skcd"] = int(int(range1_list[1]) - int(range1_list[0]) + 1)
-                range2 = re.finditer(r'\d{1,2}-\d{1,2}周(\(.\))?', i)
-                for j in range2:
-                    classInfo_dict = classInfo_dict.copy()
-                    range2_list = j.group().split("-")
-                    classInfo_dict["qszs"] = int(range2_list[0])
-                    range2_list2 = range2_list[1].split("周")
-
-                    classInfo_dict["jszs"] = int(re.findall('\d{1,2}', range2_list[1])[0])
-
-                    extra = "课程：%s\n老师：%s\n上课地点：%s\n上课时间：星期%s 第%s节-第%s节 %s-%s周" % (
-                        classInfo_dict['kcmc'], classInfo_dict["ls"], classInfo_dict['kcdd'], xqj,
-                        classInfo_dict["skjc"], classInfo_dict["skjc"] + classInfo_dict["skjc"],
-                        classInfo_dict["qszs"], classInfo_dict["jszs"])
-
-                    if range2_list2[1] == "":
-                        classInfo_dict["dsz"] = 0
-                    else:
-                        if (range2_list2[1])[1] == '单':
-                            classInfo_dict["dsz"] = 1
-                            extra += "(单周)"
-                        elif (range2_list2[1])[1] == '双':
-                            classInfo_dict["dsz"] = 2
-                            extra += "(双周)"
-                    template = [classInfo_dict][:]
-                    # obj,created = ClassInfo.objects.get_or_create(kcmc=classInfo_dict['kcmc'],ls=classInfo_dict['ls'],kcdd=classInfo_dict['kcdd'],xqj=classInfo_dict['xqj'],skjc=classInfo_dict['skjc'],skcd=classInfo_dict['skcd'],qszs=classInfo_dict['qszs'],jszs=classInfo_dict['jszs'],dsz=classInfo_dict['dsz'],extra=extra)
-
-                    class_all_list = class_all_list + template
-
-                # except:
-                #     print(1)
-
-    json_class_all_list = json.dumps(class_all_list, ensure_ascii=False)
-    return json_class_all_list
-
+# def getClass(s):
+#     class_all_list = []
+#     xqj_num = [1, 2, 3, 4, 5, 6, 7]
+#     xqj_han = ["一", "二", "三", "四", "五", "六", "日"]
+#     url = r'http://ssfw.tjut.edu.cn/ssfw/pkgl/kcbxx/4/2020-2021-1.do'
+#     # data = {
+#     #     'isHistory': 'ss',
+#     #     'curPageNo': '1',
+#     #     'iDisplayLength': '20',
+#     #     'totalSize': '20',
+#     #     'qXnxqdm': '2019-2020-2',
+#     #     'qKcxzdm':'',
+#     #     'qKclbdm':'',
+#     # }
+#     # r = s.post(url, headers=headers,data=data)
+#
+#     r_text = s.get(url).text
+#     soup = BeautifulSoup(r_text, "lxml")
+#     table = soup.find_all("table", attrs={"class": "ui_table ui_table_striped ui_table_style02"})[0]
+#     tr_list = table.find_all("tr", attrs={"class": "t_con"})
+#     for tr in tr_list:
+#         classInfo_dict = {}
+#         td_list = tr.find_all("td")
+#         classInfo_dict["kcmc"] = td_list[2].string
+#         classInfo_dict["ls"] = str(td_list[7].span).replace("<span>", "").replace("</span>", "").replace("<br/>", ",")
+#         info_list = str(td_list[5].span).replace("<span>", "").replace("</span>", "").split("节<br/>")  # 分割得到所有上课时间列表
+#         kcdd_list = str(td_list[6].span).replace("<span>", "").replace("</span>", "").split("<br/>")
+#         for i in info_list:
+#             if i == '':
+#                 pass
+#             else:
+#                 # try:
+#                 if len(info_list) == 1:
+#                     range1 = (re.findall(r'\d{1,2}-\d{1,2}节', i)[0])[:-1]
+#
+#                 else:
+#                     if info_list.index(i) == len(info_list) - 1:
+#                         range1 = (re.findall(r'\d{1,2}-\d{1,2}节', i)[0])[:-1]
+#                     else:
+#                         range1 = (re.findall(r' \d{1,2}-\d{1,2}', i)[0]).replace(' ', '')
+#                 classInfo_dict = classInfo_dict.copy()
+#                 range1_list = range1.split("-")
+#                 classInfo_dict['kcdd'] = kcdd_list[info_list.index(i)]
+#                 xqj = (re.findall(r'星期.', i)[0])[-1]
+#                 classInfo_dict["xqj"] = xqj_num[xqj_han.index(xqj)]
+#                 # classInfo_dict["xqj"] = (re.findall(r'星期.', i)[0])[-1]
+#                 classInfo_dict["skjc"] = int(range1_list[0])
+#                 classInfo_dict["skcd"] = int(int(range1_list[1]) - int(range1_list[0]) + 1)
+#                 range2 = re.finditer(r'\d{1,2}-\d{1,2}周(\(.\))?', i)
+#                 for j in range2:
+#                     classInfo_dict = classInfo_dict.copy()
+#                     range2_list = j.group().split("-")
+#                     classInfo_dict["qszs"] = int(range2_list[0])
+#                     range2_list2 = range2_list[1].split("周")
+#
+#                     classInfo_dict["jszs"] = int(re.findall('\d{1,2}', range2_list[1])[0])
+#
+#                     extra = "课程：%s\n老师：%s\n上课地点：%s\n上课时间：星期%s 第%s节-第%s节 %s-%s周" % (
+#                         classInfo_dict['kcmc'], classInfo_dict["ls"], classInfo_dict['kcdd'], xqj,
+#                         classInfo_dict["skjc"], classInfo_dict["skjc"] + classInfo_dict["skjc"],
+#                         classInfo_dict["qszs"], classInfo_dict["jszs"])
+#
+#                     if range2_list2[1] == "":
+#                         classInfo_dict["dsz"] = 0
+#                     else:
+#                         if (range2_list2[1])[1] == '单':
+#                             classInfo_dict["dsz"] = 1
+#                             extra += "(单周)"
+#                         elif (range2_list2[1])[1] == '双':
+#                             classInfo_dict["dsz"] = 2
+#                             extra += "(双周)"
+#                     template = [classInfo_dict][:]
+#                     # obj,created = ClassInfo.objects.get_or_create(kcmc=classInfo_dict['kcmc'],ls=classInfo_dict['ls'],kcdd=classInfo_dict['kcdd'],xqj=classInfo_dict['xqj'],skjc=classInfo_dict['skjc'],skcd=classInfo_dict['skcd'],qszs=classInfo_dict['qszs'],jszs=classInfo_dict['jszs'],dsz=classInfo_dict['dsz'],extra=extra)
+#
+#                     class_all_list = class_all_list + template
+#
+#                 # except:
+#                 #     print(1)
+#
+#     json_class_all_list = json.dumps(class_all_list, ensure_ascii=False)
+#     return json_class_all_list
+#
 
 def getGrade(s, term_year, term_num_list):  # 拿到全部成绩
     list2 = []
@@ -556,7 +614,7 @@ def main(stu_num, password, choice):
             return json.dumps({"error": "用户名/密码错误"}, ensure_ascii=False)
 
         if choice == "1":
-            info_json = getClass(s)
+            info_json = getClass(s, {"xn": "2020-2021", "xq": "1"})
         elif choice == "2":
             info_json = getGrade(s, "2018-2019", ["1", "2"])
         elif choice == "3":

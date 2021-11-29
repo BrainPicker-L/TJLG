@@ -30,10 +30,12 @@ class TJLG_University:
 
     @staticmethod
     def _save_to_json(name, data_list):
-        if not os.path.exists("json"):
-            os.mkdir("json")
-        with open(f"./json/{name}.json", mode="w", encoding="utf-8") as f:
-            f.write(json.dumps(data_list, ensure_ascii=False))
+        print(data_list)
+        # if not os.path.exists("json"):
+        #     os.mkdir("json")
+        #
+        # with open(f"./json/{name}.json", mode="w", encoding="utf-8") as f:
+        #     f.write(json.dumps(data_list, ensure_ascii=False))
 
     def get_salt(self):
         response = self.session.get(self.login_url)
@@ -95,6 +97,7 @@ class TJLG_University:
 
     def parse_course(self, param_dict):
         url = f"http://ssfw.tjut.edu.cn/ssfw/pkgl/kcbxx/4/{param_dict['xn']}-{param_dict['xq']}.do"
+        print(url)
         response = self.session.get(url)
         xpathor = etree.HTML(response.text)
         tr_list = xpathor.xpath(".//table[@id='1']/tr")[1:-1]
@@ -290,9 +293,9 @@ if __name__ == "__main__":
     """登录"""
     tjlg.login()
     # """课程"""
-    # tjlg.parse_course({"xn": "2020-2021", "xq": "1"})
+    tjlg.parse_course({"xn": "2020-2021", "xq": "1"})
     """成绩"""
-    tjlg.parse_grade({"xn": "", "xq": ""})
+    #tjlg.parse_grade({"xn": "", "xq": ""})
     # """空教室"""
     # tjlg.parse_empty_classroom({"xn": "2020-2021", "xq": "2", "day": "3", "week": "3", "session": "1"})
     # """考试"""
