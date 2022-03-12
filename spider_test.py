@@ -147,10 +147,10 @@ def _by_info_get_dict_data(data_list, j, info):
     ls = info[1]
     kcdd = info[2].strip()
     xqj = j + 1
-    sk = re.findall(r"\d+", info[0].split(" ")[2])
+    sk = re.findall(r"\d+", info[0].split(" ")[-1])
     skjc = sk[0]
     skcd = len(sk)
-    zs_info = info[0].split(" ")[1]
+    zs_info = info[0].split(" ")[-2]
     ds_info = re.findall(r"\((.*?)\)", zs_info, re.S)
     if not ds_info:
         dsz = 0
@@ -614,7 +614,7 @@ def main(stu_num, password, choice):
             return json.dumps({"error": "用户名/密码错误"}, ensure_ascii=False)
 
         if choice == "1":
-            info_json = getClass(s, {"xn": "2021-2022", "xq": "1"})
+            info_json = getClass(s, {"xn": "2021-2022", "xq": "2"})
         elif choice == "2":
             info_json = getGrade(s, "2018-2019", ["1", "2"])
         elif choice == "3":
@@ -636,6 +636,6 @@ if __name__ == "__main__":
     #stu_num = '20194345'  # input("请输入学号：")
     #password = '186218qq@'  # input("请输入密码：")
 
-    stu_num1 = "20195517"
-    password1 = "TJUTzh666"
+    stu_num1 = "20191424"
+    password1 = "qwer~~~123..."
     print(main(stu_num, password, choice))
