@@ -13,7 +13,7 @@ import sys
 
 def _load_js():
     print(os.path.dirname(__file__))
-    #os.chdir(os.path.dirname(__file__))
+    os.chdir(os.path.dirname(__file__))
     with open("./script/sdk.js", mode="r", encoding="utf-8") as f:
         return execjs.compile(f.read())
 
